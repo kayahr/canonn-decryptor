@@ -2,7 +2,7 @@ import { MorseDecoder } from "../../../main/decryptor/converters/MorseDecoder";
 import { Converter } from "../../../main/decryptor/converters/Converter";
 
 describe("MorseDecoder", () => {
-    describe("parse", () => {
+    describe("convert", () => {
         it("decodes empty string into empty string", () => {
             expect(new MorseDecoder().convert("")).toEqual("");
         });
@@ -16,6 +16,10 @@ describe("MorseDecoder", () => {
             expect(new MorseDecoder().convert("-")).toEqual("T");
             expect(new MorseDecoder().convert("...")).toEqual("S");
             expect(new MorseDecoder().convert("---")).toEqual("O");
+        });
+        it("can decode different kinds of morse characters", () => {
+            expect(new MorseDecoder().convert(".*")).toEqual("I");
+            expect(new MorseDecoder().convert("-__")).toEqual("O");
         });
         it("decodes sequence of morse codes", () => {
             expect(new MorseDecoder().convert(". ... ---")).toEqual("ESO");
@@ -80,7 +84,7 @@ describe("MorseDecoder", () => {
         it("deserializes a converter with default options", () => {
             const converter = Converter.fromJSON<MorseDecoder>({ "type": "morse-decoder" });
             expect(converter).toEqual(jasmine.any(MorseDecoder));
-            expect(converter.getDots()).toBe(".·");
+            expect(converter.getDots()).toBe(".·*");
             expect(converter.getDashes()).toBe("_-−");
         });
     });
