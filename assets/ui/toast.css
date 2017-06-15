@@ -1,0 +1,32 @@
+.toasts {
+    left: 0;
+    pointer-events: none;
+    position: fixed;
+    right: 0;
+    text-align: center;
+    top: 27px;
+    z-index: 2000;
+}
+
+.toast {
+    height: 0;
+    opacity: 0;
+    transition: visibility 250ms, opacity 250ms, height 250ms;
+    visibility: hidden;
+}
+
+.toast.open {
+    height: 50px;
+    opacity: 1;
+    visibility: visible;
+}
+
+.toast p {
+    background: rgba(0, 126, 44, 0.95);
+    border: 2px solid #0f0;
+    border-radius: 10px;
+    box-shadow: 0 0 25px #0f0;
+    color: #fff;
+    display: inline-block;
+    padding: 10px 20px;
+}

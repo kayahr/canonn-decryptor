@@ -1,0 +1,37 @@
+.load-project-dialog .projects p {
+    margin: 0;
+}
+
+.load-project-dialog .projects {
+    display: table;
+}
+
+.load-project-dialog .project {
+    display: table-row;
+}
+
+.load-project-dialog .project > div {
+    border-bottom: 1px solid #444;
+}
+
+.load-project-dialog .project button {
+    padding: 5px;
+}
+
+.load-project-dialog .project:last-child > div {
+    border-bottom: 0;
+}
+
+.load-project-dialog .load {
+    display: table-cell;
+    padding-right: 10px;
+}
+
+.load-project-dialog .delete {
+    display: table-cell;
+}
+
+.load-project-dialog .delete button::before {
+    content: "\f1f8";
+    margin: 0;
+}

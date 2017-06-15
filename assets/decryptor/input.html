@@ -1,0 +1,17 @@
+<div class="box">
+  <div class="title">
+    <h1>Input</h1>
+    <nav>
+      <button class="decrypt" (click)="addOutput()">Decrypt</button>
+      <button *ngIf="removable" class="remove" (click)="remove()">Remove</button>
+    </nav>
+  </div>
+  <textarea [(ngModel)]="value" focus></textarea>
+</div>
+<div class="outputs">
+  <div class="panels">
+    <div class="panel" *ngFor="let output of outputs">
+      <decryptor-output [output]="output"></decryptor-output>
+    </div>
+  </div>
+</div>

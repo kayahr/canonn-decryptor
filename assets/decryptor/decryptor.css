@@ -1,0 +1,282 @@
+/* --- Decryptor specific buttons ---------------------------------------------------------------------------------- */
+
+decryptor button.add-input::before {
+    content: "\f055";
+}
+
+
+/* --- Input/Output box--------------------------------------------------------------------------------------------- */
+
+decryptor .box {
+    background: #222;
+    border: 2px solid #444;
+    border-radius: 5px;
+    position: relative;
+}
+
+decryptor .box .title {
+    background: #444;
+    margin-bottom: 2px;
+    padding: 5px 10px;
+}
+
+decryptor .box .title > h1 {
+    display: inline-block;
+    font-family: "Euro Caps", sans-serif;
+    font-size: 17px;
+}
+
+decryptor .box .title > nav {
+    float: right;
+    white-space: nowrap;
+}
+
+decryptor .box .title > nav button {
+    margin-left: 1em;
+    position: relative;
+    top: -1px;
+}
+
+decryptor .box .title > nav button::before {
+    font-family: FontAwesome;
+    margin-right: 0.25em;
+}
+
+decryptor .box .title > nav button.decrypt::before,
+decryptor .box .title > nav button.add-input::before {
+    content: "\f055";
+}
+
+decryptor .box .title > nav button.remove::before {
+    content: "\f057";
+}
+
+
+/* --- Input/Output panel hierarchy -------------------------------------------------------------------------------- */
+
+decryptor .outputs {
+    display: table;
+    position: relative;
+    width: 100%;
+}
+
+decryptor .outputs .box::before {
+    background: url(green-arrow.svg) no-repeat;
+    background-size: 100% 100%;
+    content: "";
+    height: 22px;
+    left: calc(50% - 25px);
+    position: absolute;
+    top: -22px;
+    width: 50px;
+}
+
+decryptor .panels {
+    display: table-row;
+}
+
+decryptor .panel {
+    box-sizing: border-box;
+    display: table-cell;
+    height: 100%;
+    padding: 20px 10px 0 10px;
+    vertical-align: top;
+    width: 1%;
+}
+
+decryptor .panel:first-child {
+    padding-left: 0;
+}
+
+decryptor .panel:last-child {
+    padding-right: 0;
+}
+
+decryptor .inputs > .panels > .panel {
+    padding-top: 0;
+}
+
+
+/* --- Input text area --------------------------------------------------------------------------------------------- */
+
+decryptor textarea {
+    background: transparent;
+    border: 0;
+    box-sizing: border-box;
+    color: #ddd;
+    display: block;
+    font-family: "Roboto Mono", monospace;
+    font-size: 15px;
+    margin: 0;
+    min-height: 100px;
+    padding: 10px;
+    resize: vertical;
+    width: 100%;
+}
+
+decryptor textarea:focus {
+    color: #fff;
+    outline: none;
+}
+
+
+/* --- Output text area -------------------------------------------------------------------------------------------- */
+
+decryptor .box p {
+    color: #ddd;
+    font-family: "Roboto Mono", monospace;
+    font-size: 15px;
+    min-height: 50px;
+    padding: 10px;
+    white-space: pre-wrap;
+}
+
+
+/* --- Output parameters ------------------------------------------------------------------------------------------- */
+
+decryptor .params {
+    background: #333;
+    border-collapse: collapse;
+    box-sizing: border-box;
+    display: table;
+    width: 100%;
+}
+
+decryptor .params .param {
+    border-bottom: 2px solid #222;
+    border-left: 2px solid #222;
+    border-right: 2px solid #222;
+    display: table-row;
+}
+
+decryptor .params label:first-child {
+    background: #005180;
+    border-right: 2px solid #222;
+    box-sizing: border-box;
+    display: table-cell;
+    padding: 5px 10px;
+    white-space: nowrap;
+    width: 1%;
+}
+
+decryptor .params input[type=text],
+decryptor .params input[type=number],
+decryptor .params input[type=checkbox] + label {
+    background: #003859;
+    border: 0;
+    box-sizing: border-box;
+    color: #ddd;
+    display: table-cell;
+    font-family: "Roboto Mono", monospace;
+    font-size: 15px;
+    padding: 5px 10px;
+    width: 100%;
+}
+
+decryptor .params input:focus {
+    color: #fff;
+    outline: none;
+}
+
+decryptor .params input[type=checkbox] {
+    display: none;
+}
+
+decryptor .params input[type=checkbox] + label:before {
+    content: "\f096";
+    font-family: "FontAwesome";
+    position: absolute;
+}
+
+decryptor .params input[type=checkbox]:checked + label:before {
+    content: "\f046";
+}
+
+decryptor .params input[type=checkbox] + label:after {
+    content: "Off";
+    font-family: Roboto, sans-serif;
+    margin-left: 1.25em;
+}
+
+decryptor .params input[type=checkbox]:checked + label:after {
+    content: "On";
+}
+
+
+/* --- Instructions ------------------------------------------------------------------------------------------------ */
+
+decryptor .instructions {
+    padding-left: 1em;
+}
+
+decryptor > .instructions h1 {
+    color: #ffb000;
+    font-family: "Euro Caps", sans-serif;
+    font-size: 18px;
+    margin-bottom: 0.5em;
+    margin-top: 2em;
+    text-shadow: 0 0 15px #fff;
+}
+
+decryptor .instructions ol {
+    list-style: decimal;
+}
+
+decryptor .instructions li {
+    line-height: 1.25em;
+    margin-left: 1em;
+    margin-top: 0.5em;
+}
+
+decryptor .instructions button {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+
+/* --- Converter selection dialog ---------------------------------------------------------------------------------- */
+
+.select-converter-dialog .group {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+}
+
+.select-converter-dialog .group:first-child {
+    margin-top: 0;
+}
+
+.select-converter-dialog .converter {
+    background: #333;
+    border: 1px solid #444;
+    border-radius: 2px;
+    cursor: pointer;
+    flex-basis: 0;
+    flex-grow: 1;
+    margin-left: 10px;
+    padding: 10px;
+}
+
+.select-converter-dialog .converter:first-child {
+    margin-left: 0;
+}
+
+.select-converter-dialog .converter:hover {
+    background: #383838;
+    text-shadow: 0 0 10px #fff;
+}
+
+.select-converter-dialog .converter h1 {
+    color: #ff7100;
+    font-family: "Euro Caps", sans-serif;
+    font-size: 17px;
+    margin-bottom: 0.25em;
+}
+
+.select-converter-dialog .converter p {
+    text-align: left;
+}
+
+.select-converter-dialog .converter p {
+    margin: 0;
+}

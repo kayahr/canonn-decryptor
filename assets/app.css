@@ -1,0 +1,284 @@
+/* Remove all styles */
+@import "reset.css";
+
+/* Webfonts */
+@import "fonts/font-awesome.css";
+@import "fonts/Euro_Caps.css";
+@import "fonts/Roboto.css";
+@import "fonts/Roboto_Mono.css";
+
+/* Sub module styles */
+@import "ui/dialog.css";
+@import "ui/toast.css";
+@import "project/project.css";
+@import "decryptor/decryptor.css";
+
+
+/* --- Splash screen ----------------------------------------------------------------------------------------------- */
+
+#splash {
+    color: #fff;
+    font-family: "Euro Caps", sans-serif;
+    font-size: 40px;
+    height: 100px;
+    left: calc(50% - 100px);
+    position: fixed;
+    text-align: center;
+    text-shadow: 0 0 15px #ff7100;
+    top: calc(50% - 50px);
+    width: 200px;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#splash::before {
+    animation: spin 2s linear infinite;
+    content: "\f013";
+    display: block;
+    font-family: FontAwesome;
+    margin-top: 10px;
+    text-align: center;
+}
+
+#splash::after {
+    content: "Loading...";
+}
+
+
+/* --- Global general page styles ---------------------------------------------------------------------------------- */
+
+head {
+    height: 100%;
+}
+
+body {
+    background: #111;
+    color: #ddd;
+    font-family: Roboto, sans-serif;
+    font-size: 15px;
+    height: 100%;
+}
+
+p {
+    line-height: 1.25em;
+    margin-bottom: 1em;
+    text-align: justify;
+}
+
+a {
+    color: #ff7100;
+    text-decoration: none;
+}
+
+em {
+    font-style: italic;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+body > header {
+    background: #333 url(canonn.png) no-repeat 10px center;
+    background-size: 40px 40px;
+    height: 50px;
+}
+
+body > header h1 {
+    color: #fff;
+    font-family: "Euro Caps", sans-serif;
+    font-size: 30px;
+    padding-left: 60px;
+    padding-top: 10px;
+    text-shadow: 0 0 15px #ff7100;
+}
+
+body > header h1 > a {
+    color: #fff;
+}
+
+body > footer {
+    background: #333;
+    bottom: 0;
+    font-size: 12px;
+    height: 32px;
+    left: 0;
+    position: absolute;
+    right: 0;
+}
+
+body > footer nav {
+    left: 10px;
+    position: absolute;
+    top: 10px;
+}
+
+body > footer nav li {
+    display: block;
+    float: left;
+}
+
+body > footer nav li::after {
+    content: "\\\\";
+    margin: 0 10px;
+}
+
+body > footer nav li:last-child::after {
+    content: "";
+    margin: 0;
+}
+
+body > footer .copyright {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+
+/* --- General content styles -------------------------------------------------------------------------------------- */
+
+main {
+    bottom: 34px;
+    left: 0;
+    overflow: auto;
+    padding: 10px 20px;
+    position: absolute;
+    right: 0;
+    top: 52px;
+}
+
+main > * > header {
+    display: table;
+    margin-bottom: 2em;
+    width: 100%;
+}
+
+main > * > header:after {
+    clear: both;
+    content: "";
+    display: block;
+}
+
+main > * > header input {
+    background: transparent;
+    border: 0;
+    box-sizing: border-box;
+    color: #ffb000;
+    display: table-cell;
+    font-family: "Euro Caps", sans-serif;
+    font-size: 30px;
+    left: -10px;
+    min-width: 128px;
+    padding: 0 10px;
+    position: relative;
+    text-shadow: 0 0 15px #0a8bd6;
+    width: 100%;
+}
+
+main > * > header input:focus {
+    color: #fff;
+    outline: none;
+}
+
+main > * > header input::-webkit-input-placeholder {
+    color: #ffb000;
+}
+
+main > * > header input::-moz-placeholder {
+    color: #ffb000;
+    opacity: 1;
+}
+
+main > * > header input:focus::-webkit-input-placeholder {
+    opacity: 0;
+}
+
+main > * > header input:focus::-moz-placeholder {
+    opacity: 0;
+}
+
+main > * > header input:hover {
+    background: #003859;
+}
+
+main > * > header input:focus:hover {
+    background: transparent;
+}
+
+main > * > header nav {
+    display: table-cell;
+    float: none;
+    text-align: right;
+    width: 25%;
+}
+
+main > * > header nav {
+    white-space: nowrap;
+}
+
+main > * > header nav button {
+    display: inline-block;
+    margin-left: 1em;
+}
+
+
+/* --- Default button styles --------------------------------------------------------------------------------------- */
+
+button {
+    background: transparent;
+    border: 0;
+    color: #ff7100;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Roboto, sans-serif;
+    font-size: 15px;
+    margin: 0;
+    padding: 0;
+}
+
+button:focus {
+    outline: none;
+    text-shadow: 0 0 10px #fff;
+}
+
+button:hover {
+    text-shadow: 0 0 10px #fff;
+}
+
+button:before {
+    font-family: FontAwesome;
+    margin-right: 0.25em;
+}
+
+button:disabled {
+    color: #4b2100;
+    cursor: default;
+}
+
+button:disabled:hover {
+    text-shadow: none;
+}
+
+button::before {
+    font-family: FontAwesome;
+    margin-right: 0.25em;
+}
+
+button.load::before {
+    content: "\f07c";
+}
+
+button.save::before {
+    content: "\f0c7";
+}

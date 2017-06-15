@@ -1,0 +1,26 @@
+# IDE files and directories
+/.idea/
+/*.iml
+/.settings/
+/.project
+/.classpath
+/.factorypath
+/.jsdtscope
+
+# OS garbage
+.DS_Store
+[Dd]esktop.ini
+[Tt]humbs.db
+
+# Build output
+/node_modules/
+/src/demo
+/doc/api/
+/typings/
+/lib/
+/dist/
+/*.tgz
+
+# Crash logs and backups
+/*.log
+*~

@@ -1,0 +1,26 @@
+<header>
+  <input #projectNameInput type="text" [(ngModel)]="projectName" no-update-on-edit placeholder="Unnamed project"
+         (keydown.enter)="save() && $event.target.blur()" />
+  <nav>
+    <button class="save" [disabled]="saved" (click)="save()">Save</button>
+    <button class="load" (click)="load()">Load</button>
+    <button class="add-input" (click)="addInput()">Add Input</button>
+  </nav>
+</header>
+
+<div class="inputs">
+  <div class="panels">
+    <div class="panel" *ngFor="let input of project.getInputs()">
+      <decryptor-input [input]="input"></decryptor-input>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showInstructions" class="instructions">
+  <h1>Getting started</h1>
+  <ol>
+    <li>Enter the data you want to decrypt into the input box above.</li>
+    <li>Press the <em>Decrypt</em> button in the input box title.</li>
+    <li>Choose the converter you want to use for decrypting the input.</li>
+  </ol>
+</div>

@@ -1,0 +1,12 @@
+--quiet
+--exclude-list=assets/fonts,assets/reset.css 
+--ignore=
+    box-sizing,
+    qualified-headings,
+    fallback-colors,
+    unique-headings,
+    overqualified-elements,
+    compatible-vendor-prefixes,
+    ids,
+    import,
+    adjoining-classes
