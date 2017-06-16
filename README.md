@@ -6,7 +6,7 @@ following converters are supported:
 
 * [Caesar cipher] (Decoder and encoder)
 * [Keyword cipher] (Decoder and encoder)
-* [Morse code] (Decoder only)
+* [Morse code] (Decoder and encoder)
 * [Number-to-ASCII] (Decoder only)
 * [Roman numerals] (Decoder only)
 

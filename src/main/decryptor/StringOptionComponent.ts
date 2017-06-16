@@ -33,4 +33,13 @@ export class StringOptionComponent extends OptionComponent<StringOption> {
     public set value(value: StringValue) {
         this.option.setValue(this.converter, value.valueOf());
     }
+
+    /**
+     * Returns the maximum string length.
+     *
+     * @return The maximum string length.
+     */
+    public get maxLength(): number | null {
+        return this.option.getMaxLength();
+    }
 }

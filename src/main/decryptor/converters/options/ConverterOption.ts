@@ -46,7 +46,7 @@ export abstract class ConverterOption<T> {
     private readonly type: string;
     private id: string;
     private readonly title: string;
-    private defaultValue: T;
+    protected defaultValue: T;
     private onChange: (() => void) | null;
 
     public constructor(type: string, id: string, title: string, defaultValue: T, args: ConverterOptionArgs<T>) {
