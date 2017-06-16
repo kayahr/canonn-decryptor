@@ -2,7 +2,7 @@ import { NumberDecoder } from "../../../main/decryptor/converters/NumberDecoder"
 import { Converter } from "../../../main/decryptor/converters/Converter";
 
 describe("NumberDecoder", () => {
-    describe("parse", () => {
+    describe("convert", () => {
         it("decodes empty string into empty string", () => {
             expect(new NumberDecoder().convert("")).toEqual("");
         });

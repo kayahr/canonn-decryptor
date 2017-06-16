@@ -2,7 +2,7 @@ import { RomanDecoder } from "../../../main/decryptor/converters/RomanDecoder";
 import { Converter } from "../../../main/decryptor/converters/Converter";
 
 describe("RomanDecoder", () => {
-    describe("parse", () => {
+    describe("convert", () => {
         it("decodes empty string into empty string", () => {
             expect(new RomanDecoder().convert("")).toEqual("");
         });
@@ -21,7 +21,7 @@ describe("RomanDecoder", () => {
             expect(new RomanDecoder().convert("iii")).toEqual("3");
             expect(new RomanDecoder().convert("iv")).toEqual("4");
         });
-        it("decodes sequence of morse codes", () => {
+        it("decodes sequence of roman numbers", () => {
             expect(new RomanDecoder().convert("IX XII L")).toEqual("9 12 50");
         });
         it("keeps white-spaces in front of roman numbers", () => {

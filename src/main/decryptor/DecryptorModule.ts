@@ -15,6 +15,7 @@ import { StringOptionComponent } from "./StringOptionComponent";
 import { NumberOptionComponent } from "./NumberOptionComponent";
 import { SelectConverterDialog } from "./SelectConverterDialog";
 import { ProjectModule } from "../project/ProjectModule";
+import { UIModule } from "../ui/UIModule";
 
 import "./converters/CaesarDecoder";
 import "./converters/CaesarEncoder";
@@ -24,8 +25,8 @@ import "./converters/MorseDecoder";
 import "./converters/MorseEncoder";
 import "./converters/NumberDecoder";
 import "./converters/RomanDecoder";
+import "./converters/RomanEncoder";
 import "./converters/Rot13";
-import { UIModule } from "../ui/UIModule";
 
 const routes: Routes = [
     { path: "", component: DecryptorComponent }
