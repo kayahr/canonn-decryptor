@@ -21,6 +21,7 @@ import "./converters/CaesarEncoder";
 import "./converters/KeywordDecoder";
 import "./converters/KeywordEncoder";
 import "./converters/MorseDecoder";
+import "./converters/MorseEncoder";
 import "./converters/NumberDecoder";
 import "./converters/RomanDecoder";
 import "./converters/Rot13";

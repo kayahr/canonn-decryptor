@@ -1,0 +1,154 @@
+/*
+ * Copyright (C) 2017 Klaus Reimer <k@ailis.de>
+ * See LICENSE.md for licensing information.
+ */
+
+import { converter } from "./Converter";
+import { stringOption } from "./options/StringOption";
+import { escapeRegExp } from "../../utils/string";
+import { Converter } from "./Converter";
+
+/** Mapping table from cleartext to morse. */
+const alphabet: { [ key: string ]: string } = {
+    "A": ".-",
+    "B": "-...",
+    "C": "-.-.",
+    "D": "-..",
+    "E": ".",
+    "F": "..-.",
+    "G": "--.",
+    "H": "....",
+    "I": "..",
+    "J": ".---",
+    "K": "-.-",
+    "L": ".-..",
+    "M": "--",
+    "N": "-.",
+    "O": "---",
+    "P": ".--.",
+    "Q": "--.-",
+    "R": ".-.",
+    "S": "...",
+    "T": "-",
+    "U": "..-",
+    "V": "...-",
+    "W": ".--",
+    "X": "-..-",
+    "Y": "-.--",
+    "Z": "--..",
+    "0": "-----",
+    "1": ".----",
+    "2": "..---",
+    "3": "...--",
+    "4": "....-",
+    "5": ".....",
+    "6": "-....",
+    "7": "--...",
+    "8": "---..",
+    "9": "----.",
+    ".": ".-.-.-",
+    ",": "--..--",
+    "?": "..--..",
+    "'": ".----.",
+    "!": "-.-.--",
+    "/": "-..-.",
+    "(": "-.--.",
+    ")": "-.--.-",
+    "&": ".-...",
+    ":": "---...",
+    ";": "-.-.-.",
+    "=": "-...-",
+    "+": ".-.-.",
+    "-": "-....-",
+    "_": "..--.-",
+    "\"": ".-..-.",
+    "$": "...-..-",
+    "@": ".--.-."
+};
+
+/** Range string containing all ASCII characters with morse equivalent. */
+const range = "[" + Object.keys(alphabet).map(escapeRegExp).join("") + "]";
+
+/** Regular expression used to replace a single ASCII character with morse. */
+const characterReplace = new RegExp(range, "gi");
+
+/** Regular expression used to replace a group of ASCII characters with morse equivalent. */
+const groupReplace = new RegExp("(" + range + "+)", "gi");
+
+/**
+ * Morse encoder.
+ */
+@converter("morse-encoder", "morse", "Morse Encoder", "Encodes ASCII characters to morse code.")
+export class MorseDecoder extends Converter {
+    /** The character to be used for morse dot. */
+    @stringOption("dot", "Dot", { defaultValue: ".", allowEmpty: false, maxLength: 1 })
+    private dot: string;
+
+    /** The character to be used for morse dash. */
+    @stringOption("dash", "Dash", { defaultValue: "-", allowEmpty: false, maxLength: 1 })
+    private dash: string;
+
+    /**
+     * Creates a new morse decoder.
+     *
+     * @param dot   Optional morse dot character. Defaults to ".".
+     * @param dash  Optional morse dash character. Defaults to "-".
+     */
+    public constructor(dot?: string, dash?: string) {
+        super();
+        if (dot != null) {
+            this.dot = dot;
+        }
+        if (dash != null) {
+            this.dash = dash;
+        }
+    }
+
+    /**
+     * Returns the character to be used for morse dots.
+     *
+     * @return The morse dot character.
+     */
+    public getDot(): string {
+        return this.dot;
+    }
+
+    /**
+     * Sets the character to be used for morse dots.
+     *
+     * @param dot  The morse dot character to set.
+     */
+    public setDot(dot: string): void {
+        this.dot = dot;
+    }
+
+    /**
+     * Returns the character to be used for morse dashes.
+     *
+     * @return The morse dash character.
+     */
+    public getDash(): string {
+        return this.dash;
+    }
+
+    /**
+     * Sets the character to be used for morse dashes.
+     *
+     * @param dash  The morse dash character.
+     */
+    public setDash(dash: string): void {
+        this.dash = dash;
+    }
+
+    /** @inheritDoc */
+    public convert(input: string): string {
+        return input.split(/\n/).map(line => line.split(groupReplace).map((text, index) => {
+            if (index & 1) {
+                return text.toUpperCase().replace(characterReplace, c => alphabet[c] + " ").trim()
+                    .replace(/[\.-]/g, char => char === "." ? this.dot : this.dash);
+            } else {
+                return text;
+            }
+        }).filter(text => !!text).map(text => text.replace(/^ ( *)$/, "$1")).join(" ")).join("\n");
+    }
+}

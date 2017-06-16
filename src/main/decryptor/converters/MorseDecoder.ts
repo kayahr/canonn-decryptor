@@ -114,8 +114,8 @@ export class MorseDecoder extends Converter {
     /**
      * Creates a new morse decoder.
      *
-     * @param dots  Optional initial characters to be used for morse dots. A good default is used if not specified.
-     * @param dots  Optional initial characters to be used for morse dashes. A good default is used if not specified.
+     * @param dots    Optional initial characters to be used for morse dots. A good default is used if not specified.
+     * @param dashes  Optional initial characters to be used for morse dashes. A good default is used if not specified.
      */
     public constructor(dots?: string, dashes?: string) {
         super();
@@ -139,7 +139,7 @@ export class MorseDecoder extends Converter {
     /**
      * Sets the characters to be used for morse dots.
      *
-     * @param dashes  The morse dot characters.
+     * @param dots  The morse dot characters.
      */
     public setDots(dots: string): void {
         this.dots = dots;
