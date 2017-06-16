@@ -35,7 +35,7 @@ export class StringOption extends ConverterOption<string> {
 
     public constructor(id: string, title: string, args: StringOptionArgs) {
         super("string", id, title, args.defaultValue != null ? args.defaultValue : "", args);
-        this.allowEmpty = args.allowEmpty || false;
+        this.allowEmpty = args.allowEmpty || true;
         this.maxLength = args.maxLength || null;
     }
 
