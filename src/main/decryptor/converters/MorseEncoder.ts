@@ -79,7 +79,7 @@ const groupReplace = new RegExp("(" + range + "+)", "gi");
  * Morse encoder.
  */
 @converter("morse-encoder", "morse", "Morse Encoder", "Encodes ASCII characters to morse code.")
-export class MorseDecoder extends Converter {
+export class MorseEncoder extends Converter {
     /** The character to be used for morse dot. */
     @stringOption("dot", "Dot", { defaultValue: ".", allowEmpty: false, maxLength: 1 })
     private dot: string;
@@ -142,13 +142,25 @@ export class MorseDecoder extends Converter {
 
     /** @inheritDoc */
     public convert(input: string): string {
-        return input.split(/\n/).map(line => line.split(groupReplace).map((text, index) => {
-            if (index & 1) {
-                return text.toUpperCase().replace(characterReplace, c => alphabet[c] + " ").trim()
-                    .replace(/[\.-]/g, char => char === "." ? this.dot : this.dash);
-            } else {
-                return text;
+        const lines = input.split(/\n/);
+        return lines.map(line => {
+            // Split line into parts divided by character groups which can be translate to morse
+            const parts = line.split(groupReplace);
+
+            // If there is only one part then it can't be translatable and we also don't have to mess with
+            // white-spacing so return the line unchanged
+            if (parts.length === 1) {
+                return line;
             }
-        }).filter(text => !!text).map(text => text.replace(/^ ( *)$/, "$1")).join(" ")).join("\n");
+
+            return parts.map((text, index) => {
+                if (index & 1) {
+                    return text.toUpperCase().replace(characterReplace, c => alphabet[c] + " ").trim()
+                        .replace(/[\.-]/g, char => char === "." ? this.dot : this.dash);
+                } else {
+                    return text;
+                }
+            }).filter(text => !!text).map(text => text.replace(/^(\s*)\s$/, "$1")).join(" ");
+        }).join("\n");
     }
 }
