@@ -8,7 +8,7 @@ following converters are supported:
 * [Keyword cipher] (Decoder and encoder)
 * [Morse code] (Decoder and encoder)
 * [Number-to-ASCII] (Decoder only)
-* [Roman numerals] (Decoder only)
+* [Roman numerals] (Decoder and encoder)
 
 
 Build

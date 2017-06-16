@@ -17,7 +17,7 @@ const groupRegExp = new RegExp(`(^|\\s+)(${range}(?:\\s+${range})*)($|\\s+)`, "i
 /**
  * Decodes a roman number into a numeric value.
  *
- * @param s  The roman number to decode.
+ * @param roman  The roman number to decode.
  * @return The numeric value.
  */
 function decodeRoman(roman: string): number {
