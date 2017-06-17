@@ -13,16 +13,16 @@ describe("CaesarEncoder", () => {
             expect(new CaesarEncoder().convert("1ö_<")).toBe("1ö_<");
         });
         it("encodes normal lower-case characters", () => {
-            expect(new CaesarEncoder(21).convert("foobar")).toBe("kttgfw");
+            expect(new CaesarEncoder(5).convert("foobar")).toBe("kttgfw");
         });
         it("encodes normal upper-case characters", () => {
-            expect(new CaesarEncoder(14).convert("FOOBAR")).toBe("RAANMD");
+            expect(new CaesarEncoder(12).convert("FOOBAR")).toBe("RAANMD");
         });
         it("encodes normal mixed-case characters", () => {
-            expect(new CaesarEncoder(1).convert("FooBar")).toBe("EnnAzq");
+            expect(new CaesarEncoder(25).convert("FooBar")).toBe("EnnAzq");
         });
         it("encodes only normal characters in mixed string", () => {
-            expect(new CaesarEncoder(19).convert("#12FooBar!")).toBe("#12MvvIhy!");
+            expect(new CaesarEncoder(7).convert("#12FooBar!")).toBe("#12MvvIhy!");
         });
     });
 

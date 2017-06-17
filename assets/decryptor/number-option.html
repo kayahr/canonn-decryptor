@@ -1,1 +1,8 @@
-<input type="number" [step]="step" [min]="min" [max]="max" [(ngModel)]="value" no-update-on-edit [label]="title" />
+<input type="number"
+       [(ngModel)]="value"
+       [min]="min"
+       [max]="max"
+       [step]="step"
+       [label]="title"
+       [attr.disabled]="disabled"
+       no-update-on-edit />

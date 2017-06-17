@@ -5,6 +5,7 @@
 
 import { ConverterOption } from "./options/ConverterOption";
 import { IllegalArgumentError } from "../../utils/error";
+import { Signal } from "../../utils/Signal";
 
 /** Information about registered converters. */
 const descriptors: ConverterDescriptor[] = [];
@@ -154,7 +155,20 @@ export interface ConverterJSON {
  * Abstract base class for converters.
  */
 export abstract class Converter {
+    /**
+     * Emitted when converter has been changed so output must be updated.
+     *
+     * @event
+     */
+    public readonly onChange = new Signal<this>();
+
+    /** The current option values of this converter. */
+    private readonly optionValues: WeakMap<ConverterOption<any>, any> = new WeakMap();
+
+    /** The options of this converter. */
     private readonly options: ConverterOption<any>[];
+
+    /** The converter descriptor. */
     private readonly descriptor: ConverterDescriptor;
 
     public constructor() {
@@ -248,5 +262,37 @@ export abstract class Converter {
      */
     public getDescription(): string {
         return this.descriptor.getDescription();
+    }
+
+    /**
+     * Returns the option value of the specified option.
+     *
+     * @param option  The converter option.
+     * @return The option value or null if none.
+     */
+    public getOptionValue<T>(option: ConverterOption<T>): T | null {
+        const value = this.optionValues.get(option);
+        return value === undefined ? null : value;
+    }
+
+    /**
+     * Sets (or removes) an option value.
+     *
+     * @param option  The converter option.
+     * @param value   The option value to set. Null to remove the value.
+     * @return True if value was changed, false if not.
+     */
+    public setOptionValue<T>(option: ConverterOption<T>, value: T): boolean {
+        const oldValue = this.getOptionValue(option);
+        if (value !== oldValue) {
+            if (value == null) {
+                this.optionValues.delete(option);
+            } else {
+                this.optionValues.set(option, value);
+            }
+            this.onChange.emit(this);
+            return true;
+        }
+        return false;
     }
 }

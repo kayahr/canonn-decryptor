@@ -173,6 +173,10 @@ decryptor .params input[type=checkbox] + label {
     width: 100%;
 }
 
+decryptor .params input[disabled] {
+    background: #333;
+}
+
 decryptor .params input:focus {
     color: #fff;
     outline: none;

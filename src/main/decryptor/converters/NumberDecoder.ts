@@ -19,7 +19,10 @@ export class NumberDecoder extends Converter {
     private groupRegExp: RegExp | null = null;
 
     /** The number base. */
-    @numberOption("base", "Base", { min: 2, max: 36, defaultValue: 10, onChange: NumberDecoder.prototype.resetCaches })
+    @numberOption("base", "Base", {
+        min: 2, max: 36, defaultValue: 10,
+        onChange: (decoder: NumberDecoder) => decoder.resetCaches()
+    })
     private base: number;
 
     /** The number shift.. */

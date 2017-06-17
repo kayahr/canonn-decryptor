@@ -61,12 +61,13 @@ export class DecryptorInput extends DecryptorNode implements Serializable<Decryp
     public setInput(input: string): void {
         if (input !== this.input) {
             this.input = input;
+            this.update();
             this.change();
         }
     }
 
     /** @inheritDoc */
-    public getValue(): string {
+    public convert(value: string): string {
         return this.getInput();
     }
 }

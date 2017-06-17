@@ -12,6 +12,8 @@
           [converter]="converter" [option]="option"></decryptor-string-option>
       <decryptor-number-option *ngIf="option.getType() == 'number'" class="param"
           [converter]="converter" [option]="option"></decryptor-number-option>
+      <decryptor-boolean-option *ngIf="option.getType() == 'boolean'" class="param"
+          [converter]="converter" [option]="option"></decryptor-boolean-option>
     </ng-container>
   </div>
   <p>{{ value }}</p>

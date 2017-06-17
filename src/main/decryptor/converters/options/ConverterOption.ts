@@ -6,6 +6,8 @@
 /**
  * Interface for target object which holds the converter options.
  */
+import { Converter } from "../Converter";
+
 export interface OptionTarget {
     options: ConverterOption<any>[];
 }
@@ -15,24 +17,25 @@ export interface OptionTarget {
  */
 export interface ConverterOptionArgs<T> {
     defaultValue?: T;
-    onChange?: () => void;
+    sortIndex?: number;
+    onChange?: <A extends Converter>(converter: A) => void;
+    disabled?: <A extends Converter>(converter: A) => boolean;
 }
 
 /**
  * Base function called by all option property decorators.
  */
 export function converterOption<T>(target: OptionTarget, propertyKey: string, option: ConverterOption<T>): void {
-    if (!target.options) {
-        target.options = [];
-    }
-    target.options.push(option);
+    const options = target.options = target.options ? target.options.slice() : [];
+    options.push(option);
+    options.sort((a, b) => a.getSortIndex() - b.getSortIndex());
     Object.defineProperty(target, propertyKey, {
         configurable: false,
         enumerable: true,
-        get: function (this: any): T {
+        get: function (this: Converter): T {
             return option.getValue(this);
         },
-        set: function (this: any, value: T): void {
+        set: function (this: Converter, value: T): void {
             option.setValue(this, value);
         }
     });
@@ -42,12 +45,13 @@ export function converterOption<T>(target: OptionTarget, propertyKey: string, op
  * Abstract base class for converter options.
  */
 export abstract class ConverterOption<T> {
-    private symbol = Symbol();
     private readonly type: string;
-    private id: string;
+    private readonly id: string;
     private readonly title: string;
-    protected defaultValue: T;
-    private onChange: (() => void) | null;
+    private readonly sortIndex: number;
+    protected readonly defaultValue: T;
+    private readonly onChange: ((converter: Converter) => void) | null;
+    private readonly disabled: ((converter: Converter) => boolean) | null;
 
     public constructor(type: string, id: string, title: string, defaultValue: T, args: ConverterOptionArgs<T>) {
         this.type = type;
@@ -55,6 +59,8 @@ export abstract class ConverterOption<T> {
         this.title = title;
         this.defaultValue = defaultValue;
         this.onChange = args.onChange || null;
+        this.disabled = args.disabled || null;
+        this.sortIndex = args.sortIndex || 0;
     }
 
     /**
@@ -76,6 +82,15 @@ export abstract class ConverterOption<T> {
     }
 
     /**
+     * Returns the sort index.
+     *
+     * @return the sort index.
+     */
+    public getSortIndex(): number {
+        return this.sortIndex;
+    }
+
+    /**
      * Returns the option title.
      *
      * @return The option title.
@@ -94,6 +109,16 @@ export abstract class ConverterOption<T> {
     }
 
     /**
+     * Checks if this option is currently disabled.
+     *
+     * @param converter  The converter the option is connected to.
+     * @return True if disabled, false if not.
+     */
+    public isDisabled(converter: Converter): boolean {
+        return this.disabled ? this.disabled(converter) : false;
+    }
+
+    /**
      * Corrects the given value and returns the corrected value. Default implementation simply returns the value
      * unchanged but converter option implementations may implement a real value correction here.
      *
@@ -107,15 +132,13 @@ export abstract class ConverterOption<T> {
     /**
      * Sets a new option value.
      *
-     * @param object  The object on which to set the option.
+     * @param converter  The converter on which to set the option value.
      * @param value   The option value to set.
      */
-    public setValue(object: any, value: T): void {
-        const clamped = this.correctValue(value);
-        if (clamped !== object[this.symbol]) {
-            object[this.symbol] = clamped;
+    public setValue(converter: Converter, value: T): void {
+        if (converter.setOptionValue(this, this.correctValue(value))) {
             if (this.onChange) {
-                this.onChange.call(object);
+                this.onChange(converter);
             }
         }
     }
@@ -123,11 +146,11 @@ export abstract class ConverterOption<T> {
     /**
      * Returns the option value.
      *
-     * @param object  The object from which to read the option value.
+     * @param converter  The converter from which to read the option value.
      * @return the option value.
      */
-    public getValue(object: any): T {
-        const value = object[this.symbol];
+    public getValue(converter: Converter): T {
+        const value = converter.getOptionValue(this);
         return value != null ? value : this.defaultValue;
     }
 }

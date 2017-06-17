@@ -32,6 +32,9 @@ export abstract class DecryptorNode implements Serializable<DecryptorNodeJSON> {
     /** The outputs connected to this node. */
     protected outputs: DecryptorOutput[];
 
+    /** The current decryptor node value. */
+    private value: string = "";
+
     public constructor() {
         this.outputs = [];
     }
@@ -53,11 +56,35 @@ export abstract class DecryptorNode implements Serializable<DecryptorNodeJSON> {
     }
 
     /**
+     * Abstract method decryptor nodes must implement to convert the given input value to an output value.
+     *
+     * @param value  The input value.
+     * @return The output value.
+     */
+    public abstract convert(value: string): string;
+
+    /**
+     * Updates the node value by internally calling the [[convert]] method. If value has been changed then child
+     * outputs are also updated.
+     */
+    protected update(): void {
+        const newValue = this.convert(this.parent ? this.parent.getValue() : "");
+        if (newValue !== this.value) {
+            this.value = newValue;
+            for (const output of this.outputs) {
+                output.update();
+            }
+        }
+    }
+
+    /**
      * Returns the value of this input/output.
      *
      * @return The current value.
      */
-    public abstract getValue(): string;
+    public getValue(): string {
+        return this.value;
+    }
 
     /**
      * Returns the parent node of this node.
@@ -80,6 +107,7 @@ export abstract class DecryptorNode implements Serializable<DecryptorNodeJSON> {
     protected setParent(parent: DecryptorNode | null): void {
         if (parent !== this.parent) {
             this.parent = parent;
+            this.update();
         }
     }
 

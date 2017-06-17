@@ -1,1 +1,6 @@
-<input type="text" no-update-on-edit [(ngModel)]="value" [label]="title" [attr.maxlength]="maxLength" />
+<input type="text"
+       no-update-on-edit
+       [(ngModel)]="value"
+       [label]="title"
+       [attr.disabled]="disabled"
+       [attr.maxlength]="maxLength" />
