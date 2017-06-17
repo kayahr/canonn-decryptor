@@ -11,5 +11,5 @@ import { CaesarCipher } from "./CaesarCipher";
  */
 @converter("caesar-encoder", "caesar", "Caesar Encoder", "Encodes text with simple alphabet rotation.")
 export class CaesarEncoder extends CaesarCipher {
-    protected readonly direction = -1;
+    protected readonly direction = 1;
 }

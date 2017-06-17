@@ -18,7 +18,7 @@ export class CaesarDecoder extends CaesarCipher {
     protected automatic: boolean;
 
     /** @inheritDoc */
-    protected readonly direction = 1;
+    protected readonly direction = -1;
 
     /**
      * Creates a new caesar converter.
@@ -44,7 +44,7 @@ export class CaesarDecoder extends CaesarCipher {
         if (this.automatic) {
             let scores: { score: number, rotation: number }[] = [];
             for (let rotation = 0; rotation < 26; ++rotation) {
-                const score = textScore(this.rotateText(input, rotation));
+                const score = textScore(this.rotateText(input, -rotation));
                 scores.push({ score, rotation });
             }
             scores.sort((a, b) => b.score - a.score);
