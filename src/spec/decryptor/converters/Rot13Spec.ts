@@ -13,9 +13,13 @@ describe("Rot13", () => {
         });
         it("rotates normal lower-case characters", () => {
             expect(new Rot13().convert("foobar")).toBe("sbbone");
+            expect(new Rot13().convert("az")).toBe("nm");
+            expect(new Rot13().convert("nm")).toBe("az");
         });
         it("rotates normal upper-case characters", () => {
             expect(new Rot13().convert("FOOBAR")).toBe("SBBONE");
+            expect(new Rot13().convert("AZ")).toBe("NM");
+            expect(new Rot13().convert("NM")).toBe("AZ");
         });
         it("rotates normal mixed-case characters", () => {
             expect(new Rot13().convert("FooBar")).toBe("SbbOne");
