@@ -6,13 +6,13 @@
 import { Converter, converter } from "./Converter";
 
 /**
- * Rotates a single character using the given character base.
+ * Rotates a single character.
  *
  * @param char  The character to rotate
  * @return The rotated character.
  */
 function rotate(char: string): string {
-    const base = char < "a" ? 64 : 97;
+    const base = char < "a" ? 65 : 97;
     return String.fromCharCode(((((char.charCodeAt(0) - base) + 13) % 26) + 26) % 26 + base);
 }
 
