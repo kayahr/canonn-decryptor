@@ -11,7 +11,10 @@ import { numberOption } from "./options/NumberOption";
  */
 export abstract class CaesarCipher extends Converter {
     /** The alphabet rotation. */
-    @numberOption("rotation", "Rotation", { max: 26, defaultValue: 13 })
+    @numberOption("rotation", "Rotation", {
+        max: 25, defaultValue: 13,
+        disabled: (converter: CaesarCipher) => converter.isAutomatic()
+    })
     protected rotation: number;
 
     /** The rotation direction. For the encoder it is 1, for the decoder it is -1. */
@@ -27,6 +30,15 @@ export abstract class CaesarCipher extends Converter {
         if (rotation != null) {
             this.rotation = rotation;
         }
+    }
+
+    /**
+     * Checks if rotation is calculated automatically.
+     *
+     * @return True if operating in automatic mode, false if not.
+     */
+    protected isAutomatic() {
+        return false;
     }
 
     /**
@@ -72,9 +84,19 @@ export abstract class CaesarCipher extends Converter {
         } else return char;
     }
 
+    /**
+     * Rotates the given text with the given rotation.
+     *
+     * @param text      The text to rotate.
+     * @param rotation  How far to rate the characters.
+     * @return The rotated text.
+     */
+    protected rotateText(text: string, rotation: number): string {
+        return text.split("").map(char => this.convertChar(char, rotation)).join("");
+    }
+
     /** @inheritDoc */
     public convert(input: string): string {
-        const rotation = this.rotation * this.direction;
-        return input.split("").map(char => this.convertChar(char, rotation)).join("");
+        return this.rotateText(input, this.rotation * this.direction);
     }
 }

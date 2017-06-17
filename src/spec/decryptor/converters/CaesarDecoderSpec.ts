@@ -1,42 +1,53 @@
 import { CaesarDecoder } from "../../../main/decryptor/converters/CaesarDecoder";
 import { Converter } from "../../../main/decryptor/converters/Converter";
+import { CaesarEncoder } from "../../../main/decryptor/converters/CaesarEncoder";
 
 describe("CaesarDecoder", () => {
     describe("convert", () => {
         it("converts empty string to empty string", () => {
-            expect(new CaesarDecoder().convert("")).toBe("");
+            expect(new CaesarDecoder(false).convert("")).toBe("");
         });
         it("keeps white-space only string", () => {
-            expect(new CaesarDecoder().convert(" \n\r\t")).toBe(" \n\r\t");
+            expect(new CaesarDecoder(false).convert(" \n\r\t")).toBe(" \n\r\t");
         });
         it("keeps unrotated characters", () => {
-            expect(new CaesarDecoder().convert("1ö_<")).toBe("1ö_<");
+            expect(new CaesarDecoder(false).convert("1ö_<")).toBe("1ö_<");
         });
         it("decodes normal lower-case characters", () => {
-            expect(new CaesarDecoder(21).convert("kttgfw")).toBe("foobar");
+            expect(new CaesarDecoder(false, 21).convert("kttgfw")).toBe("foobar");
         });
         it("decodes normal upper-case characters", () => {
-            expect(new CaesarDecoder(14).convert("RAANMD")).toBe("FOOBAR");
+            expect(new CaesarDecoder(false, 14).convert("RAANMD")).toBe("FOOBAR");
         });
         it("decodes normal mixed-case characters", () => {
-            expect(new CaesarDecoder(1).convert("EnnAzq")).toBe("FooBar");
+            expect(new CaesarDecoder(false, 1).convert("EnnAzq")).toBe("FooBar");
         });
         it("decodes only normal characters in mixed string", () => {
-            expect(new CaesarDecoder(19).convert("#12MvvIhy!")).toBe("#12FooBar!");
+            expect(new CaesarDecoder(false, 19).convert("#12MvvIhy!")).toBe("#12FooBar!");
+        });
+        it("automatically detects rotation in auto mode", () => {
+            const decoder = new CaesarDecoder(true);
+            for (let i = 0; i < 26; ++i) {
+                const encoded = new CaesarEncoder(i).convert("Elite Dangerous");
+                const decoded = decoder.convert(encoded);
+                expect(decoded).toBe("Elite Dangerous");
+                expect(decoder.getRotation()).toBe(i);
+            }
         });
     });
 
     describe("toJSON", () => {
         it("serializes the converter", () => {
-            expect(new CaesarDecoder(15).toJSON()).toEqual({
+            expect(new CaesarDecoder(false, 15).toJSON()).toEqual({
                 "type": "caesar-decoder",
                 "options": {
+                    "auto": false,
                     "rotation": 15
                 }
             });
         });
         it("does not serialize default option values", () => {
-            expect(new CaesarDecoder(13).toJSON()).toEqual({
+            expect(new CaesarDecoder(true, 13).toJSON()).toEqual({
                 "type": "caesar-decoder"
             });
         });

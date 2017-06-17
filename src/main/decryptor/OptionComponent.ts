@@ -36,4 +36,13 @@ export abstract class OptionComponent<T extends ConverterOption<any>> {
     public get title(): string {
         return this.option.getTitle();
     }
+
+    /**
+     * Checks if option is disabled.
+     *
+     * @return True if disabled, false if not.
+     */
+    public get disabled(): string | null {
+        return this.option.isDisabled(this.converter) ? "disabled" : null;
+    }
 }

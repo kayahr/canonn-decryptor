@@ -14,7 +14,7 @@ const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
  */
 export abstract class KeywordCipher extends Converter {
     /** The keyword to encode/decode with. */
-    @stringOption("keyword", "Keyword", { onChange: KeywordCipher.prototype.resetCaches })
+    @stringOption("keyword", "Keyword", { onChange: (converter: KeywordCipher) => converter.resetCaches() })
     protected keyword: string;
 
     /** The alphabet generated for the configured keyword. */
