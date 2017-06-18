@@ -136,11 +136,7 @@ export abstract class ConverterOption<T> {
      * @param value   The option value to set.
      */
     public setValue(converter: Converter, value: T): void {
-        if (converter.setOptionValue(this, this.correctValue(value))) {
-            if (this.onChange) {
-                this.onChange(converter);
-            }
-        }
+        converter.setOptionValue(this, this.correctValue(value), this.onChange);
     }
 
     /**

@@ -282,7 +282,8 @@ export abstract class Converter {
      * @param value   The option value to set. Null to remove the value.
      * @return True if value was changed, false if not.
      */
-    public setOptionValue<T>(option: ConverterOption<T>, value: T): boolean {
+    public setOptionValue<T>(option: ConverterOption<T>, value: T,
+            onChange: ((converter: Converter) => void) | null = null): void {
         const oldValue = this.getOptionValue(option);
         if (value !== oldValue) {
             if (value == null) {
@@ -290,9 +291,10 @@ export abstract class Converter {
             } else {
                 this.optionValues.set(option, value);
             }
+            if (onChange) {
+                onChange(this);
+            }
             this.onChange.emit(this);
-            return true;
         }
-        return false;
     }
 }

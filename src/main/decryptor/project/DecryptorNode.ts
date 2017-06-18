@@ -75,6 +75,7 @@ export abstract class DecryptorNode implements Serializable<DecryptorNodeJSON> {
                 output.update();
             }
         }
+        this.onChanged.emit(this);
     }
 
     /**
