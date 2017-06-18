@@ -104,11 +104,11 @@ export class MorseDecoder extends Converter {
     private dotsRegExp: RegExp | null = null;
 
     /** The characters to be used for morse dots. */
-    @stringOption("dots", "Dots", { defaultValue: ".·*", onChange: MorseDecoder.prototype.resetCaches })
+    @stringOption("dots", "Dots", { defaultValue: ".·*", onChange: (decoder: MorseDecoder) => decoder.resetCaches })
     private dots: string;
 
     /** The characters to be used for morse dashes. */
-    @stringOption("dashes", "Dashes", { defaultValue: "_-−", onChange: MorseDecoder.prototype.resetCaches })
+    @stringOption("dashes", "Dashes", { defaultValue: "_-−", onChange: (decoder: MorseDecoder) => decoder.resetCaches })
     private dashes: string;
 
     /**

@@ -59,3 +59,5 @@ import "./converters/NumberDecoder";
 import "./converters/RomanDecoder";
 import "./converters/RomanEncoder";
 import "./converters/Rot13";
+import "./converters/VigenereDecoder";
+import "./converters/VigenereEncoder";
