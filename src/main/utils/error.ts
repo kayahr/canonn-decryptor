@@ -12,7 +12,8 @@
  * @param className  The name of the error class used in stack traces instead of the potentially obfuscated real
  *                   class name.
  */
-export function error(className: string): ClassDecorator {
+export function error(className: string):
+        <E extends Error, T extends (new (...args: any[]) => E)>(constructor: T) => T {
     return function<E extends Error, T extends (new (...args: any[]) => E)>(constructor: T): T {
         const error: T = <any>function(this: E, ...args: any[]): E {
             const instance = constructor.apply(this, args);

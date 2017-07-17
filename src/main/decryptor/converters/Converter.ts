@@ -68,7 +68,8 @@ export function createConverter(id: string): Converter {
  * @param title        The converter title.
  * @param description  The converter description.
  */
-export function converter(id: string, groupId: string, title: string, description: string): ClassDecorator {
+export function converter(id: string, groupId: string, title: string, description: string):
+        <T extends Converter, C extends new () => T>(ctor: C) => C {
     return function <T extends Converter, C extends new () => T>(ctor: C): C {
         const info = new ConverterDescriptor(ctor, id, groupId, title, description);
         descriptors.push(info);

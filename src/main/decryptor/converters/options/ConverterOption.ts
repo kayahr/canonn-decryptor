@@ -18,8 +18,8 @@ export interface OptionTarget {
 export interface ConverterOptionArgs<T> {
     defaultValue?: T;
     sortIndex?: number;
-    onChange?: <A extends Converter>(converter: A) => void;
-    disabled?: <A extends Converter>(converter: A) => boolean;
+    onChange?: (converter: Converter) => void;
+    disabled?: (converter: Converter) => boolean;
 }
 
 /**
