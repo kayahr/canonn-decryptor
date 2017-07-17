@@ -37,7 +37,7 @@ export abstract class CaesarCipher extends Converter {
      *
      * @return True if operating in automatic mode, false if not.
      */
-    protected isAutomatic() {
+    protected isAutomatic(): boolean {
         return false;
     }
 
