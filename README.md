@@ -4,11 +4,14 @@ Canonn Decryptor
 The [Canonn Decryptor] is a tool for decrypting the mysteries of the [Elite: Dangerous] universe. Currently the
 following converters are supported:
 
-* [Caesar cipher] (Decoder and encoder)
-* [Keyword cipher] (Decoder and encoder)
-* [Morse code] (Decoder and encoder)
-* [Number-to-ASCII] (Decoder only)
-* [Roman numerals] (Decoder and encoder)
+* [Atbash cipher]
+* [Caesar cipher]
+* [Keyword cipher]
+* [Morse code]
+* [Number-to-ASCII]
+* Reverse text
+* [Roman numerals]
+* [Vigenère cipher]
 
 
 Build
@@ -56,11 +59,13 @@ Links
 
 [Canonn Decryptor]: https://kayahr.github.io/canonn-decryptor/
 [Elite: Dangerous]: https://www.elitedangerous.com/
+[Atbash cipher]: https://en.wikipedia.org/wiki/Atbash
 [Caesar cipher]: https://en.wikipedia.org/wiki/Caesar_cipher
 [Keyword cipher]: https://en.wikipedia.org/wiki/Keyword_cipher
 [Morse code]: https://en.wikipedia.org/wiki/Morse_code
 [Number-to-ASCII]: https://en.wikipedia.org/wiki/ASCII
 [Roman numerals]: https://en.wikipedia.org/wiki/Roman_numerals
+[Vigenère cipher]: https://en.wikipedia.org/wiki/Vigenère_cipher
 [Node.js]: https://nodejs.org/
 [SystemJS]: https://github.com/systemjs/systemjs
 [Visual Studio Code]: https://code.visualstudio.com/

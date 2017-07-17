@@ -56,6 +56,7 @@ import "./converters/KeywordEncoder";
 import "./converters/MorseDecoder";
 import "./converters/MorseEncoder";
 import "./converters/NumberDecoder";
+import "./converters/Reverse";
 import "./converters/RomanDecoder";
 import "./converters/RomanEncoder";
 import "./converters/Rot13";
