@@ -4,6 +4,7 @@ Canonn Decryptor
 The [Canonn Decryptor] is a tool for decrypting the mysteries of the [Elite: Dangerous] universe. Currently the
 following converters are supported:
 
+* [Base64] (Decoder only)
 * [Caesar cipher] (Decoder and encoder)
 * [Keyword cipher] (Decoder and encoder)
 * [Morse code] (Decoder and encoder)
