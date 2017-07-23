@@ -7,6 +7,11 @@
 /.factorypath
 /.jsdtscope
 
+# Temporary stuff
+/assets/fitness/input
+/src/demo
+/src/sandbox
+
 # OS garbage
 .DS_Store
 [Dd]esktop.ini
@@ -14,7 +19,6 @@
 
 # Build output
 /node_modules/
-/src/demo
 /doc/api/
 /typings/
 /lib/
