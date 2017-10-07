@@ -144,7 +144,6 @@ decryptor .params {
     box-sizing: border-box;
     display: table;
     width: 100%;
-    position: relative;
 }
 
 decryptor .params .param {
@@ -152,7 +151,6 @@ decryptor .params .param {
     border-left: 2px solid #222;
     border-right: 2px solid #222;
     display: table-row;
-    position: relative;
 }
 
 decryptor .params label:first-child {
@@ -295,14 +293,14 @@ decryptor .instructions button {
 /* --- Keyword Cracker Dialog -------------------------------------------------------------------------------------- */
 
 .keyword-cracker-dialog .content {
-    max-width: 768px;
     max-height: 768px;
+    max-width: 768px;
 }
 
 .keyword-cracker-dialog .controls {
-    margin-top: 1em;
-    margin-bottom: 1em;
     color: #888;
+    margin-bottom: 1em;
+    margin-top: 1em;
 }
 
 @keyframes spin {
@@ -325,7 +323,7 @@ decryptor .instructions button {
 }
 
 .keyword-cracker-dialog .controls button {
-   margin-left: 1em;
+    margin-left: 1em;
 }
 
 .keyword-cracker-dialog button.stop::before {
@@ -376,6 +374,6 @@ decryptor .instructions button {
 }
 
 .keyword-cracker-dialog .result p {
-    text-align: justify;
     margin: 0;
+    text-align: justify;
 }
