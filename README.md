@@ -5,8 +5,8 @@ The [Canonn Decryptor] is a tool for decrypting the mysteries of the [Elite: Dan
 following converters are supported:
 
 * [Atbash cipher]
-* [Caesar cipher]
-* [Keyword cipher]
+* [Caesar cipher] (With automatic rotation cracking)
+* [Keyword cipher] (With automatic keyword cracking)
 * [Morse code]
 * [Number-to-ASCII]
 * Reverse text
