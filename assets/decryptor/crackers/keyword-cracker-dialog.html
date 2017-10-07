@@ -1,0 +1,33 @@
+<div class="dialog keyword-cracker-dialog">
+  <h1>Keyword cracker</h1>
+  <button class="close" (click)="close()"></button>
+  <p>
+    The keyword cracker continuously tries to find the most valuable results and lists them below sorted by their
+    <em>englishness</em>-score. Click on a result to accept it.
+  </p>
+  <div class="controls">
+    <span class="progress" *ngIf="running">
+      Run {{ run }} ({{ progress }}%)
+    </span>
+    <span *ngIf="!running">
+      Cracking stopped
+    </span>
+    <nav>
+      <button *ngIf="running" class="stop" (click)="stop()">Stop</button>
+      <button *ngIf="!running" class="clear" (click)="clear()">Clear</button>
+      <button *ngIf="!running" class="start" (click)="start()">Start</button>
+    </nav>
+  </div>
+  <div class="results">
+    <div class="result" *ngFor="let result of results"  (click)="close(result.getKeyword())">
+      <h1>{{ result.getKeyword() }} <span class="score">({{ result.getScore().toFixed(2) }})</span></h1>
+      <p>
+        {{ result.getMessage() }}
+      </p>
+    </div>
+    <p *ngIf="emptyResult">
+      No results recorded so far.
+    </p>
+  </div>
+  <button class="cancel" (click)="close()">Cancel</button>
+</div>

@@ -23,7 +23,7 @@ module.exports = {
         new CopyWebpackPlugin([
             { from: "node_modules/core-js/client/shim.min.js", to: "lib/" },
             { from: "node_modules/zone.js/dist/zone.js", to: "lib/" },
-            { from: "assets", to: "assets/" },
+            { from: "assets", to: "assets/", ignore: [ "fitness/input/**", "fitness/Makefile" ] },
             {
                 from: "index.html", transform: content => content.toString()
                     .replace(/^\s*<script [\s\S]*<\/script>/m,

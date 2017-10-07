@@ -256,7 +256,7 @@ button:hover {
     text-shadow: 0 0 10px #fff;
 }
 
-button:before {
+button::before {
     font-family: FontAwesome;
     margin-right: 0.25em;
 }

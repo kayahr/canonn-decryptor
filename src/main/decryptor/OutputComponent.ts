@@ -9,6 +9,8 @@ import { DialogService } from "../ui/DialogService";
 import { SelectConverterDialog } from "./SelectConverterDialog";
 import { createConverter, Converter } from "./converters/Converter";
 import { ConverterOption } from "./converters/options/ConverterOption";
+import { KeywordCrackerDialog } from "./crackers/KeywordCrackerDialog";
+import { KeywordDecoder } from "./converters/KeywordDecoder";
 
 /**
  * Decryptor output panel.
@@ -88,6 +90,31 @@ export class OutputComponent {
         const converterId = await this.dialogService.openDialog(SelectConverterDialog);
         if (converterId) {
             this.output.addOutput(new DecryptorOutput(createConverter(converterId)));
+        }
+    }
+
+    /**
+     * Checks if converter supports cracking.
+     *
+     * @return True if crackable, false if not.
+     */
+    public get crackable(): boolean {
+        const converter = this.output.getConverter();
+        return converter instanceof KeywordDecoder;
+    }
+
+    /**
+     * Starts the cracking process if converter supports it.
+     */
+    public async crack(): Promise<void> {
+        const converter = this.output.getConverter();
+        if (converter instanceof KeywordDecoder) {
+            const keyword = await this.dialogService.openDialog(KeywordCrackerDialog, dialog => {
+                dialog.init(this.output.getParent().getValue());
+            });
+            if (keyword) {
+                converter.setKeyword(keyword);
+            }
         }
     }
 }
