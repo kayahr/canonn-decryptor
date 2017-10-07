@@ -33,7 +33,7 @@ export class Quadgrams {
     public getScore(text: FastString): number {
         let score = 0;
         const root = this.quadgrams;
-        for (let i = 0, max = text.length - 3; i !== max; ++i) {
+        for (let i = 0, max = text.length - 3; i < max; ++i) {
             let j = i;
             const a = root[text[j]];
             if (!a) continue;
