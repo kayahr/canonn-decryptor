@@ -106,6 +106,22 @@ export class Alphabet extends Array<number> {
     }
 
     /**
+     * Trims the alphabet to the given length. The rest of the alphabet is filled with the remaining letters.
+     *
+     * @param len  The length to trim the alphabet to.
+     * @return This alphabet for method chaining.
+     */
+    public trim(len: number): this {
+        this.splice(len + 1, 28 - len);
+        for (let i = 1; i < 27; ++i) {
+            if (this.indexOf(i) === -1) {
+                this.push(i);
+            }
+        }
+        return this;
+    }
+
+    /**
      * Converts the alphabet into a string and returns it.
      *
      * @return The string representation of the alphabet.

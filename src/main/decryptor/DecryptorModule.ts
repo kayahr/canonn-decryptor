@@ -17,6 +17,7 @@ import { SelectConverterDialog } from "./SelectConverterDialog";
 import { ProjectModule } from "../project/ProjectModule";
 import { UIModule } from "../ui/UIModule";
 import { BooleanOptionComponent } from "./BooleanOptionComponent";
+import { KeywordCrackerDialog } from "./crackers/KeywordCrackerDialog";
 
 const routes: Routes = [
     { path: "", component: DecryptorComponent }
@@ -40,10 +41,12 @@ const routes: Routes = [
         StringOptionComponent,
         NumberOptionComponent,
         BooleanOptionComponent,
-        SelectConverterDialog
+        SelectConverterDialog,
+        KeywordCrackerDialog
     ],
     entryComponents: [
-        SelectConverterDialog
+        SelectConverterDialog,
+        KeywordCrackerDialog
     ]
 })
 export class DecryptorModule {}

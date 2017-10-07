@@ -16,6 +16,7 @@ import { LabelDirective } from "./LabelDirective";
 import { FocusDirective } from "./FocusDirective";
 import { CustomCheckboxDirective } from "./CustomCheckboxDirective";
 import { NoUpdateOnEditDirective } from "./NoUpdateOnEditDirective";
+import { ButtonDirective } from "./ButtonDirective";
 
 @NgModule({
     imports: [
@@ -30,6 +31,7 @@ import { NoUpdateOnEditDirective } from "./NoUpdateOnEditDirective";
         CustomCheckboxDirective,
         FocusDirective,
         LabelDirective,
+        ButtonDirective,
         DialogOutletComponent,
         DialogComponent,
         ToastOutletComponent,
@@ -45,6 +47,7 @@ import { NoUpdateOnEditDirective } from "./NoUpdateOnEditDirective";
         CustomCheckboxDirective,
         FocusDirective,
         LabelDirective,
+        ButtonDirective,
         DialogOutletComponent,
         DialogComponent,
         ToastOutletComponent,

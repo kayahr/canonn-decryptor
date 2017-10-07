@@ -1,9 +1,15 @@
+/*
+ * Copyright (C) 2017 Klaus Reimer <k@ailis.de
+ * See LICENSE.md for licensing information.
+ */
+
 /** Regular expression to match upper-case words in a string. */
 import { Alphabet } from "./Alphabet";
+import { isEqual, Equatable } from "./Equatable";
 
 const WORD_REGEXP = /\b[A-Z]+\b/gi;
 
-export class FastString extends Array<number> {
+export class FastString extends Array<number> implements Equatable {
     public constructor() {
         super();
         Object.setPrototypeOf(this, FastString.prototype);
@@ -36,5 +42,21 @@ export class FastString extends Array<number> {
             dest[i] = alphabet[this[i]];
         }
         return dest;
+    }
+
+    /** @inheritDoc */
+    public equals(other: any): boolean {
+        return isEqual(this, other, other => {
+            const len = this.length;
+            if (len !== other.length) {
+                return false;
+            }
+            for (let i = 0; i < len; ++i) {
+                if (this[i] !== other[i]) {
+                    return false;
+                }
+            }
+            return true;
+        });
     }
 }

@@ -51,6 +51,10 @@ decryptor .box .title > nav button.remove::before {
     content: "\f057";
 }
 
+decryptor .box .title > nav button.crack::before {
+    content: "\f084";
+}
+
 
 /* --- Input/Output panel hierarchy -------------------------------------------------------------------------------- */
 
@@ -140,6 +144,7 @@ decryptor .params {
     box-sizing: border-box;
     display: table;
     width: 100%;
+    position: relative;
 }
 
 decryptor .params .param {
@@ -147,6 +152,7 @@ decryptor .params .param {
     border-left: 2px solid #222;
     border-right: 2px solid #222;
     display: table-row;
+    position: relative;
 }
 
 decryptor .params label:first-child {
@@ -282,5 +288,94 @@ decryptor .instructions button {
 }
 
 .select-converter-dialog .converter p {
+    margin: 0;
+}
+
+
+/* --- Keyword Cracker Dialog -------------------------------------------------------------------------------------- */
+
+.keyword-cracker-dialog .content {
+    max-width: 768px;
+    max-height: 768px;
+}
+
+.keyword-cracker-dialog .controls {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    color: #888;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.keyword-cracker-dialog .progress::before {
+    animation: spin 2s linear infinite;
+    content: "\f013";
+    display: inline-block;
+    font-family: FontAwesome;
+    font-size: 14px;
+    margin-right: 0.25em;
+}
+
+.keyword-cracker-dialog .controls nav {
+    float: right;
+}
+
+.keyword-cracker-dialog .controls button {
+   margin-left: 1em;
+}
+
+.keyword-cracker-dialog button.stop::before {
+    content: "\f28c";
+}
+
+.keyword-cracker-dialog button.start::before {
+    content: "\f01d";
+}
+
+.keyword-cracker-dialog button.clear::before {
+    content: "\f28e";
+}
+
+.keyword-cracker-dialog .results {
+    clear: both;
+}
+
+.keyword-cracker-dialog .result {
+    background: #333;
+    border: 1px solid #444;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+.keyword-cracker-dialog .result:first-child {
+    margin-top: 0;
+}
+
+.keyword-cracker-dialog .result:hover {
+    background: #383838;
+    text-shadow: 0 0 10px #fff;
+}
+
+.keyword-cracker-dialog .result h1 {
+    color: #ff7100;
+    font-family: "Roboto Mono", monospace;
+    font-size: 17px;
+    margin-bottom: 0.25em;
+}
+
+.keyword-cracker-dialog .result h1 .score {
+    color: #fff;
+    font-family: "Euro Caps", sans-serif;
+    font-size: 12px;
+}
+
+.keyword-cracker-dialog .result p {
+    text-align: justify;
     margin: 0;
 }
