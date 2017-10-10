@@ -259,7 +259,7 @@ decryptor .instructions button {
     border: 1px solid #444;
     border-radius: 2px;
     cursor: pointer;
-    flex-basis: 0;
+    flex-basis: 400px;
     flex-grow: 1;
     margin-left: 10px;
     padding: 10px;
