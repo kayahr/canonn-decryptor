@@ -19,9 +19,9 @@ export class NumberDecoder extends Converter {
     private groupRegExp: RegExp | null = null;
 
     /** The number base. */
-    @numberOption("base", "Base", {
+    @numberOption<NumberDecoder>("base", "Base", {
         min: 2, max: 36, defaultValue: 10,
-        onChange: (decoder: NumberDecoder) => decoder.resetCaches()
+        onChange: decoder => decoder.resetCaches()
     })
     private base: number;
 

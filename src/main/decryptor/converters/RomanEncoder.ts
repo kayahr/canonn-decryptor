@@ -54,7 +54,7 @@ function encodeRoman(decimal: number): string {
 /**
  * Roman number encoder.
  */
-@converter("roman-encoder", "roman", "Roman Encoder", "Encodes decimal numbers into roman numerals.")
+@converter<RomanEncoder>("roman-encoder", "roman", "Roman Encoder", "Encodes decimal numbers into roman numerals.")
 export class RomanEncoder extends Converter {
     /** @inheritDoc */
     public convert(input: string): string {

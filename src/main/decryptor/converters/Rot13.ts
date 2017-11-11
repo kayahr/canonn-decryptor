@@ -19,7 +19,7 @@ function rotate(char: string): string {
 /**
  * ROT 13 converter.
  */
-@converter("rot13", "rot13", "Rot 13", "Converts text by rotating the alphabet by 13.")
+@converter<Rot13>("rot13", "rot13", "Rot 13", "Converts text by rotating the alphabet by 13.")
 export class Rot13 extends Converter {
     /** @inheritDoc */
     public convert(input: string): string {
