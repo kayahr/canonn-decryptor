@@ -1,7 +1,7 @@
 {
   "$schema": "http://json.schemastore.org/package",
   "name": "canonn-decryptor",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Tool to decrypt the mysteries of the Elite Dangerous universe",
   "keywords": [
     "Elite: Dangerous",
@@ -9,7 +9,7 @@
     "Canonn",
     "Decryptor"
   ],
-  "homepage": "https://github.com/kayahr/canonn-decryptor",
+  "homepage": "https://kayahr.github.io/canonn-decryptor/",
   "author": {
     "name": "Klaus Reimer",
     "email": "k@ailis.de",
@@ -48,10 +48,12 @@
     "del-cli": "=1.1.0",
     "http-server": "=0.10.0",
     "jasmine": "=2.8.0",
+    "source-map-loader": "=0.2.3",
     "systemjs": "=0.20.19",
     "systemjs-plugin-json": "=0.3.0",
     "tslint": "=5.8.0",
     "typescript": "=2.6.1",
+    "uglifyjs-webpack-plugin": "=1.0.1",
     "webpack": "=3.8.1"
   },
   "dependencies": {
