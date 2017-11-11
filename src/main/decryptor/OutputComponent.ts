@@ -51,7 +51,7 @@ export class OutputComponent {
      *
      * @return The converter options.
      */
-    public get options(): ReadonlyArray<ConverterOption<any>> {
+    public get options(): ReadonlyArray<ConverterOption> {
         return this.output.getConverter().getOptions();
     }
 
