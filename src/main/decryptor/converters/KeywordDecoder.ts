@@ -9,7 +9,7 @@ import { KeywordCipher } from "./KeywordCipher";
 /**
  * Keyword decoder.
  */
-@converter("keyword-decoder", "keyword", "Keyword Decoder",
+@converter<KeywordDecoder>("keyword-decoder", "keyword", "Keyword Decoder",
     "Decodes text encrypted with keyword based alphabet substitution.")
 export class KeywordDecoder extends KeywordCipher {
     /** @inheritDoc */

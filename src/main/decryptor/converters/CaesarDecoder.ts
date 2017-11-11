@@ -12,10 +12,11 @@ import { FastString } from "../../utils/FastString";
 /**
  * Converter for caesar decoding.
  */
-@converter("caesar-decoder", "caesar", "Caesar Decoder", "Decodes text encrypted by simple alphabet rotation.")
+@converter<CaesarDecoder>("caesar-decoder", "caesar", "Caesar Decoder",
+    "Decodes text encrypted by simple alphabet rotation.")
 export class CaesarDecoder extends CaesarCipher {
     /** The alphabet rotation. */
-    @booleanOption("auto", "Automatic", { defaultValue: true, sortIndex: -1 })
+    @booleanOption<CaesarDecoder>("auto", "Automatic", { defaultValue: true, sortIndex: -1 })
     protected automatic: boolean;
 
     /** @inheritDoc */

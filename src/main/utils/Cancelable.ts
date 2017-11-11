@@ -6,7 +6,7 @@
 /**
  * Interface for a cancelable promise.
  */
-export interface Cancelable<T> extends Promise<T> {
+export interface Cancelable<T = any> extends Promise<T> {
     cancel(reason?: string): Promise<void>;
 }
 
@@ -16,6 +16,6 @@ export interface Cancelable<T> extends Promise<T> {
  * @param object  The object to check.
  * @return True if object is a cancelable promise, false if not.
  */
-export function isCancelable(object: any): object is Cancelable<any> {
+export function isCancelable(object: any): object is Cancelable {
     return typeof(object.then) === "function" && typeof(object.cancel) === "function";
 }

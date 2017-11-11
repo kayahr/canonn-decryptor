@@ -4,11 +4,12 @@
  */
 
 import { ConverterOption, OptionTarget, converterOption, ConverterOptionArgs } from "./ConverterOption";
+import { Converter } from "../Converter";
 
 /**
  * The arguments of a number option.
  */
-export interface NumberOptionArgs extends ConverterOptionArgs<number> {
+export interface NumberOptionArgs<T extends Converter> extends ConverterOptionArgs<number, T> {
     min?: number;
     max?: number;
     step?: number;
@@ -21,22 +22,22 @@ export interface NumberOptionArgs extends ConverterOptionArgs<number> {
  * @param title  The option title.
  * @param args   Optional option arguments.
  */
-export function numberOption(id: string, title: string, args: NumberOptionArgs = {}):
-        PropertyDecorator {
-    return function (target: OptionTarget, propertyKey: string): void {
-        converterOption(target, propertyKey, new NumberOption(id, title, args));
+export function numberOption<T extends Converter>(id: string, title: string,
+        args: NumberOptionArgs<T> = {}): (target: OptionTarget<T>, propertyKey: string) => void {
+    return function (target: OptionTarget<T>, propertyKey: string): void {
+        converterOption(target, propertyKey, new NumberOption<T>(id, title, args));
     };
 }
 
 /**
  * Number option.
  */
-export class NumberOption extends ConverterOption<number> {
+export class NumberOption<T extends Converter = Converter> extends ConverterOption<number, T> {
     private min: number;
     private max: number;
     private step: number;
 
-    public constructor(id: string, title: string, args: NumberOptionArgs) {
+    public constructor(id: string, title: string, args: NumberOptionArgs<T>) {
         super("number", id, title, args.defaultValue != null ? args.defaultValue : 0, args);
         this.max = args.max != null ? args.max : Number.MAX_SAFE_INTEGER;
         this.min = args.min != null ? args.min : 0;

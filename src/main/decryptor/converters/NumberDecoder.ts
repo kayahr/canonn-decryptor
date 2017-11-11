@@ -9,7 +9,7 @@ import { numberOption } from "./options/NumberOption";
 /**
  * Number decoder.
  */
-@converter("number-decoder", "number", "Number Decoder",
+@converter<NumberDecoder>("number-decoder", "number", "Number Decoder",
     "Decodes numbers into ASCII characters. Supports base 2 to 36 and value shifting.")
 export class NumberDecoder extends Converter {
     /** Cached regular expression to match a number. */
@@ -26,7 +26,7 @@ export class NumberDecoder extends Converter {
     private base: number;
 
     /** The number shift.. */
-    @numberOption("shift", "Shift", { defaultValue: 64 })
+    @numberOption<NumberDecoder>("shift", "Shift", { defaultValue: 64 })
     private shift: number;
 
     /**
