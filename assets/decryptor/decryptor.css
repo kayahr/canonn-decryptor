@@ -24,6 +24,7 @@ decryptor .box .title > h1 {
     display: inline-block;
     font-family: "Euro Caps", sans-serif;
     font-size: 17px;
+    margin-right: 5px;
 }
 
 decryptor .box .title > nav {
@@ -35,6 +36,16 @@ decryptor .box .title > nav button {
     margin-left: 1em;
     position: relative;
     top: -1px;
+}
+
+decryptor .box .title > nav button:first-child {
+    margin-left: 0;
+}
+
+decryptor .box .title::after {
+    clear: both;
+    content: "";
+    display: block;
 }
 
 decryptor .box .title > nav button::before {
