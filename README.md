@@ -40,7 +40,7 @@ Testing
 
 Run `npm test` to check the TypeScript and CSS files and to run the unit tests.
 
-Within Visual Studio Code you can press `F5` to run the unit tests in the debugger.
+Within Visual Studio Code you can press `Ctrl-Shift-T` to run the unit tests.
 
 
 Deployment
