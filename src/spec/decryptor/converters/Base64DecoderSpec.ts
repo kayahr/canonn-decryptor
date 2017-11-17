@@ -25,6 +25,9 @@ describe("Base64Decoder", () => {
         it("decodes valid base64 to bytes", () => {
             expect(new Base64Decoder(Base64OutputType.BYTES).convert("Zm9vYmFy")).toBe("66 6f 6f 62 61 72");
         });
+        it("ignores whitespaces", () => {
+            expect(new Base64Decoder(Base64OutputType.BYTES).convert(" Zm\n9\rv\tYm Fy ")).toBe("66 6f 6f 62 61 72");
+        });
     });
 
     describe("setOutputType", () => {

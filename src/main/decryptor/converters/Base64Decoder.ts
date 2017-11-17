@@ -57,7 +57,7 @@ export class Base64Decoder extends Converter {
     public convert(input: string): string {
         let decoded: number[];
         try {
-            decoded = Array.from(base64.toByteArray(input));
+            decoded = Array.from(base64.toByteArray(input.replace(/\s+/g, "")));
         } catch (e) {
             return "DECODING ERROR: " + e.message;
         }
