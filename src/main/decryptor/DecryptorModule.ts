@@ -12,6 +12,7 @@ import { DecryptorState } from "./DecryptorState";
 import { InputComponent } from "./InputComponent";
 import { OutputComponent } from "./OutputComponent";
 import { StringOptionComponent } from "./StringOptionComponent";
+import { SelectOptionComponent } from "./SelectOptionComponent";
 import { NumberOptionComponent } from "./NumberOptionComponent";
 import { SelectConverterDialog } from "./SelectConverterDialog";
 import { ProjectModule } from "../project/ProjectModule";
@@ -39,6 +40,7 @@ const routes: Routes = [
         InputComponent,
         OutputComponent,
         StringOptionComponent,
+        SelectOptionComponent,
         NumberOptionComponent,
         BooleanOptionComponent,
         SelectConverterDialog,

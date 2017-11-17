@@ -75,6 +75,10 @@ decryptor .outputs .box::before {
     width: 50px;
 }
 
+decryptor .outputs .box p {
+    text-align: left;
+}
+
 decryptor .panels {
     display: table-row;
 }
@@ -174,6 +178,19 @@ decryptor .params input[type=checkbox] + label {
     font-family: "Roboto Mono", monospace;
     font-size: 15px;
     padding: 5px 10px;
+    width: 100%;
+}
+
+decryptor .params select {
+    background: #003859;
+    border: 0;
+    box-sizing: border-box;
+    color: #ddd;
+    display: table-cell;
+    font-family: "Roboto", sans-serif;
+    font-size: 15px;
+    outline: none;
+    padding: 5px 6px;
     width: 100%;
 }
 
