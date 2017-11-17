@@ -27,6 +27,17 @@ describe("Base64Decoder", () => {
         });
     });
 
+    describe("setOutputType", () => {
+        it("sets the output type", () => {
+            const decoder = new Base64Decoder();
+            expect(decoder.getOutputType()).toBe(Base64OutputType.TEXT);
+            expect(decoder.convert("Zm9vYmFy")).toBe("foobar");
+            decoder.setOutputType(Base64OutputType.BYTES);
+            expect(decoder.getOutputType()).toBe(Base64OutputType.BYTES);
+            expect(decoder.convert("Zm9vYmFy")).toBe("66 6f 6f 62 61 72");
+        });
+    });
+
     describe("toJSON", () => {
         it("serializes the converter", () => {
             expect(new Base64Decoder(Base64OutputType.BYTES).toJSON()).toEqual({
