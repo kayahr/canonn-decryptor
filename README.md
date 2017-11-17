@@ -9,6 +9,7 @@ following converters are supported:
 * [Keyword cipher] (With automatic keyword cracking)
 * [Morse code]
 * [Number-to-ASCII]
+* [One-time pad]
 * Reverse text
 * [Roman numerals]
 * [Vigenère cipher]
@@ -64,6 +65,7 @@ Links
 [Keyword cipher]: https://en.wikipedia.org/wiki/Keyword_cipher
 [Morse code]: https://en.wikipedia.org/wiki/Morse_code
 [Number-to-ASCII]: https://en.wikipedia.org/wiki/ASCII
+[One-time pad]: https://en.wikipedia.org/wiki/One-time_pad
 [Roman numerals]: https://en.wikipedia.org/wiki/Roman_numerals
 [Vigenère cipher]: https://en.wikipedia.org/wiki/Vigenère_cipher
 [Node.js]: https://nodejs.org/
