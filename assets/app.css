@@ -90,6 +90,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 body > header {
+    position: relative;
     background: #333 url(canonn.png) no-repeat 10px center;
     background-size: 40px 40px;
     height: 50px;
@@ -106,6 +107,21 @@ body > header h1 {
 
 body > header h1 > a {
     color: #fff;
+}
+
+body > header > nav {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+}
+
+body > header .version {
+    margin-right: 20px;
+    font-size: 12px;
+}
+
+body > header > nav button.changelog::before {
+    content: "\f05a";
 }
 
 body > footer {
@@ -281,4 +297,11 @@ button.load::before {
 
 button.save::before {
     content: "\f0c7";
+}
+
+
+/* --- Changelog dialog -------------------------------------------------------------------------------------------- */
+
+.changelog-dialog .content {
+    max-width: 768px;
 }

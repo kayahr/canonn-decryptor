@@ -10,6 +10,7 @@ import { RouterModule } from "@angular/router";
 import { DecryptorModule } from "./decryptor/DecryptorModule";
 import { AppComponent } from "./AppComponent";
 import { UIModule } from "./ui/UIModule";
+import { ChangelogDialog } from "./ChangelogDialog";
 
 @NgModule({
     imports: [
@@ -20,7 +21,11 @@ import { UIModule } from "./ui/UIModule";
         DecryptorModule
     ],
     declarations: [
-        AppComponent
+        AppComponent,
+        ChangelogDialog
+    ],
+    entryComponents: [
+        ChangelogDialog
     ],
     bootstrap: [
         AppComponent

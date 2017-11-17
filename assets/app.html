@@ -1,5 +1,9 @@
 <header>
   <h1><a routerLink=".">Canonn Decryptor</a></h1>
+  <nav>
+    <span class="version">Version {{ appVersion }}</span>
+    <button class="changelog" (click)="openChangelog()">Changelog</button>
+  </nav>
 </header>
 
 <main>
