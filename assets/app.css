@@ -90,10 +90,10 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 body > header {
-    position: relative;
     background: #333 url(canonn.png) no-repeat 10px center;
     background-size: 40px 40px;
     height: 50px;
+    position: relative;
 }
 
 body > header h1 {
@@ -116,8 +116,8 @@ body > header > nav {
 }
 
 body > header .version {
-    margin-right: 20px;
     font-size: 12px;
+    margin-right: 20px;
 }
 
 body > header > nav button.changelog::before {
