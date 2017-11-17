@@ -7,6 +7,11 @@ import { Converter, converter } from "./Converter";
 import * as base64 from "base64-js";
 import { selectOption } from "./options/SelectOption";
 
+export enum Base64OutputType {
+    TEXT = "text",
+    BYTES = "bytes"
+}
+
 /**
  * Base64 decoder.
  */
@@ -14,10 +19,38 @@ import { selectOption } from "./options/SelectOption";
 export class Base64Decoder extends Converter {
     /** The output type. */
     @selectOption<Base64Decoder>("output", "Output", [
-        { value: "text", label: "Plain-Text" },
-        { value: "bytes", label: "Bytes in HEX" }
+        { value: Base64OutputType.TEXT, label: "Plain-Text" },
+        { value: Base64OutputType.BYTES, label: "Bytes in HEX" }
     ], { defaultValue: "text" })
-    protected output: string;
+    protected outputType: Base64OutputType;
+
+    /**
+     * @param output   Optional initial output type. Defaults to "text".
+     */
+    public constructor(output?: Base64OutputType) {
+        super();
+        if (output) {
+            this.outputType = output;
+        }
+    }
+
+    /**
+     * Sets the output type.
+     *
+     * @param outputType  The output type to set.
+     */
+    public setOutputType(outputType: Base64OutputType) {
+        this.outputType = outputType;
+    }
+
+    /**
+     * Returns the output type.
+     *
+     * @return The output type.
+     */
+    public getOutputType(): Base64OutputType {
+        return this.outputType;
+    }
 
     /** @inheritDoc */
     public convert(input: string): string {
@@ -28,7 +61,7 @@ export class Base64Decoder extends Converter {
             return "DECODING ERROR: " + e.message;
         }
 
-        if (this.output === "text") {
+        if (this.outputType === "text") {
             return decoded.map(byte => String.fromCharCode(byte)).join("");
         } else {
             return decoded.map(byte => (byte < 16 ? "0" : "") + byte.toString(16)).join(" ");
