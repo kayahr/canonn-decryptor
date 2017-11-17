@@ -93,6 +93,7 @@ body > header {
     background: #333 url(canonn.png) no-repeat 10px center;
     background-size: 40px 40px;
     height: 50px;
+    position: relative;
 }
 
 body > header h1 {
@@ -106,6 +107,21 @@ body > header h1 {
 
 body > header h1 > a {
     color: #fff;
+}
+
+body > header > nav {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+}
+
+body > header .version {
+    font-size: 12px;
+    margin-right: 20px;
+}
+
+body > header > nav button.changelog::before {
+    content: "\f05a";
 }
 
 body > footer {
@@ -256,7 +272,7 @@ button:hover {
     text-shadow: 0 0 10px #fff;
 }
 
-button:before {
+button::before {
     font-family: FontAwesome;
     margin-right: 0.25em;
 }
@@ -281,4 +297,11 @@ button.load::before {
 
 button.save::before {
     content: "\f0c7";
+}
+
+
+/* --- Changelog dialog -------------------------------------------------------------------------------------------- */
+
+.changelog-dialog .content {
+    max-width: 768px;
 }

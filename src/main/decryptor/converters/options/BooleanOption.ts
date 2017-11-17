@@ -4,11 +4,12 @@
  */
 
 import { ConverterOption, OptionTarget, converterOption, ConverterOptionArgs } from "./ConverterOption";
+import { Converter } from "../Converter";
 
 /**
  * The arguments of a boolean option.
  */
-export interface BooleanOptionArgs extends ConverterOptionArgs<boolean> {}
+export interface BooleanOptionArgs<T extends Converter> extends ConverterOptionArgs<boolean, T> {}
 
 /**
  * Property decorator for a boolean option.
@@ -17,18 +18,18 @@ export interface BooleanOptionArgs extends ConverterOptionArgs<boolean> {}
  * @param title  The option title.
  * @param args   Optional option arguments.
  */
-export function booleanOption(id: string, title: string, args: BooleanOptionArgs = {}):
-        PropertyDecorator {
-    return function (target: OptionTarget, propertyKey: string): void {
-        converterOption(target, propertyKey, new BooleanOption(id, title, args));
+export function booleanOption<T extends Converter>(id: string, title: string, args: BooleanOptionArgs<T> = {}):
+        (target: OptionTarget<T>, propertyKey: string) => void {
+    return function (target: OptionTarget<T>, propertyKey: string): void {
+        converterOption(target, propertyKey, new BooleanOption<T>(id, title, args));
     };
 }
 
 /**
  * Boolean option.
  */
-export class BooleanOption extends ConverterOption<boolean> {
-    public constructor(id: string, title: string, args: BooleanOptionArgs) {
+export class BooleanOption<T extends Converter = Converter> extends ConverterOption<boolean, T> {
+    public constructor(id: string, title: string, args: BooleanOptionArgs<T>) {
         super("boolean", id, title, args.defaultValue != null ? args.defaultValue : false, args);
     }
 }

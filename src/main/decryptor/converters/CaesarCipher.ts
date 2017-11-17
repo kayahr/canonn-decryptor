@@ -11,9 +11,9 @@ import { numberOption } from "./options/NumberOption";
  */
 export abstract class CaesarCipher extends Converter {
     /** The alphabet rotation. */
-    @numberOption("rotation", "Rotation", {
+    @numberOption<CaesarCipher>("rotation", "Rotation", {
         max: 25, defaultValue: 13,
-        disabled: (converter: CaesarCipher) => converter.isAutomatic()
+        disabled: converter => converter.isAutomatic()
     })
     protected rotation: number;
 
@@ -37,7 +37,7 @@ export abstract class CaesarCipher extends Converter {
      *
      * @return True if operating in automatic mode, false if not.
      */
-    protected isAutomatic() {
+    protected isAutomatic(): boolean {
         return false;
     }
 

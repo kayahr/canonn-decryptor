@@ -10,7 +10,7 @@ import { Converter } from "./converters/Converter";
 /**
  * Abstract base class for option components.
  */
-export abstract class OptionComponent<T extends ConverterOption<any>> {
+export abstract class OptionComponent<T extends ConverterOption> {
     /** The converter option  */
     @Input()
     protected option: T;

@@ -11,7 +11,7 @@ import { stringOption } from "./options/StringOption";
  */
 export abstract class VigenereCipher extends Converter {
     /** The keyword to encode/decode with. */
-    @stringOption("keyword", "Keyword", { onChange: (cipher: VigenereCipher) => cipher.createKeys() })
+    @stringOption<VigenereCipher>("keyword", "Keyword", { onChange: cipher => cipher.createKeys() })
     protected keyword: string;
 
     /** Key characters created from the configured keyword. */

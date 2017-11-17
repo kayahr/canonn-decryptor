@@ -19,7 +19,7 @@ function reverse(char: string): string {
 /**
  * Atbash converter.
  */
-@converter("atbash", "atbash", "Atbash", "Converts text by reversing the alphabet.")
+@converter<Atbash>("atbash", "atbash", "Atbash", "Converts text by reversing the alphabet.")
 export class Atbash extends Converter {
     /** @inheritDoc */
     public convert(input: string): string {

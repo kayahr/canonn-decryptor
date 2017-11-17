@@ -6,15 +6,17 @@
 import { CaesarCipher } from "./CaesarCipher";
 import { converter } from "./Converter";
 import { booleanOption } from "./options/BooleanOption";
-import { textScore } from "../../utils/string";
+import { quadgrams } from "../../utils/Quadgrams";
+import { FastString } from "../../utils/FastString";
 
 /**
  * Converter for caesar decoding.
  */
-@converter("caesar-decoder", "caesar", "Caesar Decoder", "Decodes text encrypted by simple alphabet rotation.")
+@converter<CaesarDecoder>("caesar-decoder", "caesar", "Caesar Decoder",
+    "Decodes text encrypted by simple alphabet rotation.")
 export class CaesarDecoder extends CaesarCipher {
     /** The alphabet rotation. */
-    @booleanOption("auto", "Automatic", { defaultValue: true, sortIndex: -1 })
+    @booleanOption<CaesarDecoder>("auto", "Automatic", { defaultValue: true, sortIndex: -1 })
     protected automatic: boolean;
 
     /** @inheritDoc */
@@ -44,7 +46,7 @@ export class CaesarDecoder extends CaesarCipher {
         if (this.automatic) {
             let scores: { score: number, rotation: number }[] = [];
             for (let rotation = 0; rotation < 26; ++rotation) {
-                const score = textScore(this.rotateText(input, -rotation));
+                const score = quadgrams.getScore(FastString.fromString(this.rotateText(input, -rotation)));
                 scores.push({ score, rotation });
             }
             scores.sort((a, b) => b.score - a.score);
