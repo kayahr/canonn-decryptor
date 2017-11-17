@@ -144,3 +144,58 @@ export function diacriticsToAscii(s: string): string {
 export function escapeRegExp(s: string): string {
     return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
 }
+
+/**
+ * Converts a string to a byte array containing UTF-8 encoded data.
+ *
+ * @param s  The string to convert (In JavaScript Unicode encoding).
+ * @return The string as bytes in UTF-8 encoding.
+ */
+export function toByteArray(s: string): Uint8Array {
+    const bytes: number[] = [];
+    for (let i = 0, max = s.length; i < max; i++) {
+        let c = s.charCodeAt(i);
+        if (c < 0x80) {
+            bytes.push(c);
+        } else if (c < 0x800) {
+            bytes.push(0xC0 | c >> 6 & 0x1F, 0x80 | c >> 0 & 0x3F);
+        } else if (c > 0x07FF && c < 0xd800 || c > 0xe000) {
+            bytes.push(0xE0 | c >> 12 & 0x0f, 0x80 | c >> 6 & 0x3f, 0x80 | c >> 0 & 0x3f);
+        } else {
+            c = ((c & 0x3ff) << 10 | s.charCodeAt(++i) & 0x3ff) + 0x10000;
+            bytes.push(0xf0 | c >> 18, 0x80 | c >> 12 & 0x3f, 0x80 | c >> 6 & 0x3f, 0x80 | c & 0x3f);
+        }
+    }
+    return new Uint8Array(bytes);
+}
+
+/**
+ * Converts a UTF-8 encoded byte array into a standard JavaScript Unicode string.
+ *
+ * @param bytes   The UTF-8 encoded byte array.
+ * @param index   Optional start index in the bytes array.
+ * @param length  Optional number of bytes to read.
+ * @return The JavaScript Unicode string.
+ */
+export function fromByteArray(bytes: ArrayLike<number>, index: number = 0,
+        length: number = bytes.length - index): string {
+    let out = "";
+    index = Math.min(bytes.length, Math.max(0, index));
+    length = Math.min(bytes.length - index, Math.max(0, length));
+    const max = length + index;
+    for (let i = index; i < max; ++i) {
+        let c = bytes[i];
+        if ((c & 0x80) === 0) {
+            out += String.fromCharCode(c);
+        } else if ((c & 0xe0) === 0xc0) {
+            out += String.fromCharCode((c & 0x1F) << 6 | bytes[++i] & 0x3F);
+        } else if ((c & 0xf0) === 0xe0) {
+            out += String.fromCharCode((c & 0x0F) << 12 | (bytes[++i] & 0x3F) << 6 | bytes[++i] & 0x3F);
+        } else {
+            c = ((c & 0x0f) << 18 | (bytes[++i] & 0x3f) << 12 | (bytes[++i] & 0x3f) << 6 | bytes[++i] & 0x3f) - 0x10000;
+            out += String.fromCharCode(c >> 10 & 0x3ff | 0xd800);
+            out += String.fromCharCode(c & 0x3ff | 0xdc00);
+        }
+    }
+    return out;
+}

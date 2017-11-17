@@ -1,9 +1,10 @@
 --quiet
---exclude-list=assets/fonts,assets/reset.css 
+--exclude-list=assets/fonts,assets/reset.css
 --ignore=
     box-sizing,
     qualified-headings,
     fallback-colors,
+    font-sizes,
     unique-headings,
     overqualified-elements,
     compatible-vendor-prefixes,
