@@ -15,7 +15,7 @@ export class Base64Encoder extends Converter {
     /** @inheritDoc */
     public convert(input: string): string {
         try {
-            return base64.fromByteArray(toByteArray(input));
+            return base64.fromByteArray(toByteArray(input)).replace(/(.{76})/g, "$1\n");
         } catch (e) {
             return "ENCODING ERROR: " + e.message;
         }

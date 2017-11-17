@@ -6,8 +6,19 @@ describe("Base64Encoder", () => {
         it("converts empty string to empty string", () => {
             expect(new Base64Encoder().convert("")).toBe("");
         });
-        it("decodes valid base64 to UTF-8 text", () => {
+        it("encodes UTF-8 to base64", () => {
             expect(new Base64Encoder().convert("foobar öäüß")).toBe("Zm9vYmFyIMO2w6TDvMOf");
+        });
+        it("adds line breaks after 76 characters", () => {
+            expect(new Base64Encoder()
+                .convert(
+                    "The Imperial Clipper is the quintessential Imperial ship. It epitomises elegance of form " +
+                    "while delivering speed and agility.")
+                ).toBe(
+                    "VGhlIEltcGVyaWFsIENsaXBwZXIgaXMgdGhlIHF1aW50ZXNzZW50aWFsIEltcGVyaWFsIHNoaXAu\n" +
+                    "IEl0IGVwaXRvbWlzZXMgZWxlZ2FuY2Ugb2YgZm9ybSB3aGlsZSBkZWxpdmVyaW5nIHNwZWVkIGFu\n" +
+                    "ZCBhZ2lsaXR5Lg=="
+                );
         });
     });
 
