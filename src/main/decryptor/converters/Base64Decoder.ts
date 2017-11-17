@@ -9,8 +9,23 @@ import { selectOption } from "./options/SelectOption";
 import { fromByteArray } from "../../utils/string";
 
 export enum Base64OutputType {
-    TEXT = "text",
-    BYTES = "bytes"
+    TXT = "txt",
+    DEC = "dec",
+    HEX = "hex",
+    BIN = "bin"
+}
+
+function toBin(byte: number): string {
+    const s = "00000000" + byte.toString(2);
+    return s.substr(s.length - 8);
+}
+
+function toDec(byte: number): string {
+    return byte.toString(10);
+}
+
+function toHex(byte: number): string {
+    return (byte < 16 ? "0" : "") + byte.toString(16);
 }
 
 /**
@@ -20,9 +35,11 @@ export enum Base64OutputType {
 export class Base64Decoder extends Converter {
     /** The output type. */
     @selectOption<Base64Decoder>("output", "Output", [
-        { value: Base64OutputType.TEXT, label: "Plain-Text" },
-        { value: Base64OutputType.BYTES, label: "Bytes in HEX" }
-    ], { defaultValue: "text" })
+        { value: Base64OutputType.TXT, label: "Plain-Text" },
+        { value: Base64OutputType.DEC, label: "Bytes (Decimal)" },
+        { value: Base64OutputType.HEX, label: "Bytes (Hex)" },
+        { value: Base64OutputType.BIN, label: "Bytes (Binary)" }
+    ], { defaultValue: Base64OutputType.TXT })
     protected outputType: Base64OutputType;
 
     /**
@@ -62,10 +79,18 @@ export class Base64Decoder extends Converter {
             return "DECODING ERROR: " + e.message;
         }
 
-        if (this.outputType === "text") {
-            return fromByteArray(decoded);
-        } else {
-            return decoded.map(byte => (byte < 16 ? "0" : "") + byte.toString(16)).join(" ");
+        switch (this.outputType) {
+            case Base64OutputType.BIN:
+                return decoded.map(toBin).join(" ");
+
+            case Base64OutputType.DEC:
+                return decoded.map(toDec).join(" ");
+
+            case Base64OutputType.HEX:
+                return decoded.map(toHex).join(" ");
+
+            default:
+                return fromByteArray(decoded);
         }
     }
 }
