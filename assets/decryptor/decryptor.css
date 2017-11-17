@@ -200,9 +200,13 @@ decryptor .params select {
     display: table-cell;
     font-family: "Roboto", sans-serif;
     font-size: 15px;
-    outline: none;
     padding: 5px 6px;
     width: 100%;
+}
+
+decryptor .params select:focus {
+    color: #fff;
+    outline: none;
 }
 
 decryptor .params input[disabled] {
