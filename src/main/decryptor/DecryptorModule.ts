@@ -55,6 +55,7 @@ export class DecryptorModule {}
 
 import "./converters/Atbash";
 import "./converters/Base64Decoder";
+import "./converters/Base64Encoder";
 import "./converters/CaesarDecoder";
 import "./converters/CaesarEncoder";
 import "./converters/KeywordDecoder";

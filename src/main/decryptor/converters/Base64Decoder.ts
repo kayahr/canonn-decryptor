@@ -6,6 +6,7 @@
 import { Converter, converter } from "./Converter";
 import * as base64 from "base64-js";
 import { selectOption } from "./options/SelectOption";
+import { fromByteArray } from "../../utils/string";
 
 export enum Base64OutputType {
     TEXT = "text",
@@ -15,7 +16,7 @@ export enum Base64OutputType {
 /**
  * Base64 decoder.
  */
-@converter<Base64Decoder>("base64-decoder", "base64", "Base 64 Decoder", "Decodes base64 encoded text or bytes")
+@converter<Base64Decoder>("base64-decoder", "base64", "Base64 Decoder", "Decodes Base64 encoded text or bytes.")
 export class Base64Decoder extends Converter {
     /** The output type. */
     @selectOption<Base64Decoder>("output", "Output", [
@@ -62,7 +63,7 @@ export class Base64Decoder extends Converter {
         }
 
         if (this.outputType === "text") {
-            return decoded.map(byte => String.fromCharCode(byte)).join("");
+            return fromByteArray(decoded);
         } else {
             return decoded.map(byte => (byte < 16 ? "0" : "") + byte.toString(16)).join(" ");
         }
