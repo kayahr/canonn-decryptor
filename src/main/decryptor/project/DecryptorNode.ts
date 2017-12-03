@@ -26,7 +26,7 @@ export abstract class DecryptorNode implements Serializable<DecryptorNodeJSON> {
      *
      * @event
      */
-    public onChanged = this.emitOnChanged.signal;
+    public readonly onChanged = this.emitOnChanged.signal;
 
     /** The parent decryptor node (input or output) or null if none. */
     protected parent: DecryptorNode | null = null;

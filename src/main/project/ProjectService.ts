@@ -33,7 +33,7 @@ export class ProjectService {
      *
      * @event
      */
-    public onDeleted = this.emitOnDeleted.signal;
+    public readonly onDeleted = this.emitOnDeleted.signal;
 
     /**
      * Loads all projects and returns them.
