@@ -17,7 +17,7 @@ export abstract class ProjectState<T extends Project> {
      *
      * @event
      */
-    public onChanged = this.emitOnChanged.signal;
+    public readonly onChanged = this.emitOnChanged.signal.debounce(250);
 
     /** The current project within the state. */
     protected project: T;

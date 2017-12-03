@@ -218,4 +218,29 @@ export class Signal<T = void, R = any> implements Observable<T> {
             }
         };
     }
+
+    /**
+     * Returns a new signal connected to this one which emits the current value after the given time has passed without
+     * the original signal emitting any new value.
+     *
+     * @param throttle  Duration of the throttle period in milliseconds.
+     * @return The debounced signal.
+     */
+    public debounce(throttle: number): Signal<T> {
+        let timer: any = null;
+        return new Signal<T>(emit => {
+            const subscription = this.subscribe(arg => {
+                if (timer != null) {
+                    clearTimeout(timer);
+                }
+                timer = setTimeout(() => emit(arg), throttle);
+            });
+            return subscription;
+        }, subscription => {
+            if (timer != null) {
+                clearTimeout(timer);
+            }
+            subscription.unsubscribe();
+        });
+    }
 }
