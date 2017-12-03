@@ -13,6 +13,7 @@ import { LoadProjectDialog } from "./LoadProjectDialog";
 import { ToastService } from "../ui/ToastService";
 import { ViewChild, ElementRef } from "@angular/core";
 import { StringValue } from "../ui/StringValue";
+import { queueFor } from "../utils/function";
 
 /**
  * Abstract base class for a main application component which works on project.
@@ -51,7 +52,7 @@ export abstract class ProjectComponent<T extends Project> {
         this.projectService.onDeleted.connect(this.handleProjectDelete, this);
 
         // Update router when project state changes
-        this.state.onChanged.connect(this.updateRouter, this);
+        this.state.onChanged.connect(this.queueUpdateRouter, this);
 
         // Initialize project state from 'data' query parameter and also update the project state automatically when
         // this parameter changes
@@ -74,8 +75,12 @@ export abstract class ProjectComponent<T extends Project> {
 
     public ngOnDestroy() {
         this.queryParamsSubscription.unsubscribe();
-        this.state.onChanged.disconnect(this.updateRouter, this);
+        this.state.onChanged.disconnect(this.queueUpdateRouter, this);
         this.projectService.onDeleted.disconnect(this.handleProjectDelete, this);
+    }
+
+    private queueUpdateRouter() {
+        queueFor(500, this.updateRouter, this);
     }
 
     private updateRouter() {
