@@ -3,6 +3,22 @@
  * See LICENSE.md for licensing information.
  */
 
+ /**
+  * A signal emitter is simply a function which can be called to emit a signal. The signal itself can be read from
+  * the signal property.
+  */
+export interface SignalEmitter<T> {
+    (arg: T): void;
+    signal: Signal<T>;
+}
+
+/**
+ * Specialized signal emitter type which emits no value (void).
+ */
+export interface VoidSignalEmitter extends SignalEmitter<void> {
+    (): void;
+}
+
 /**
  * Internally used container for a signal handler function bound to an object.
  *
@@ -61,9 +77,65 @@ export interface Observable<T> {
  *
  * @param <T>  The signal payload type.
  */
-export class Signal<T = void> implements Observable<T> {
+export class Signal<T = void, R = any> implements Observable<T> {
     /** The list of registered signal listeners (slots). Entries may be null if deleted. */
     private slots: Array<Slot<T> | null> = [];
+
+    /** Initialization callback called when first slot is connected to signal. */
+    private onInit: (emit: (arg: T) => void) => R;
+
+    /** Optional de-initialization callback called when last slot has been disconnected from signal. */
+    private onDone: ((initResult: R) => void) | null;
+
+    /** Optional result returned from init callback and passed to done callback. */
+    private initResult: R | null = null;
+
+    /** The number of connected slots. */
+    private slotCount: number = 0;
+
+    /**
+     * Creates a new signal initialized by the given init callback and de-initialized by the optionally given
+     * done callback.
+     *
+     * @param onInit  Callback called when first slot is connected to signal. This callback is responsible to
+     *                connect the signal with the actual signal emitter which must call the passed emit function
+     *                to emit the signal. The callback can optionally return a value which is passed to the
+     *                `onDone` callback when specified.
+     * @param onDone  Optional callback called after last slot has been disconnected from the signal. The returned
+     *                result of the `onInit` callback is passed as one and only parameter.
+     */
+    public constructor(onInit: (emit: (arg: T) => void) => R, onDone: ((initResult: R) => void) | null = null) {
+        this.onInit = onInit;
+        this.onDone = onDone;
+    }
+
+    /**
+     * Creates a signal emitter which emits no value (void).
+     *
+     * @return The created signal emitter.
+     */
+    public static createEmitter(): VoidSignalEmitter;
+
+    /**
+     * Creates and returns a signal emitter emitting a value of the given type.
+     *
+     * @return The created signal emitter.
+     */
+    public static createEmitter<T>(): SignalEmitter<T>;
+
+    public static createEmitter<T>(): SignalEmitter<T> {
+        let emit: ((arg: T) => void) | null = null;
+        const signal = new Signal((signalEmit: (arg: T) => void) => {
+            emit = signalEmit;
+        }, () => {
+            emit = null;
+        });
+        return Object.assign((arg: T) => {
+            if (emit) {
+                emit(arg);
+            }
+        }, { signal });
+    }
 
     /**
      * Connects the given listener function or method to the signal.
@@ -72,7 +144,11 @@ export class Signal<T = void> implements Observable<T> {
      * @param context   Optional context to bind the listener function to, making it a method.
      */
     public connect(func: (data: T) => void, context: Object | null = null): void {
+        if (this.slotCount === 0) {
+            this.initResult = this.onInit((arg: T) => this.emit(arg));
+        }
         this.slots.push(new Slot(func, context));
+        this.slotCount++;
     }
 
     /**
@@ -92,6 +168,10 @@ export class Signal<T = void> implements Observable<T> {
                 break;
             }
         }
+        this.slotCount--;
+        if (this.slotCount === 0 && this.onDone) {
+            this.onDone(<R>this.initResult);
+        }
     }
 
     /**
@@ -99,7 +179,7 @@ export class Signal<T = void> implements Observable<T> {
      *
      * @param value  The signal payload value to emit.
      */
-    public emit(value: T): void {
+    private emit(value: T): void {
         const slots = this.slots;
 
         for (let i = 0, max = slots.length; i < max; ++i) {

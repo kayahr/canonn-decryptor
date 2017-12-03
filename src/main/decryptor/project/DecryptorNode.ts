@@ -19,12 +19,14 @@ export interface DecryptorNodeJSON {
  * Shared abstract base class for decryptor inputs and outputs.
  */
 export abstract class DecryptorNode implements Serializable<DecryptorNodeJSON> {
+    private emitOnChanged = Signal.createEmitter<this>();
+
     /**
      * Emitted when the node has been changed.
      *
      * @event
      */
-    public onChanged = new Signal<this>();
+    public onChanged = this.emitOnChanged.signal;
 
     /** The parent decryptor node (input or output) or null if none. */
     protected parent: DecryptorNode | null = null;
@@ -43,7 +45,7 @@ export abstract class DecryptorNode implements Serializable<DecryptorNodeJSON> {
      * Emits the onChanged event.
      */
     protected change(): void {
-        this.onChanged.emit(this);
+        this.emitOnChanged(this);
     }
 
     /** @inheritDoc */
@@ -75,7 +77,7 @@ export abstract class DecryptorNode implements Serializable<DecryptorNodeJSON> {
                 output.update();
             }
         }
-        this.onChanged.emit(this);
+        this.change();
     }
 
     /**

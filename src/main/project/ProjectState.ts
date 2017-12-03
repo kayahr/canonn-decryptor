@@ -10,12 +10,14 @@ import { Signal } from "../utils/Signal";
  * Abstract base class for an injectable state object which holds a project.
  */
 export abstract class ProjectState<T extends Project> {
+    private emitOnChanged = Signal.createEmitter();
+
     /**
      * This signal is emitted when the project within this project state has been changed.
      *
      * @event
      */
-    public onChanged = new Signal<void>();
+    public onChanged = this.emitOnChanged.signal;
 
     /** The current project within the state. */
     protected project: T;
@@ -27,14 +29,7 @@ export abstract class ProjectState<T extends Project> {
      */
     protected constructor(project: T) {
         this.project = project;
-        project.onChanged.connect(this.change, this);
-    }
-
-    /**
-     * Emits the onChanged signal.
-     */
-    private change(): void {
-        this.onChanged.emit(undefined);
+        project.onChanged.connect(this.emitOnChanged, this);
     }
 
     /**
@@ -52,9 +47,9 @@ export abstract class ProjectState<T extends Project> {
      * @param project  The new project to set.
      */
     public setProject(project: T) {
-        this.project.onChanged.disconnect(this.change, this);
+        this.project.onChanged.disconnect(this.emitOnChanged, this);
         this.project = project;
-        project.onChanged.connect(this.change, this);
-        this.change();
+        project.onChanged.connect(this.emitOnChanged, this);
+        this.emitOnChanged();
     }
 }

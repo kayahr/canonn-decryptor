@@ -41,7 +41,9 @@ export interface ProjectStatic<T extends Project> extends SerializableStatic<T> 
  * Abstract base class for projects.
  */
 export abstract class Project implements Serializable<ProjectJSON> {
-    public onChanged = new Signal<void>();
+    private emitOnChanged = Signal.createEmitter();
+
+    public readonly onChanged = this.emitOnChanged.signal;
 
     /** The project name. */
     private name: string;
@@ -70,7 +72,7 @@ export abstract class Project implements Serializable<ProjectJSON> {
 
     protected change(): void {
         this.saved = false;
-        this.onChanged.emit(undefined);
+        this.emitOnChanged();
     }
 
     /**
