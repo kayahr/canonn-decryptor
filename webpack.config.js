@@ -7,7 +7,7 @@ const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 module.exports = {
     entry: "./lib/main/index.js",
     output: {
-        filename: "lib/canonn-decryptor.js",
+        filename: `lib/canonn-decryptor-${pkg.version}.js`,
         path: path.join(__dirname, "dist")
     },
     devtool: "hidden",
@@ -33,7 +33,7 @@ module.exports = {
                         '    <script src="lib/shim.min.js"></script>\n' +
                         '    <script src="lib/zone.js"></script>')
                     .replace(/^\s*<\/body>/m,
-                        '    <script src="lib/canonn-decryptor.js"></script>\n' +
+                        `    <script src="lib/canonn-decryptor-${pkg.version}.js"></script>\n` +
                         '  </body>')
             }
         ])
