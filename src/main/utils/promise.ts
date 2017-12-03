@@ -27,7 +27,7 @@ export function cancelable<T>(promise: Promise<T>, onCancel?: (canceled: Cancele
 export function cancelable<T>(asyncFunc: () => Promise<T>, onCancel?: (canceled: Canceled) => void): Cancelable<T>;
 
 export function cancelable<T>(promiseOrAsync: (() => Promise<T>) | Promise<T>,
-                              onCancel: (canceled: Canceled) => void): Cancelable<T> {
+                              onCancel?: (canceled: Canceled) => void): Cancelable<T> {
     const promise = promiseOrAsync instanceof Promise ? promiseOrAsync : (<() => Promise<T>>promiseOrAsync)();
     let cancel: ((reason: string) => Promise<void>) | null = null;
     let cancelable: Cancelable<T>;

@@ -24,6 +24,7 @@ decryptor .box .title > h1 {
     display: inline-block;
     font-family: "Euro Caps", sans-serif;
     font-size: 17px;
+    margin-right: 5px;
 }
 
 decryptor .box .title > nav {
@@ -35,6 +36,16 @@ decryptor .box .title > nav button {
     margin-left: 1em;
     position: relative;
     top: -1px;
+}
+
+decryptor .box .title > nav button:first-child {
+    margin-left: 0;
+}
+
+decryptor .box .title::after {
+    clear: both;
+    content: "";
+    display: block;
 }
 
 decryptor .box .title > nav button::before {
@@ -73,6 +84,10 @@ decryptor .outputs .box::before {
     position: absolute;
     top: -22px;
     width: 50px;
+}
+
+decryptor .outputs .box p {
+    text-align: left;
 }
 
 decryptor .panels {
@@ -175,6 +190,23 @@ decryptor .params input[type=checkbox] + label {
     font-size: 15px;
     padding: 5px 10px;
     width: 100%;
+}
+
+decryptor .params select {
+    background: #003859;
+    border: 0;
+    box-sizing: border-box;
+    color: #ddd;
+    display: table-cell;
+    font-family: "Roboto", sans-serif;
+    font-size: 15px;
+    padding: 5px 6px;
+    width: 100%;
+}
+
+decryptor .params select:focus {
+    color: #fff;
+    outline: none;
 }
 
 decryptor .params input[disabled] {

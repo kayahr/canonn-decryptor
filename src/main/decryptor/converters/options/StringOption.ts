@@ -4,11 +4,12 @@
  */
 
 import { ConverterOption, OptionTarget, converterOption, ConverterOptionArgs } from "./ConverterOption";
+import { Converter } from "../Converter";
 
 /**
  * The string option arguments.
  */
-export interface StringOptionArgs extends ConverterOptionArgs<string> {
+export interface StringOptionArgs<T extends Converter> extends ConverterOptionArgs<string, T> {
     allowEmpty?: boolean;
     maxLength?: number;
 }
@@ -20,8 +21,9 @@ export interface StringOptionArgs extends ConverterOptionArgs<string> {
  * @param title  The option title.
  * @param args   Optional option arguments.
  */
-export function stringOption(id: string, title: string, args: StringOptionArgs = {}): PropertyDecorator {
-    return function (target: OptionTarget, propertyKey: string): void {
+export function stringOption<T extends Converter>(id: string, title: string, args: StringOptionArgs<T> = {}):
+        (target: OptionTarget<T>, propertyKey: string) => void {
+    return function (target: OptionTarget<T>, propertyKey: string): void {
         converterOption(target, propertyKey, new StringOption(id, title, args));
     };
 }
@@ -29,11 +31,11 @@ export function stringOption(id: string, title: string, args: StringOptionArgs =
 /**
  * String option.
  */
-export class StringOption extends ConverterOption<string> {
+export class StringOption<T extends Converter = Converter> extends ConverterOption<string, T> {
     private allowEmpty: boolean;
     private maxLength: number | null;
 
-    public constructor(id: string, title: string, args: StringOptionArgs) {
+    public constructor(id: string, title: string, args: StringOptionArgs<T>) {
         super("string", id, title, args.defaultValue != null ? args.defaultValue : "", args);
         this.allowEmpty = args.allowEmpty || true;
         this.maxLength = args.maxLength || null;

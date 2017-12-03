@@ -1,4 +1,5 @@
 import { Reverse } from "../../../main/decryptor/converters/Reverse";
+import { Converter } from "../../../main/decryptor/converters/Converter";
 
 describe("Reverse", () => {
     describe("convert", () => {
@@ -38,7 +39,7 @@ describe("Reverse", () => {
 
     describe("fromJSON", () => {
         it("deserializes a converter", () => {
-            const converter = <Reverse>Reverse.fromJSON({ "type": "reverse" });
+            const converter = Converter.fromJSON<Reverse>({ "type": "reverse" });
             expect(converter).toEqual(jasmine.any(Reverse));
         });
     });

@@ -24,7 +24,7 @@ export class DecryptorOutput extends DecryptorNode implements Serializable<Decry
     public constructor(converter: Converter) {
         super();
         this.converter = converter;
-        converter.onChange.connect(this.update, this);
+        converter.onChanged.connect(this.update, this);
     }
 
     public static fromJSON(json: DecryptorOutputJSON): DecryptorOutput {

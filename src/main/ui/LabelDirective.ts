@@ -18,7 +18,7 @@ let inputLabelLinkCounter = 0;
  * ```
  */
 @Directive({
-    selector: "input[label]",
+    selector: "input[label], select[label]",
     inputs: [ "label" ]
 })
 export class LabelDirective {

@@ -9,8 +9,16 @@ import { IllegalArgumentError } from "../utils/error";
 import { Project, ProjectJSON, ProjectStatic } from "./Project";
 import { Signal } from "../utils/Signal";
 
-function itemKey<T extends Project>(type: ProjectStatic<T>): string {
+/**
+ * Forgot to rename the key after renaming the project. Existing projects under this key are migrated to the new
+ * key so hopefully I can remove this code some day.
+ */
+function deprecatedItemKey<T extends Project>(type: ProjectStatic<T>): string {
     return `canonn-little-helper.${type.getProjectType()}.projects`;
+}
+
+function itemKey<T extends Project>(type: ProjectStatic<T>): string {
+    return `canonn-decryptor.${type.getProjectType()}.projects`;
 }
 
 /**
@@ -18,12 +26,14 @@ function itemKey<T extends Project>(type: ProjectStatic<T>): string {
  */
 @Injectable()
 export class ProjectService {
+    private emitOnDeleted = Signal.createEmitter<string>();
+
     /**
      * Signal is triggered when a project has been deleted.
      *
      * @event
      */
-    public onDeleted = new Signal<string>();
+    public readonly onDeleted = this.emitOnDeleted.signal;
 
     /**
      * Loads all projects and returns them.
@@ -31,12 +41,31 @@ export class ProjectService {
      * @return The loaded projects.
      */
     public loadProjects<T extends Project>(type: ProjectStatic<T>): T[] {
-        const item = localStorage.getItem(itemKey(type));
+        const key = itemKey(type);
+        const item = localStorage.getItem(key);
+        let projects: T[];
         if (item) {
             const json: ProjectJSON[] = JSON.parse(item);
-            return json.map(type.fromJSON);
+            projects = json.map(type.fromJSON);
+        } else {
+            projects = [];
         }
-        return [];
+
+        // If projects are found under deprecated key then move them to new key. I hope I can remove this
+        // code someday...
+        const deprecatedKey = deprecatedItemKey(type);
+        const deprecatedItem = localStorage.getItem(deprecatedKey);
+        if (deprecatedItem) {
+            const json: ProjectJSON[] = JSON.parse(deprecatedItem);
+            const deprecatedProjects = json.map(type.fromJSON);
+            for (const project of deprecatedProjects) {
+                projects.push(project);
+            }
+            localStorage.removeItem(deprecatedKey);
+            this.saveProjects(type, projects);
+        }
+
+        return projects;
     }
 
     /**
@@ -74,7 +103,7 @@ export class ProjectService {
     public deleteProject<T extends Project>(type: ProjectStatic<T>, name: string): void {
         const projects = this.loadProjects(type);
         this.saveProjects(type, projects.filter(project => project.getName() !== name));
-        this.onDeleted.emit(name);
+        this.emitOnDeleted(name);
     }
 
     /**

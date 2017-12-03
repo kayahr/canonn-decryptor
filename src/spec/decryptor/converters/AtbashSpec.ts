@@ -1,4 +1,5 @@
 import { Atbash } from "../../../main/decryptor/converters/Atbash";
+import { Converter } from "../../../main/decryptor/converters/Converter";
 
 describe("Atbash", () => {
     describe("convert", () => {
@@ -35,7 +36,7 @@ describe("Atbash", () => {
 
     describe("fromJSON", () => {
         it("deserializes a converter", () => {
-            const converter = <Atbash>Atbash.fromJSON({ "type": "atbash" });
+            const converter = Converter.fromJSON<Atbash>({ "type": "atbash" });
             expect(converter).toEqual(jasmine.any(Atbash));
         });
     });

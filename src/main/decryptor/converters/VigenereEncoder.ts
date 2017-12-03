@@ -9,7 +9,7 @@ import { VigenereCipher } from "./VigenereCipher";
 /**
  * Vigènere encoder.
  */
-@converter("vigenere-encoder", "vigenere", "Vigènere Encoder",
+@converter<VigenereEncoder>("vigenere-encoder", "vigenere", "Vigènere Encoder",
     "Encodes text encrypted with the Vigènere square.")
 export class VigenereEncoder extends VigenereCipher {
     /** @inheritDoc */

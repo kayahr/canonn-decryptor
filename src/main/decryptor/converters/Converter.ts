@@ -32,7 +32,7 @@ export function getConverterDescriptors(): ReadonlyArray<ConverterDescriptor> {
  * @return The converter descriptor.
  * @throws IllegalArgumentError  When no matching converter descriptor was found.
  */
-export function getConverterDescriptor(id: string): ConverterDescriptor;
+export function getConverterDescriptor<T extends Converter>(id: string): ConverterDescriptor<T>;
 
 /**
  * Returns the converter descriptor for the given converter class.
@@ -41,14 +41,14 @@ export function getConverterDescriptor(id: string): ConverterDescriptor;
  * @return The converter descriptor.
  * @throws IllegalArgumentError  When no matching converter descriptor was found.
  */
-export function getConverterDescriptor(ctor: new () => Converter): ConverterDescriptor;
+export function getConverterDescriptor<T extends Converter>(ctor: new () => T): ConverterDescriptor<T>;
 
-export function getConverterDescriptor(arg: string | (new () => Converter)): ConverterDescriptor {
+export function getConverterDescriptor<T extends Converter>(arg: string | (new () => T)): ConverterDescriptor<T> {
     const info = typeof arg === "string" ? idMap[arg] : ctorMap.get(arg);
     if (!info) {
         throw new IllegalArgumentError(`Converter descriptor for '${arg}' not found`);
     }
-    return info;
+    return <ConverterDescriptor<T>>info;
 }
 
 /**
@@ -68,8 +68,8 @@ export function createConverter(id: string): Converter {
  * @param title        The converter title.
  * @param description  The converter description.
  */
-export function converter(id: string, groupId: string, title: string, description: string):
-        <T extends Converter, C extends new () => T>(ctor: C) => C {
+export function converter<T extends Converter>(id: string, groupId: string, title: string, description: string):
+        <C extends new () => T>(ctor: C) => C {
     return function <T extends Converter, C extends new () => T>(ctor: C): C {
         const info = new ConverterDescriptor(ctor, id, groupId, title, description);
         descriptors.push(info);
@@ -83,14 +83,14 @@ export function converter(id: string, groupId: string, title: string, descriptio
 /**
  * Describes a converter.
  */
-export class ConverterDescriptor {
-    private readonly ctor: new () => Converter;
+export class ConverterDescriptor<T extends Converter = Converter> {
+    private readonly ctor: new () => T;
     private readonly id: string;
     private readonly groupId: string;
     private readonly title: string;
     private readonly description: string;
 
-    public constructor(ctor: new () => Converter, id: string, groupId: string, title: string, description: string) {
+    public constructor(ctor: new () => T, id: string, groupId: string, title: string, description: string) {
         this.ctor = ctor;
         this.id = id;
         this.groupId = groupId;
@@ -139,7 +139,7 @@ export class ConverterDescriptor {
      *
      * @return The created converter.
      */
-    public create(): Converter {
+    public create(): T {
         return new this.ctor();
     }
 }
@@ -156,24 +156,26 @@ export interface ConverterJSON {
  * Abstract base class for converters.
  */
 export abstract class Converter {
+    private emitOnChanged = Signal.createEmitter<this>();
+
     /**
      * Emitted when converter has been changed so output must be updated.
      *
      * @event
      */
-    public readonly onChange = new Signal<this>();
+    public readonly onChanged: Signal<this> = this.emitOnChanged.signal;
 
     /** The current option values of this converter. */
-    private readonly optionValues: WeakMap<ConverterOption<any>, any> = new WeakMap();
+    private readonly optionValues: WeakMap<ConverterOption<any, this>, any> = new WeakMap();
 
     /** The options of this converter. */
-    private readonly options: ConverterOption<any>[];
+    public readonly options: ConverterOption<any, this>[];
 
     /** The converter descriptor. */
-    private readonly descriptor: ConverterDescriptor;
+    private readonly descriptor: ConverterDescriptor<this>;
 
     public constructor() {
-        this.descriptor = getConverterDescriptor(<new () => Converter>this.constructor);
+        this.descriptor = getConverterDescriptor(<new () => this>this.constructor);
     }
 
     public static fromJSON<T extends Converter>(json: ConverterJSON): T {
@@ -218,7 +220,7 @@ export abstract class Converter {
      *
      * @return The converter options.
      */
-    public getOptions(): ReadonlyArray<ConverterOption<any>> {
+    public getOptions(): ReadonlyArray<ConverterOption<any, this>> {
         return this.options || [];
     }
 
@@ -229,7 +231,7 @@ export abstract class Converter {
      * @return The converter option.
      * @throws IllegalArgumentError  When no option with the given ID exists.
      */
-    public getOption(id: string): ConverterOption<any> {
+    public getOption(id: string): ConverterOption<any, this> {
         for (const option of this.getOptions()) {
             if (id === option.getId()) {
                 return option;
@@ -271,7 +273,7 @@ export abstract class Converter {
      * @param option  The converter option.
      * @return The option value or null if none.
      */
-    public getOptionValue<T>(option: ConverterOption<T>): T | null {
+    public getOptionValue<T>(option: ConverterOption<T, this>): T | null {
         const value = this.optionValues.get(option);
         return value === undefined ? null : value;
     }
@@ -283,8 +285,8 @@ export abstract class Converter {
      * @param value   The option value to set. Null to remove the value.
      * @return True if value was changed, false if not.
      */
-    public setOptionValue<T>(option: ConverterOption<T>, value: T,
-            onChange: ((converter: Converter) => void) | null = null): void {
+    public setOptionValue<T>(option: ConverterOption<T, this>, value: T,
+            onChange: ((converter: this) => void) | null = null): void {
         const oldValue = this.getOptionValue(option);
         if (value !== oldValue) {
             if (value == null) {
@@ -295,7 +297,7 @@ export abstract class Converter {
             if (onChange) {
                 onChange(this);
             }
-            this.onChange.emit(this);
+            this.emitOnChanged(this);
         }
     }
 }

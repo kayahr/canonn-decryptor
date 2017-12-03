@@ -18,7 +18,7 @@ function reverse(s: string): string {
 /**
  * Reverse converter.
  */
-@converter("reverse", "Reverse", "Reverse", "Reverses the text.")
+@converter<Reverse>("reverse", "Reverse", "Reverse", "Reverses the text.")
 export class Reverse extends Converter {
     /** @inheritDoc */
     public convert(input: string): string {

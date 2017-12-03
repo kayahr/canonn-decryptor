@@ -1,4 +1,5 @@
 import { Rot13 } from "../../../main/decryptor/converters/Rot13";
+import { Converter } from "../../../main/decryptor/converters/Converter";
 
 describe("Rot13", () => {
     describe("convert", () => {
@@ -39,7 +40,7 @@ describe("Rot13", () => {
 
     describe("fromJSON", () => {
         it("deserializes a converter", () => {
-            const converter = <Rot13>Rot13.fromJSON({ "type": "rot13" });
+            const converter = Converter.fromJSON<Rot13>({ "type": "rot13" });
             expect(converter).toEqual(jasmine.any(Rot13));
         });
     });

@@ -12,6 +12,7 @@ import { DecryptorState } from "./DecryptorState";
 import { InputComponent } from "./InputComponent";
 import { OutputComponent } from "./OutputComponent";
 import { StringOptionComponent } from "./StringOptionComponent";
+import { SelectOptionComponent } from "./SelectOptionComponent";
 import { NumberOptionComponent } from "./NumberOptionComponent";
 import { SelectConverterDialog } from "./SelectConverterDialog";
 import { ProjectModule } from "../project/ProjectModule";
@@ -39,6 +40,7 @@ const routes: Routes = [
         InputComponent,
         OutputComponent,
         StringOptionComponent,
+        SelectOptionComponent,
         NumberOptionComponent,
         BooleanOptionComponent,
         SelectConverterDialog,
@@ -52,6 +54,8 @@ const routes: Routes = [
 export class DecryptorModule {}
 
 import "./converters/Atbash";
+import "./converters/Base64Decoder";
+import "./converters/Base64Encoder";
 import "./converters/CaesarDecoder";
 import "./converters/CaesarEncoder";
 import "./converters/KeywordDecoder";
@@ -59,6 +63,8 @@ import "./converters/KeywordEncoder";
 import "./converters/MorseDecoder";
 import "./converters/MorseEncoder";
 import "./converters/NumberDecoder";
+import "./converters/OneTimePadDecoder";
+import "./converters/OneTimePadEncoder";
 import "./converters/Reverse";
 import "./converters/RomanDecoder";
 import "./converters/RomanEncoder";

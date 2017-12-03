@@ -78,14 +78,14 @@ const groupReplace = new RegExp("(" + range + "+)", "gi");
 /**
  * Morse encoder.
  */
-@converter("morse-encoder", "morse", "Morse Encoder", "Encodes ASCII characters to morse code.")
+@converter<MorseEncoder>("morse-encoder", "morse", "Morse Encoder", "Encodes ASCII characters to morse code.")
 export class MorseEncoder extends Converter {
     /** The character to be used for morse dot. */
-    @stringOption("dot", "Dot", { defaultValue: ".", allowEmpty: false, maxLength: 1 })
+    @stringOption<MorseEncoder>("dot", "Dot", { defaultValue: ".", allowEmpty: false, maxLength: 1 })
     private dot: string;
 
     /** The character to be used for morse dash. */
-    @stringOption("dash", "Dash", { defaultValue: "-", allowEmpty: false, maxLength: 1 })
+    @stringOption<MorseEncoder>("dash", "Dash", { defaultValue: "-", allowEmpty: false, maxLength: 1 })
     private dash: string;
 
     /**

@@ -9,7 +9,7 @@ import { CaesarCipher } from "./CaesarCipher";
 /**
  * Converter for caesar encoding.
  */
-@converter("caesar-encoder", "caesar", "Caesar Encoder", "Encodes text with simple alphabet rotation.")
+@converter<CaesarEncoder>("caesar-encoder", "caesar", "Caesar Encoder", "Encodes text with simple alphabet rotation.")
 export class CaesarEncoder extends CaesarCipher {
     protected readonly direction = 1;
 }
