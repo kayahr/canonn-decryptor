@@ -156,12 +156,14 @@ export interface ConverterJSON {
  * Abstract base class for converters.
  */
 export abstract class Converter {
+    private emitOnChanged = Signal.createEmitter<this>();
+
     /**
      * Emitted when converter has been changed so output must be updated.
      *
      * @event
      */
-    public readonly onChange = new Signal<this>();
+    public readonly onChanged: Signal<this> = this.emitOnChanged.signal;
 
     /** The current option values of this converter. */
     private readonly optionValues: WeakMap<ConverterOption<any, this>, any> = new WeakMap();
@@ -295,7 +297,7 @@ export abstract class Converter {
             if (onChange) {
                 onChange(this);
             }
-            this.onChange.emit(this);
+            this.emitOnChanged(this);
         }
     }
 }

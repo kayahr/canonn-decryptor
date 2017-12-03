@@ -14,7 +14,7 @@ export abstract class Dialog<T> {
      *
      * @event
      */
-    public onClosed = new EventEmitter<T | null>();
+    public readonly onClosed = new EventEmitter<T | null>();
 
     /**
      * Closes the dialog with the given result.

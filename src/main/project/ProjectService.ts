@@ -26,12 +26,14 @@ function itemKey<T extends Project>(type: ProjectStatic<T>): string {
  */
 @Injectable()
 export class ProjectService {
+    private emitOnDeleted = Signal.createEmitter<string>();
+
     /**
      * Signal is triggered when a project has been deleted.
      *
      * @event
      */
-    public onDeleted = new Signal<string>();
+    public readonly onDeleted = this.emitOnDeleted.signal;
 
     /**
      * Loads all projects and returns them.
@@ -101,7 +103,7 @@ export class ProjectService {
     public deleteProject<T extends Project>(type: ProjectStatic<T>, name: string): void {
         const projects = this.loadProjects(type);
         this.saveProjects(type, projects.filter(project => project.getName() !== name));
-        this.onDeleted.emit(name);
+        this.emitOnDeleted(name);
     }
 
     /**
