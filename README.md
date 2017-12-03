@@ -69,6 +69,7 @@ Links
 [One-time pad]: https://en.wikipedia.org/wiki/One-time_pad
 [Roman numerals]: https://en.wikipedia.org/wiki/Roman_numerals
 [Vigenère cipher]: https://en.wikipedia.org/wiki/Vigenère_cipher
+[Base64]: https://en.wikipedia.org/wiki/Base64
 [Node.js]: https://nodejs.org/
 [SystemJS]: https://github.com/systemjs/systemjs
 [Visual Studio Code]: https://code.visualstudio.com/
