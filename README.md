@@ -26,17 +26,13 @@ Obviously [Node.js] is required for this.
 Development
 -----------
 
-It is recommended to edit the project with [Visual Studio Code].
-
-Run `npm start` to serve the project on localhost.
+Run `npm start` to start a development web server on localhost and open the provided URL in your browser.
 
 
 Testing
 -------
 
 Run `npm test` to check the TypeScript and CSS files and to run the unit tests.
-
-Within Visual Studio Code you can press `Ctrl-Shift-T` to run the unit tests.
 
 
 Deployment
