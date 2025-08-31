@@ -26,15 +26,9 @@ Obviously [Node.js] is required for this.
 Development
 -----------
 
-It is recommended to edit the project with [Visual Studio Code]. After running `npm install` once you can open
-the project root in the IDE and then press `Ctrl-Shift-B` to compile the project and enable compile-on-save. From then
-on TypeScript file changes are automatically compiled to JavaScript.
+It is recommended to edit the project with [Visual Studio Code].
 
-If you already have a local web server which can serve the project files then simply open the `index.html` file
-in your browser. This index file is meant to be used during development. It loads all JavaScript files through
-[SystemJS] so no packaging is needed.
-
-If you don't have a local web server then run `npm start` to serve the project on `http://localhost:8080/`
+Run `npm start` to serve the project on localhost.
 
 
 Testing
