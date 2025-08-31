@@ -8,7 +8,7 @@ permissions:
   pages: write
   id-token: write
 jobs:
-  ci:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -24,7 +24,6 @@ jobs:
       - name: Package project
         run: npm run package
       - name: Deploy project
-        if: github.ref == 'refs/heads/main'
         uses: kayahr/deploy-github-pages-action@d17ae8bb6c807ba4612792ceefa558be2e061e4c
         with:
           path: dist
