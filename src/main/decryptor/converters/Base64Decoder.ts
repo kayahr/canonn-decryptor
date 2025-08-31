@@ -3,10 +3,12 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter, converter } from "./Converter";
-import * as base64 from "base64-js";
-import { selectOption } from "./options/SelectOption";
-import { fromByteArray } from "../../utils/string";
+import base64 from "base64-js";
+
+import { getErrorMessage } from "../../utils/error.js";
+import { fromByteArray } from "../../utils/string.js";
+import { Converter, converter } from "./Converter.js";
+import { selectOption } from "./options/SelectOption.js";
 
 export enum Base64OutputType {
     TXT = "txt",
@@ -17,7 +19,7 @@ export enum Base64OutputType {
 
 function toBin(byte: number): string {
     const s = "00000000" + byte.toString(2);
-    return s.substr(s.length - 8);
+    return s.substring(s.length - 8);
 }
 
 function toDec(byte: number): string {
@@ -40,14 +42,14 @@ export class Base64Decoder extends Converter {
         { value: Base64OutputType.HEX, label: "Bytes (Hex)" },
         { value: Base64OutputType.BIN, label: "Bytes (Binary)" }
     ], { defaultValue: Base64OutputType.TXT })
-    protected outputType: Base64OutputType;
+    protected outputType: Base64OutputType = Base64OutputType.TXT;
 
     /**
      * @param output   Optional initial output type. Defaults to "text".
      */
     public constructor(output?: Base64OutputType) {
         super();
-        if (output) {
+        if (output != null) {
             this.outputType = output;
         }
     }
@@ -57,7 +59,7 @@ export class Base64Decoder extends Converter {
      *
      * @param outputType  The output type to set.
      */
-    public setOutputType(outputType: Base64OutputType) {
+    public setOutputType(outputType: Base64OutputType): void {
         this.outputType = outputType;
     }
 
@@ -76,7 +78,7 @@ export class Base64Decoder extends Converter {
         try {
             decoded = Array.from(base64.toByteArray(input.replace(/\s+/g, "")));
         } catch (e) {
-            return "DECODING ERROR: " + e.message;
+            return "DECODING ERROR: " + getErrorMessage(e);
         }
 
         switch (this.outputType) {
@@ -89,7 +91,7 @@ export class Base64Decoder extends Converter {
             case Base64OutputType.HEX:
                 return decoded.map(toHex).join(" ");
 
-            default:
+            case Base64OutputType.TXT:
                 return fromByteArray(decoded);
         }
     }

@@ -3,11 +3,12 @@
  * See LICENSE.md for licensing information.
  */
 
-import * as lz from "lz-string";
 import { Injectable } from "@angular/core";
-import { IllegalArgumentError } from "../utils/error";
-import { Project, ProjectJSON, ProjectStatic } from "./Project";
-import { Signal } from "../utils/Signal";
+import lz from "lz-string";
+
+import { IllegalArgumentError } from "../utils/error.js";
+import { Signal } from "../utils/Signal.js";
+import { Project, type ProjectJSON, type ProjectStatic } from "./Project.js";
 
 /**
  * Forgot to rename the key after renaming the project. Existing projects under this key are migrated to the new
@@ -24,9 +25,9 @@ function itemKey<T extends Project>(type: ProjectStatic<T>): string {
 /**
  * Service for loading, saving, deleting, importing and exporting projects.
  */
-@Injectable()
+@Injectable({ providedIn: "root" })
 export class ProjectService {
-    private emitOnDeleted = Signal.createEmitter<string>();
+    private readonly emitOnDeleted = Signal.createEmitter<string>();
 
     /**
      * Signal is triggered when a project has been deleted.
@@ -44,8 +45,8 @@ export class ProjectService {
         const key = itemKey(type);
         const item = localStorage.getItem(key);
         let projects: T[];
-        if (item) {
-            const json: ProjectJSON[] = JSON.parse(item);
+        if (item != null) {
+            const json = JSON.parse(item) as ProjectJSON[];
             projects = json.map(type.fromJSON);
         } else {
             projects = [];
@@ -55,8 +56,8 @@ export class ProjectService {
         // code someday...
         const deprecatedKey = deprecatedItemKey(type);
         const deprecatedItem = localStorage.getItem(deprecatedKey);
-        if (deprecatedItem) {
-            const json: ProjectJSON[] = JSON.parse(deprecatedItem);
+        if (deprecatedItem != null) {
+            const json = JSON.parse(deprecatedItem) as ProjectJSON[];
             const deprecatedProjects = json.map(type.fromJSON);
             for (const project of deprecatedProjects) {
                 projects.push(project);
@@ -111,7 +112,7 @@ export class ProjectService {
      *
      * @param project  The project to save.
      */
-    public async save<T extends Project>(type: ProjectStatic<T>, project: T): Promise<void> {
+    public save<T extends Project>(type: ProjectStatic<T>, project: T): void {
         const projects = this.loadProjects(type).filter(existing => existing.getName() !== project.getName());
         projects.push(project);
         this.saveProjects(type, projects);
@@ -134,8 +135,8 @@ export class ProjectService {
      * @param type  The type of project to import.
      * @return The imported project or null if none.
      */
-    public async import<T extends Project>(type: ProjectStatic<T>, data: string): Promise<T> {
-        const json = JSON.parse(lz.decompressFromBase64(data));
+    public import<T extends Project>(type: ProjectStatic<T>, data: string): T {
+        const json = JSON.parse(lz.decompressFromBase64(data)) as unknown;
         if (!type.isProjectJSON(json)) {
             throw new IllegalArgumentError("Import data is not a valid decryptor project");
         }

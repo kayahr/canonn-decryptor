@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter, converter } from "./Converter";
+import { Converter, converter } from "./Converter.js";
 
 /** Mapping table from roman numbers to numeric values. */
 const romanNumerals: { [roman: string]: number } = {
@@ -11,8 +11,10 @@ const romanNumerals: { [roman: string]: number } = {
 };
 
 const range = "(?:M{0,3})(?:CM|CD|D?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3})";
-const romanRegExp = new RegExp(`(${range})`, "ig");
-const groupRegExp = new RegExp(`(^|\\s+)(${range}(?:\\s+${range})*)($|\\s+)`, "ig");
+// eslint-disable-next-line regexp/no-unused-capturing-group, regexp/no-useless-non-capturing-group
+const romanRegExp = new RegExp(`(${range})`, "gi");
+// eslint-disable-next-line regexp/no-misleading-capturing-group, regexp/no-useless-non-capturing-group, regexp/optimal-quantifier-concatenation
+const groupRegExp = new RegExp(`(^|\\s+)(${range}(?:\\s+${range})*)($|\\s+)`, "gi");
 
 /**
  * Decodes a roman number into a numeric value.
@@ -21,8 +23,9 @@ const groupRegExp = new RegExp(`(^|\\s+)(${range}(?:\\s+${range})*)($|\\s+)`, "i
  * @return The numeric value.
  */
 function decodeRoman(roman: string): number {
+    // eslint-disable-next-line regexp/prefer-character-class
     const result = roman.match(/M|CM|D|CD|C|XC|L|XL|X|IX|V|IV|I/gi);
-    return result ? result.reduce((result, match) => result + romanNumerals[match.toUpperCase()], 0) : 0;
+    return result != null ? result.reduce((result, match) => result + romanNumerals[match.toUpperCase()], 0) : 0;
 }
 
 /**

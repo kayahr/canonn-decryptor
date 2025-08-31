@@ -3,29 +3,25 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Injectable, ViewContainerRef, ComponentFactoryResolver, Renderer } from "@angular/core";
-import { ToastComponent } from "./ToastComponent";
+import { Injectable, Renderer2, ViewContainerRef } from "@angular/core";
+
+import { IllegalStateError } from "../utils/error.js";
+import { ToastComponent } from "./ToastComponent.js";
 
 /**
  * The toast service used to spawn new toasts.
  */
-@Injectable()
+@Injectable({ providedIn: "root" })
 export class ToastService {
-    private componentFactoryResolver: ComponentFactoryResolver;
-    private viewContainer: ViewContainerRef;
-
-    private renderer: Renderer;
-
-    public constructor(componentFactoryResolver: ComponentFactoryResolver) {
-        this.componentFactoryResolver = componentFactoryResolver;
-    }
+    private viewContainer: ViewContainerRef | null = null;
+    private renderer: Renderer2 | null = null;
 
     /**
      * Registers a toast outlet on the service so the service knows where to place new toasts. Is called
      * internally by [[ToastOutletComponent]]. All you have to do is use the toast outlet component somewhere in your
      * main HTML file.
      */
-    public registerOutlet(viewContainer: ViewContainerRef, renderer: Renderer) {
+    public registerOutlet(viewContainer: ViewContainerRef, renderer: Renderer2): void {
         this.viewContainer = viewContainer;
         this.renderer = renderer;
     }
@@ -39,15 +35,18 @@ export class ToastService {
      */
     public showToast(text: string, duration: number = Math.max(1000, text.split(/\s+/).length * 350)): void {
         const viewContainer = this.viewContainer;
-        const toastComponentFactory = this.componentFactoryResolver.resolveComponentFactory(ToastComponent);
-        const toastComponentRef = viewContainer.createComponent(toastComponentFactory);
+        const renderer = this.renderer;
+        if (viewContainer == null || renderer == null) {
+            throw new IllegalStateError("Toast service outlet not registered");
+        }
+        const toastComponentRef = viewContainer.createComponent(ToastComponent);
         const toast = toastComponentRef.instance;
         toast.text = text;
-        const element = toastComponentRef.location.nativeElement;
-        setTimeout(() => this.renderer.setElementClass(element, "open", true), 0);
+        const element = toastComponentRef.location.nativeElement as HTMLElement;
+        setTimeout(() => renderer.addClass(element, "open"), 0);
         setTimeout(() => {
-            this.renderer.setElementClass(element, "open", false);
+            renderer.removeClass(element, "open");
             setTimeout(() => toastComponentRef.destroy(), 1000);
-        }, duration ? duration : text.length );
+        }, duration > 0 ? duration : text.length);
     }
 }

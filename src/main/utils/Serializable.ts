@@ -38,8 +38,8 @@ export interface SerializableStatic<T> {
  * @param object  The object to check.
  * @return True if object is serializable, false if not.
  */
-export function isSerializable(object: any): object is Serializable<Object> {
-    return typeof(object.toJSON) === "function";
+export function isSerializable(object: unknown): object is Serializable<Object> {
+    return object instanceof Object && typeof (object as Serializable<Object>).toJSON === "function";
 }
 
 /**
@@ -49,5 +49,5 @@ export function isSerializable(object: any): object is Serializable<Object> {
  * @return True if class is deserializable, false if not.
  */
 export function isSerializableStatic<T>(cls: new (...args: any[]) => T): cls is SerializableStatic<T> {
-    return typeof((<any>cls).fromJSON) === "function";
+    return cls instanceof Function && typeof (cls as SerializableStatic<T>).fromJSON === "function";
 }

@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter, converter } from "./Converter";
+import { Converter, converter } from "./Converter.js";
 
 /**
  * Reverses a single character.
@@ -23,6 +23,6 @@ function reverse(char: string): string {
 export class Atbash extends Converter {
     /** @inheritDoc */
     public convert(input: string): string {
-        return input.replace(/[a-zA-Z]/g, reverse);
+        return input.replace(/[a-z]/gi, reverse);
     }
 }

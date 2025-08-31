@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { isEquatable } from "./Equatable";
+import { isEquatable } from "./Equatable.js";
 
 /**
  * Internal implementation of equals which can recursively dive deep into arrays and objects to check for equality.
@@ -13,7 +13,7 @@ import { isEquatable } from "./Equatable";
  * @param seen  Array of already checked objects.
  * @return True if the arguments are equal to each other and false otherwise.
  */
-function deepEquals(obj1: Object | null | undefined, obj2: Object | null | undefined, seen: Object[] = []): boolean {
+function deepEquals(obj1: object | null | undefined, obj2: object | null | undefined, seen: object[] = []): boolean {
     // Check if objects are exactly the same instance or same primitive value
     if (obj1 === obj2) {
         return true;
@@ -48,7 +48,7 @@ function deepEquals(obj1: Object | null | undefined, obj2: Object | null | undef
                 return false;
             }
             for (let i = 0, max = obj1.length; i !== max; ++i) {
-                if (!deepEquals(obj1[i], obj2[i], seen)) {
+                if (!deepEquals(obj1[i] as object, obj2[i] as object, seen)) {
                     return false;
                 }
             }
@@ -68,14 +68,14 @@ function deepEquals(obj1: Object | null | undefined, obj2: Object | null | undef
 
         // Build array with all keys from obj1 and obj2
         const keys = Object.keys(obj1);
-        for (let key of Object.keys(obj2)) {
+        for (const key of Object.keys(obj2)) {
             if (keys.indexOf(key) < 0) {
                 keys.push(key);
             }
         }
 
         // Check if all properties of the objects are equal
-        return keys.every(key => deepEquals((<any>obj1)[key], (<any>obj2)[key], seen));
+        return keys.every(key => deepEquals((obj1 as Record<string, object>)[key], (obj2 as Record<string, object>)[key], seen));
     }
 
     // Not equal

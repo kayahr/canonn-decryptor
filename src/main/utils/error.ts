@@ -4,54 +4,33 @@
  */
 
 /**
- * Decorator which can be used to on error classes to automatically repair the broken prototype chain. Since newer
- * TypeScript versions extending standard JavaScript types like Error yields in objects with a broken prototype chain
- * which doesn't allow instanceof checks. This decorator fixes it and as an additional side effect it gives the
- * error class a name which survives source code obfuscation.
- *
- * @param className  The name of the error class used in stack traces instead of the potentially obfuscated real
- *                   class name.
- */
-export function error(className: string):
-        <E extends Error, T extends (new (...args: any[]) => E)>(constructor: T) => T {
-    return function<E extends Error, T extends (new (...args: any[]) => E)>(constructor: T): T {
-        const error: T = <any>function(this: E, ...args: any[]): E {
-            const instance = constructor.apply(this, args);
-            Object.setPrototypeOf(instance, error.prototype);
-            instance.name = className;
-            return instance;
-        };
-        error.prototype = constructor.prototype;
-        return error;
-    };
-}
-
-/**
- * Base exception class implementing the standard error constructor with an optional exception message and an
- * optional cause.
- */
-export abstract class Exception extends Error {
-    /** The exception cause (if any). */
-    public cause: any;
-
-    /**
-     * @param message  Optional exception message.
-     * @param cause    Optional original error which caused this exception.
-     */
-    public constructor(message?: string, cause: any = null) {
-        super(message);
-        this.cause = cause;
-    }
-}
-
-/**
  * Thrown when an illegal argument has been specified.
  */
-@error("IllegalArgumentError")
-export class IllegalArgumentError extends Exception {}
+export class IllegalArgumentError extends Error {}
 
 /**
  * Thrown when an operation is not allowed because of an illegal state.
  */
-@error("IllegalStateError")
-export class IllegalStateError extends Exception {}
+export class IllegalStateError extends Error {}
+
+/**
+ * Converts the given error object into an instance of the Error class. If it is already is an instance then it is
+ * is converted into a string and a new Error object is created using this string as error message.
+ *
+ * @param error - The error if unknown type.
+ * @returns An Error instance.
+ */
+export function toError(error: unknown): Error {
+    return error instanceof Error ? error : new Error(String(error));
+}
+
+/**
+ * Returns the error message for the given error. When error is of type Error then the message property is read.
+ * Otherwise the error is simply converted to a string.
+ *
+ * @param error - The error.
+ * @returns The error message.
+ */
+export function getErrorMessage(error: unknown): string {
+    return error instanceof Error ? error.message : String(error);
+}

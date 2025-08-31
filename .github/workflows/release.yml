@@ -1,0 +1,30 @@
+name: release
+on:
+  push:
+    tags:
+      - "v*.*.*"
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+      - name: Build project
+        run: npm ci
+      - name: Run tests
+        run: npm test
+      - name: Package project
+        run: npm run package
+      - name: Deploy project
+        if: github.ref == 'refs/heads/main'
+        uses: kayahr/deploy-github-pages-action@d17ae8bb6c807ba4612792ceefa558be2e061e4c
+        with:
+          path: dist

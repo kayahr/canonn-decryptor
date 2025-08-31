@@ -25,8 +25,8 @@ export interface VoidSignalEmitter extends SignalEmitter<void> {
  * @param <T>  The signal payload type.
  */
 class Slot<T> {
-    private func: (data: T) => void;
-    private context: Object | null;
+    private readonly func: (data: T) => void;
+    private readonly context: Object | null;
 
     public constructor(func: (data: T) => void, context: Object | null = null) {
         this.func = func;
@@ -79,13 +79,13 @@ export interface Observable<T> {
  */
 export class Signal<T = void, R = any> implements Observable<T> {
     /** The list of registered signal listeners (slots). Entries may be null if deleted. */
-    private slots: Array<Slot<T> | null> = [];
+    private readonly slots: Array<Slot<T> | null> = [];
 
     /** Initialization callback called when first slot is connected to signal. */
-    private onInit: (emit: (arg: T) => void) => R;
+    private readonly onInit: (emit: (arg: T) => void) => R;
 
     /** Optional de-initialization callback called when last slot has been disconnected from signal. */
-    private onDone: ((initResult: R) => void) | null;
+    private readonly onDone: ((initResult: R) => void) | null;
 
     /** Optional result returned from init callback and passed to done callback. */
     private initResult: R | null = null;
@@ -131,7 +131,7 @@ export class Signal<T = void, R = any> implements Observable<T> {
             emit = null;
         });
         return Object.assign((arg: T) => {
-            if (emit) {
+            if (emit != null) {
                 emit(arg);
             }
         }, { signal });
@@ -163,14 +163,14 @@ export class Signal<T = void, R = any> implements Observable<T> {
         const slots = this.slots;
         for (let i = slots.length - 1; i >= 0; --i) {
             const slot = slots[i];
-            if (slot && slot.equals(callback, context)) {
+            if (slot != null && slot.equals(callback, context)) {
                 slots[i] = null;
                 break;
             }
         }
         this.slotCount--;
-        if (this.slotCount === 0 && this.onDone) {
-            this.onDone(<R>this.initResult);
+        if (this.slotCount === 0 && this.onDone != null) {
+            this.onDone(this.initResult as R);
         }
     }
 
@@ -184,7 +184,7 @@ export class Signal<T = void, R = any> implements Observable<T> {
 
         for (let i = 0, max = slots.length; i < max; ++i) {
             const slot = slots[i];
-            if (slot) {
+            if (slot != null) {
                 slot.call(value);
             } else {
                 slots.splice(i, 1);
@@ -227,18 +227,18 @@ export class Signal<T = void, R = any> implements Observable<T> {
      * @return The debounced signal.
      */
     public debounce(throttle: number): Signal<T> {
-        let timer: any = null;
-        return new Signal<T>(emit => {
+        let timer: number;
+        return new Signal<T, Subscription>(emit => {
             const subscription = this.subscribe(arg => {
                 if (timer != null) {
                     clearTimeout(timer);
                 }
-                timer = setTimeout(() => emit(arg), throttle);
+                timer = window.setTimeout(() => emit(arg), throttle);
             });
             return subscription;
         }, subscription => {
             if (timer != null) {
-                clearTimeout(timer);
+                window.clearTimeout(timer);
             }
             subscription.unsubscribe();
         });

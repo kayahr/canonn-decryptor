@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Renderer, ElementRef, Directive } from "@angular/core";
+import { Directive, ElementRef, Renderer2 } from "@angular/core";
 
 let inputLabelLinkCounter = 0;
 
@@ -22,14 +22,14 @@ let inputLabelLinkCounter = 0;
     inputs: [ "label" ]
 })
 export class LabelDirective {
-    private readonly renderer: Renderer;
+    private readonly renderer: Renderer2;
     private readonly inputElement: HTMLInputElement;
     private labelElement: HTMLLabelElement | null = null;
 
-    public constructor(renderer: Renderer, elementRef: ElementRef) {
+    public constructor(renderer: Renderer2, elementRef: ElementRef<HTMLInputElement>) {
         this.renderer = renderer;
         this.inputElement = elementRef.nativeElement;
-        if (!this.inputElement.id) {
+        if (this.inputElement.id === "" || this.inputElement.id === null) {
             this.inputElement.id = "input-label-link-" + inputLabelLinkCounter++;
         }
     }
@@ -37,13 +37,13 @@ export class LabelDirective {
     public set label(label: string) {
         let reference: HTMLElement = this.inputElement;
         let parentElement = reference.parentElement;
-        if (parentElement && parentElement.tagName === "LABEL") {
+        if (parentElement != null && parentElement.tagName === "LABEL") {
             reference = parentElement;
             parentElement = reference.parentElement;
         }
-        if (parentElement) {
-            if (!this.labelElement) {
-                this.labelElement = <HTMLLabelElement>this.renderer.createElement(parentElement, "label");
+        if (parentElement != null) {
+            if (this.labelElement == null) {
+                this.labelElement = this.renderer.createElement("label") as HTMLLabelElement;
                 this.labelElement.htmlFor = this.inputElement.id;
                 parentElement.insertBefore(this.labelElement, reference);
             }

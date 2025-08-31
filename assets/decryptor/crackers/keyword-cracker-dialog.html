@@ -7,7 +7,7 @@
   </p>
   <div class="controls">
     <span class="progress" *ngIf="running">
-      Run {{ run }} ({{ progress }}%)
+      Run {{ run() }} ({{ progress() }}%)
     </span>
     <span *ngIf="!running">
       Cracking stopped
@@ -19,7 +19,7 @@
     </nav>
   </div>
   <div class="results">
-    <div class="result" *ngFor="let result of results"  (click)="close(result.getKeyword())">
+    <div class="result" *ngFor="let result of results()"  (click)="close(result.getKeyword())">
       <h1>{{ result.getKeyword() }} <span class="score">({{ result.getScore().toFixed(2) }})</span></h1>
       <p>
         {{ result.getMessage() }}

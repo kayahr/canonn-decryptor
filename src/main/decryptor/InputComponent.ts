@@ -3,33 +3,42 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, Input } from "@angular/core";
-import { DecryptorInput } from "./project/DecryptorInput";
-import { DecryptorOutput } from "./project/DecryptorOutput";
-import { DecryptorState } from "./DecryptorState";
-import { DialogService } from "../ui/DialogService";
-import { SelectConverterDialog } from "./SelectConverterDialog";
-import { createConverter } from "./converters/Converter";
+import { CommonModule } from "@angular/common";
+import { Component, inject, Input } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+
+import template from "../../../assets/decryptor/input.html?raw";
+import { ButtonDirective } from "../ui/ButtonDirective.js";
+import { DialogService } from "../ui/DialogService.js";
+import { FocusDirective } from "../ui/FocusDirective.js";
+import { createConverter } from "./converters/Converter.js";
+import { DecryptorState } from "./DecryptorState.js";
+import { OutputComponent } from "./OutputComponent.js";
+import { DecryptorInput } from "./project/DecryptorInput.js";
+import { DecryptorOutput } from "./project/DecryptorOutput.js";
+import { SelectConverterDialog } from "./SelectConverterDialog.js";
 
 /**
  * Decryptor input panel.
  */
 @Component({
+    imports: [
+        CommonModule,
+        OutputComponent,
+        FormsModule,
+        ButtonDirective,
+        FocusDirective
+    ],
     selector: "decryptor-input",
-    templateUrl: "assets/decryptor/input.html"
+    template
 })
 export class InputComponent {
-    private state: DecryptorState;
-    private dialogService: DialogService;
+    private readonly state = inject(DecryptorState);
+    private readonly dialogService = inject(DialogService);
 
     /** The decryptor input.  */
     @Input()
-    public input: DecryptorInput;
-
-    public constructor(state: DecryptorState, dialogService: DialogService) {
-        this.state = state;
-        this.dialogService = dialogService;
-    }
+    public input: DecryptorInput | null = null;
 
     /**
      * Returns the input data.
@@ -37,7 +46,7 @@ export class InputComponent {
      * @return The input data.
      */
     public get value(): string {
-        return this.input.getInput();
+        return this.input?.getInput() ?? "";
     }
 
     /**
@@ -46,7 +55,7 @@ export class InputComponent {
      * @param value  The input data to set.
      */
     public set value(value: string) {
-        this.input.setInput(value);
+        this.input?.setInput(value);
     }
 
     /**
@@ -55,7 +64,7 @@ export class InputComponent {
      * @return The connected outputs.
      */
     public get outputs(): DecryptorOutput[] {
-        return this.input.getOutputs();
+        return this.input?.getOutputs() ?? [];
     }
 
     /**
@@ -71,7 +80,7 @@ export class InputComponent {
      * Removes this input after the user has confirmed it.
      */
     public async remove(): Promise<void> {
-        if (await this.dialogService.confirm("Are you sure you want to delete this input?")) {
+        if (this.input != null && await this.dialogService.confirm("Are you sure you want to delete this input?")) {
             this.state.getProject().removeInput(this.input);
         }
     }
@@ -81,8 +90,8 @@ export class InputComponent {
      */
     public async addOutput(): Promise<void> {
         const converterId = await this.dialogService.openDialog(SelectConverterDialog);
-        if (converterId) {
-            this.input.addOutput(new DecryptorOutput(createConverter(converterId)));
+        if (converterId != null) {
+            this.input?.addOutput(new DecryptorOutput(createConverter(converterId)));
         }
     }
 }

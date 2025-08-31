@@ -33,8 +33,8 @@ export interface Equatable {
  * @param object  The object to check.
  * @return True if object is equatable, false if not.
  */
-export function isEquatable(object: any): object is Equatable {
-    return typeof(object.equals) === "function";
+export function isEquatable(object: unknown): object is Equatable {
+    return object instanceof Object && typeof (object as Equatable).equals === "function";
 }
 
 /**
@@ -48,14 +48,14 @@ export function isEquatable(object: any): object is Equatable {
  *                  are equal or false it no.
  * @return True if objects are equal, false if not.
  */
-export function isEqual<T extends Equatable>(thisObj: T, otherObj: any, comparer: (other: T) => boolean): boolean {
+export function isEqual<T extends Equatable>(thisObj: T, otherObj: unknown, comparer: (other: T) => boolean): boolean {
     if (otherObj === thisObj) {
         return true;
     }
     if (otherObj == null) {
         return false;
     }
-    const other = <T>otherObj;
+    const other = otherObj as T;
     if (other.equals !== thisObj.equals) {
         return false;
     }

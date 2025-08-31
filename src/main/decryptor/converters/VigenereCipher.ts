@@ -3,22 +3,22 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter } from "./Converter";
-import { stringOption } from "./options/StringOption";
+import { Converter } from "./Converter.js";
+import { stringOption } from "./options/StringOption.js";
 
 /**
- * Abstract base class for the Vigènere encoder and decoder.
+ * Abstract base class for the Vigenère encoder and decoder.
  */
 export abstract class VigenereCipher extends Converter {
     /** The keyword to encode/decode with. */
     @stringOption<VigenereCipher>("keyword", "Keyword", { onChange: cipher => cipher.createKeys() })
-    protected keyword: string;
+    protected keyword: string = "";
 
     /** Key characters created from the configured keyword. */
     private keys: number[] = [];
 
     /**
-     * Creates a new Vigènere cipher with the given keyword.
+     * Creates a new Vigenère cipher with the given keyword.
      *
      * @param keyword  Optional initial keyword. Defaults to no keyword when not specified.
      */
@@ -59,9 +59,9 @@ export abstract class VigenereCipher extends Converter {
     public convert(input: string): string {
         const keys = this.keys;
         let index = 0;
-        return input.replace(/[a-z]/ig, char => {
+        return input.replace(/[a-z]/gi, char => {
             const base = char < "a" ? 65 : 97;
-            const key = keys[index] || 0;
+            const key = keys[index] ?? 0;
             index = (index + 1) % keys.length;
             return String.fromCharCode(this.convertChar(char.charCodeAt(0) - base, key) + base);
         });

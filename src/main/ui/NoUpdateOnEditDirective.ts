@@ -3,9 +3,11 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Renderer, EventEmitter, ExistingProvider, ElementRef, forwardRef, Directive } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
-import { StringValue } from "./StringValue";
+import { Directive, ElementRef, EventEmitter, type ExistingProvider, forwardRef, Renderer2 } from "@angular/core";
+import { type ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
+import type { Subscription } from "rxjs";
+
+import { type StringValue } from "./StringValue.js";
 
 const NO_UPDATE_ON_EDIT_ACCESSOR: ExistingProvider = {
     provide: NG_VALUE_ACCESSOR,
@@ -42,12 +44,12 @@ const NO_UPDATE_ON_EDIT_ACCESSOR: ExistingProvider = {
 export class NoUpdateOnEditDirective implements ControlValueAccessor {
     private readonly onTouchedCallback = new EventEmitter<void>();
     private readonly onChangeCallback = new EventEmitter<StringValue>();
-    private readonly renderer: Renderer;
+    private readonly renderer: Renderer2;
     private readonly elementRef: ElementRef;
     private value = "";
     private editing = false;
 
-    public constructor(renderer: Renderer, elementRef: ElementRef) {
+    public constructor(renderer: Renderer2, elementRef: ElementRef) {
         this.renderer = renderer;
         this.elementRef = elementRef;
     }
@@ -70,21 +72,21 @@ export class NoUpdateOnEditDirective implements ControlValueAccessor {
     }
 
     public update(): void {
-        this.renderer.setElementProperty(this.elementRef.nativeElement, "value", this.value);
+        this.renderer.setProperty(this.elementRef.nativeElement, "value", this.value);
     }
 
     public writeValue(value: string): void {
         this.value = value;
         if (!this.editing) {
-            this.renderer.setElementProperty(this.elementRef.nativeElement, "value", value);
+            this.renderer.setProperty(this.elementRef.nativeElement, "value", value);
         }
     }
 
-    public registerOnChange(fn: any) {
+    public registerOnChange(fn: unknown): Subscription {
         return this.onChangeCallback.subscribe(fn);
     }
 
-    public registerOnTouched(fn: any) {
+    public registerOnTouched(fn: unknown): Subscription {
         return this.onTouchedCallback.subscribe(fn);
     }
 }

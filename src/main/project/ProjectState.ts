@@ -3,14 +3,14 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Project } from "./Project";
-import { Signal } from "../utils/Signal";
+import { Signal } from "../utils/Signal.js";
+import { Project } from "./Project.js";
 
 /**
  * Abstract base class for an injectable state object which holds a project.
  */
 export abstract class ProjectState<T extends Project> {
-    private emitOnChanged = Signal.createEmitter();
+    private readonly emitOnChanged = Signal.createEmitter();
 
     /**
      * This signal is emitted when the project within this project state has been changed.
@@ -46,7 +46,7 @@ export abstract class ProjectState<T extends Project> {
      *
      * @param project  The new project to set.
      */
-    public setProject(project: T) {
+    public setProject(project: T): void {
         this.project.onChanged.disconnect(this.emitOnChanged, this);
         this.project = project;
         project.onChanged.connect(this.emitOnChanged, this);

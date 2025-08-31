@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ConverterOption, OptionTarget, converterOption, ConverterOptionArgs } from "./ConverterOption";
-import { Converter } from "../Converter";
+import { Converter } from "../Converter.js";
+import { ConverterOption, converterOption, type ConverterOptionArgs, type OptionTarget } from "./ConverterOption.js";
 
 /**
  * The arguments of a number option.
@@ -33,15 +33,15 @@ export function numberOption<T extends Converter>(id: string, title: string,
  * Number option.
  */
 export class NumberOption<T extends Converter = Converter> extends ConverterOption<number, T> {
-    private min: number;
-    private max: number;
-    private step: number;
+    private readonly min: number;
+    private readonly max: number;
+    private readonly step: number;
 
     public constructor(id: string, title: string, args: NumberOptionArgs<T>) {
-        super("number", id, title, args.defaultValue != null ? args.defaultValue : 0, args);
-        this.max = args.max != null ? args.max : Number.MAX_SAFE_INTEGER;
-        this.min = args.min != null ? args.min : 0;
-        this.step = args.step != null ? args.step : 1;
+        super("number", id, title, args.defaultValue ?? 0, args);
+        this.max = args.max ?? Number.MAX_SAFE_INTEGER;
+        this.min = args.min ?? 0;
+        this.step = args.step ?? 1;
     }
 
     /**
@@ -72,7 +72,7 @@ export class NumberOption<T extends Converter = Converter> extends ConverterOpti
     }
 
     /** @inheritDoc */
-    protected correctValue(value: number): number {
+    protected override correctValue(value: number): number {
         const { min, max, step } = this;
         return Math.min(max, (Math.round((Math.max(value, min) - min) / step)) * step + min);
     }

@@ -3,9 +3,9 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Serializable } from "../../utils/Serializable";
-import { DecryptorNodeJSON, DecryptorNode } from "./DecryptorNode";
-import { DecryptorOutput } from "./DecryptorOutput";
+import { type Serializable } from "../../utils/Serializable.js";
+import { DecryptorNode, type DecryptorNodeJSON } from "./DecryptorNode.js";
+import { DecryptorOutput } from "./DecryptorOutput.js";
 
 /**
  * JSON structure of a serialized decryptor input.
@@ -28,17 +28,17 @@ export class DecryptorInput extends DecryptorNode implements Serializable<Decryp
 
     public static fromJSON(json: DecryptorInputJSON): DecryptorInput {
         const node = new DecryptorInput();
-        if (json.input) {
+        if (json.input != null) {
             node.setInput(json.input);
         }
-        if (json.outputs) {
+        if (json.outputs != null) {
             node.addOutputs(json.outputs.map(output => DecryptorOutput.fromJSON(output)));
         }
         return node;
     }
 
     /** @inheritDoc */
-    public toJSON(): DecryptorInputJSON {
+    public override toJSON(): DecryptorInputJSON {
         return Object.assign(super.toJSON(), {
             input: this.input
         });
@@ -49,7 +49,7 @@ export class DecryptorInput extends DecryptorNode implements Serializable<Decryp
      *
      * @return The input data.
      */
-    public getInput() {
+    public getInput(): string {
         return this.input;
     }
 

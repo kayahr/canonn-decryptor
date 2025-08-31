@@ -3,9 +3,9 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ConverterOption, OptionTarget, converterOption, ConverterOptionArgs } from "./ConverterOption";
-import { Converter } from "../Converter";
-import { IllegalArgumentError } from "../../../utils/error";
+import { IllegalArgumentError } from "../../../utils/error.js";
+import { Converter } from "../Converter.js";
+import { ConverterOption, converterOption, type ConverterOptionArgs, type OptionTarget } from "./ConverterOption.js";
 
 /**
  * The select option arguments.
@@ -42,7 +42,7 @@ export class SelectOption<T extends Converter = Converter> extends ConverterOpti
     private readonly items: SelectItems;
 
     public constructor(id: string, title: string, items: SelectItems, args: SelectOptionArgs<T>) {
-        super("select", id, title, args.defaultValue != null ? args.defaultValue : "", args);
+        super("select", id, title, args.defaultValue ?? "", args);
         if (items.length < 1) {
             throw new IllegalArgumentError("There must be at least one item to select");
         }
@@ -54,12 +54,12 @@ export class SelectOption<T extends Converter = Converter> extends ConverterOpti
      *
      * @return The selectable items.
      */
-    public getItems(): ReadonlyArray<SelectItem> {
+    public getItems(): readonly SelectItem[] {
         return this.items;
     }
 
     /** @inheritDoc */
-    protected correctValue(value: string): string {
+    protected override correctValue(value: string): string {
         for (const item of this.items) {
             if (value === item.value) {
                 return value;

@@ -3,30 +3,43 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Input, Component } from "@angular/core";
-import { DecryptorOutput } from "./project/DecryptorOutput";
-import { DialogService } from "../ui/DialogService";
-import { SelectConverterDialog } from "./SelectConverterDialog";
-import { createConverter, Converter } from "./converters/Converter";
-import { ConverterOption } from "./converters/options/ConverterOption";
-import { KeywordCrackerDialog } from "./crackers/KeywordCrackerDialog";
-import { KeywordDecoder } from "./converters/KeywordDecoder";
+import { CommonModule } from "@angular/common";
+import { Component, inject, Input } from "@angular/core";
+
+import template from "../../../assets/decryptor/output.html?raw";
+import { ButtonDirective } from "../ui/ButtonDirective.js";
+import { DialogService } from "../ui/DialogService.js";
+import { BooleanOptionComponent } from "./BooleanOptionComponent.js";
+import { Converter, createConverter } from "./converters/Converter.js";
+import { KeywordDecoder } from "./converters/KeywordDecoder.js";
+import { ConverterOption } from "./converters/options/ConverterOption.js";
+import { KeywordCrackerDialog } from "./crackers/KeywordCrackerDialog.js";
+import { NumberOptionComponent } from "./NumberOptionComponent.js";
+import { DecryptorOutput } from "./project/DecryptorOutput.js";
+import { SelectConverterDialog } from "./SelectConverterDialog.js";
+import { SelectOptionComponent } from "./SelectOptionComponent.js";
+import { StringOptionComponent } from "./StringOptionComponent.js";
 
 /**
  * Decryptor output panel.
  */
 @Component({
     selector: "decryptor-output",
-    templateUrl: "assets/decryptor/output.html"
+    imports: [
+        CommonModule,
+        StringOptionComponent,
+        NumberOptionComponent,
+        BooleanOptionComponent,
+        SelectOptionComponent,
+        ButtonDirective
+    ],
+    template
 })
 export class OutputComponent {
     @Input()
-    protected output: DecryptorOutput;
-    private dialogService: DialogService;
+    protected output!: DecryptorOutput;
 
-    public constructor(dialogService: DialogService) {
-        this.dialogService = dialogService;
-    }
+    private readonly dialogService = inject(DialogService);
 
     /**
      * Returns the output title which is the title of the used converter.
@@ -51,7 +64,7 @@ export class OutputComponent {
      *
      * @return The converter options.
      */
-    public get options(): ReadonlyArray<ConverterOption> {
+    public get options(): readonly ConverterOption[] {
         return this.output.getConverter().getOptions();
     }
 
@@ -88,7 +101,7 @@ export class OutputComponent {
      */
     public async addOutput(): Promise<void> {
         const converterId = await this.dialogService.openDialog(SelectConverterDialog);
-        if (converterId) {
+        if (converterId != null) {
             this.output.addOutput(new DecryptorOutput(createConverter(converterId)));
         }
     }
@@ -112,7 +125,7 @@ export class OutputComponent {
             const keyword = await this.dialogService.openDialog(KeywordCrackerDialog, dialog => {
                 dialog.init(this.output.getParent().getValue());
             });
-            if (keyword) {
+            if (keyword != null) {
                 converter.setKeyword(keyword);
             }
         }

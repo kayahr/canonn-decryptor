@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ConverterOption, OptionTarget, converterOption, ConverterOptionArgs } from "./ConverterOption";
-import { Converter } from "../Converter";
+import { Converter } from "../Converter.js";
+import { ConverterOption, converterOption, type ConverterOptionArgs, type OptionTarget } from "./ConverterOption.js";
 
 /**
  * The string option arguments.
@@ -32,13 +32,13 @@ export function stringOption<T extends Converter>(id: string, title: string, arg
  * String option.
  */
 export class StringOption<T extends Converter = Converter> extends ConverterOption<string, T> {
-    private allowEmpty: boolean;
-    private maxLength: number | null;
+    private readonly allowEmpty: boolean;
+    private readonly maxLength: number | null;
 
     public constructor(id: string, title: string, args: StringOptionArgs<T>) {
-        super("string", id, title, args.defaultValue != null ? args.defaultValue : "", args);
-        this.allowEmpty = args.allowEmpty || true;
-        this.maxLength = args.maxLength || null;
+        super("string", id, title, args.defaultValue ?? "", args);
+        this.allowEmpty = (args.allowEmpty ?? false) || true;
+        this.maxLength = args.maxLength ?? null;
     }
 
     /**
@@ -60,12 +60,12 @@ export class StringOption<T extends Converter = Converter> extends ConverterOpti
     }
 
     /** @inheritDoc */
-    protected correctValue(value: string): string {
+    protected override correctValue(value: string): string {
         const { allowEmpty, maxLength, defaultValue } = this;
         if (!allowEmpty && value === "") {
-            value = defaultValue || " ";
+            value = defaultValue === "" ? " " : defaultValue;
         }
-        if (maxLength) {
+        if (maxLength != null) {
             value = value.substring(0, maxLength);
         }
         return value;

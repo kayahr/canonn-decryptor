@@ -3,31 +3,35 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component } from "@angular/core";
-import { Dialog } from "../ui/Dialog";
-import { DialogService } from "../ui/DialogService";
-import { ProjectService } from "./ProjectService";
-import { ProjectStatic, Project } from "./Project";
-import { ToastService } from "../ui/ToastService";
+import { CommonModule } from "@angular/common";
+import { Component, inject } from "@angular/core";
+
+import template from "../../../assets/project/load-project-dialog.html?raw";
+import { ButtonDirective } from "../ui/ButtonDirective.js";
+import { Dialog } from "../ui/Dialog.js";
+import { DialogComponent } from "../ui/DialogComponent.js";
+import { DialogService } from "../ui/DialogService.js";
+import { ToastService } from "../ui/ToastService.js";
+import { IllegalStateError } from "../utils/error.js";
+import { Project, type ProjectStatic } from "./Project.js";
+import { ProjectService } from "./ProjectService.js";
 
 /**
  * Dialog which displays the list of previously saved projects and let the user load or delete a project.
  */
 @Component({
-    templateUrl: "assets/project/load-project-dialog.html"
+    imports: [
+        CommonModule,
+        ButtonDirective,
+        DialogComponent
+    ],
+    template
 })
 export class LoadProjectDialog extends Dialog<string> {
-    public projectType: ProjectStatic<Project>;
-    private readonly dialogService: DialogService;
-    private readonly toastService: ToastService;
-    private readonly projectService: ProjectService;
-
-    public constructor(dialogService: DialogService, toastService: ToastService, projectService: ProjectService) {
-        super();
-        this.dialogService = dialogService;
-        this.toastService = toastService;
-        this.projectService = projectService;
-    }
+    public projectType: ProjectStatic<Project> | null = null;
+    private readonly dialogService = inject(DialogService);
+    private readonly toastService = inject(ToastService);
+    private readonly projectService = inject(ProjectService);
 
     /**
      * Returns a list of all project names.
@@ -35,6 +39,9 @@ export class LoadProjectDialog extends Dialog<string> {
      * @return All project names.
      */
     public get projectNames(): string[] {
+        if (this.projectType == null) {
+            throw new IllegalStateError("Project type not set");
+        }
         return this.projectService.loadProjects(this.projectType).map(project => project.getName());
     }
 
@@ -44,6 +51,9 @@ export class LoadProjectDialog extends Dialog<string> {
      * @param projectName  The name of the project to delete.
      */
     public async delete(projectName: string): Promise<void> {
+        if (this.projectType == null) {
+            throw new IllegalStateError("Project type not set");
+        }
         if (await this.dialogService.confirm(`Area you sure you want to delete '${projectName}'?`)) {
             this.projectService.deleteProject(this.projectType, projectName);
             this.toastService.showToast(`Project '${projectName}' has been deleted`);

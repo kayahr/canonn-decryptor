@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { isEquatable } from "./Equatable";
+import { isEquatable } from "./Equatable.js";
 
 /**
  * Checks if given array contains the given object. This also checks for equality if object implements the
@@ -13,7 +13,7 @@ import { isEquatable } from "./Equatable";
  * @param object  The object to look for.
  * @return True if object was found, false if not.
  */
-export function contains(array: any[], object: any): boolean {
+export function contains(array: any[], object: unknown): boolean {
     const checkEquality = isEquatable(object);
     for (const entry of array) {
         if (entry === object || (checkEquality && object.equals(entry))) {

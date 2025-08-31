@@ -1,5 +1,5 @@
-import * as quadgramsJSON from "../../../assets/fitness/ngrams.json";
-import { FastString } from "../utils/FastString";
+import quadgramsJSON from "../../../assets/fitness/ngrams.json" with { type: "json" };
+import { FastString } from "../utils/FastString.js";
 
 export class Quadgrams {
     private readonly scores: Map<string, number>;
@@ -15,17 +15,14 @@ export class Quadgrams {
             const score = floor - Math.abs(Math.log10(raw[ngram] / total));
             this.scores.set(ngram, score);
 
-            const ngram2 = Array.prototype.map.call(ngram, (char: string) => Math.max(0, char.charCodeAt(0) - 64));
+            const ngram2 = Array.prototype.map.call(ngram, (char: string) => Math.max(0, char.charCodeAt(0) - 64)) as number[];
 
             let char = ngram2[0];
-            let a = this.quadgrams[char];
-            if (!a) a = this.quadgrams[char] = [];
+            const a = this.quadgrams[char] ?? (this.quadgrams[char] = []);
             char = ngram2[1];
-            let b = a[char];
-            if (!b) b = a[char] = [];
+            const b = a[char] ?? (a[char] = []);
             char = ngram2[2];
-            let c = b[char];
-            if (!c) c = b[char] = [];
+            const c = b[char] ?? (b[char] = []);
             c[ngram2[3]] = score;
         }
     }
@@ -36,13 +33,13 @@ export class Quadgrams {
         for (let i = 0, max = text.length - 3; i < max; ++i) {
             let j = i;
             const a = root[text[j]];
-            if (!a) continue;
+            if (a == null) continue;
             const b = a[text[++j]];
-            if (!b) continue;
+            if (b == null) continue;
             const c = b[text[++j]];
-            if (!c) continue;
+            if (c == null) continue;
             const d = c[text[++j]];
-            if (d) score += d;
+            if (d != null) score += d;
         }
         return score;
     }

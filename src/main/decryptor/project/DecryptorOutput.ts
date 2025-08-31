@@ -3,9 +3,9 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Serializable } from "../../utils/Serializable";
-import { DecryptorNodeJSON, DecryptorNode } from "./DecryptorNode";
-import { ConverterJSON, Converter } from "../converters/Converter";
+import { type Serializable } from "../../utils/Serializable.js";
+import { Converter, type ConverterJSON } from "../converters/Converter.js";
+import { DecryptorNode, type DecryptorNodeJSON } from "./DecryptorNode.js";
 
 /**
  * JSON structure of a serialized decryptor output.
@@ -19,7 +19,7 @@ export interface DecryptorOutputJSON extends DecryptorNodeJSON {
  */
 export class DecryptorOutput extends DecryptorNode implements Serializable<DecryptorOutputJSON> {
     /** The converter used to convert the input of the parent. */
-    private converter: Converter;
+    private readonly converter: Converter;
 
     public constructor(converter: Converter) {
         super();
@@ -29,14 +29,14 @@ export class DecryptorOutput extends DecryptorNode implements Serializable<Decry
 
     public static fromJSON(json: DecryptorOutputJSON): DecryptorOutput {
         const node = new DecryptorOutput(Converter.fromJSON(json.converter));
-        if (json.outputs) {
+        if (json.outputs != null) {
             node.addOutputs(json.outputs.map(output => DecryptorOutput.fromJSON(output)));
         }
         return node;
     }
 
     /** @inheritDoc */
-    public toJSON(): DecryptorOutputJSON {
+    public override toJSON(): DecryptorOutputJSON {
         return Object.assign(super.toJSON(), {
             converter: this.converter.toJSON()
         });
@@ -55,7 +55,7 @@ export class DecryptorOutput extends DecryptorNode implements Serializable<Decry
      * Removes this output.
      */
     public remove(): void {
-        if (this.parent) {
+        if (this.parent != null) {
             this.parent.removeOutput(this);
         }
     }

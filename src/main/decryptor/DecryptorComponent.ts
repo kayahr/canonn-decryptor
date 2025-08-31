@@ -3,34 +3,71 @@
  * See LICENSE.md for licensing information.
  */
 
-import { DecryptorState } from "./DecryptorState";
-import { DecryptorProject } from "./project/DecryptorProject";
-import { DecryptorInput } from "./project/DecryptorInput";
-import { Component } from "@angular/core";
-import { ProjectComponent } from "../project/ProjectComponent";
-import { ProjectService } from "../project/ProjectService";
-import { DialogService } from "../ui/DialogService";
-import { Router, ActivatedRoute } from "@angular/router";
-import { ToastService } from "../ui/ToastService";
+import "./converters/Atbash.js";
+import "./converters/Base64Decoder.js";
+import "./converters/Base64Encoder.js";
+import "./converters/CaesarDecoder.js";
+import "./converters/CaesarEncoder.js";
+import "./converters/KeywordDecoder.js";
+import "./converters/KeywordEncoder.js";
+import "./converters/MorseDecoder.js";
+import "./converters/MorseEncoder.js";
+import "./converters/NumberDecoder.js";
+import "./converters/OneTimePadDecoder.js";
+import "./converters/OneTimePadEncoder.js";
+import "./converters/Reverse.js";
+import "./converters/RomanDecoder.js";
+import "./converters/RomanEncoder.js";
+import "./converters/Rot13.js";
+import "./converters/VigenereDecoder.js";
+import "./converters/VigenereEncoder.js";
+
+import { CommonModule } from "@angular/common";
+import { Component, inject } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+
+import template from "../../../assets/decryptor/decryptor.html?raw";
+import { ProjectComponent } from "../project/ProjectComponent.js";
+import { ProjectService } from "../project/ProjectService.js";
+import { ButtonDirective } from "../ui/ButtonDirective.js";
+import { DialogService } from "../ui/DialogService.js";
+import { NoUpdateOnEditDirective } from "../ui/NoUpdateOnEditDirective.js";
+import { ToastService } from "../ui/ToastService.js";
+import { DecryptorState } from "./DecryptorState.js";
+import { InputComponent } from "./InputComponent.js";
+import { DecryptorInput } from "./project/DecryptorInput.js";
+import { DecryptorProject } from "./project/DecryptorProject.js";
 
 /**
  * The main component of the decryptor module.
  */
 @Component({
     selector: "decryptor",
-    templateUrl: "assets/decryptor/decryptor.html"
+    imports: [
+        CommonModule,
+        FormsModule,
+        InputComponent,
+        NoUpdateOnEditDirective,
+        ButtonDirective
+    ],
+    template
 })
 export class DecryptorComponent extends ProjectComponent<DecryptorProject> {
     /**
      * Creates a new decryptor component showing the specified state and using the specified service for loading
      * and saving.
-     *
-     * @param state    The decryptor state holding the current decryptor project.
-     * @param service  The decryptor service used for loading and saving projects.
      */
-    public constructor(state: DecryptorState, projectService: ProjectService, dialogService: DialogService,
-            toastService: ToastService, router: Router, activatedRoute: ActivatedRoute) {
-        super(DecryptorProject, state, projectService, dialogService, toastService, router, activatedRoute);
+    public constructor() {
+        super(
+            DecryptorProject,
+            inject(DecryptorState),
+            inject(ProjectService),
+            inject(DialogService),
+            inject(ToastService),
+            inject(Router),
+            inject(ActivatedRoute)
+        );
     }
 
     /**

@@ -3,17 +3,14 @@
  * See LICENSE.md for licensing information.
  */
 
-import { error } from "./error";
-
 /**
  * Error with which canceled promises are rejected.
  */
-@error("Canceled")
 export class Canceled extends Error {
     /**
-     * @param reason  The cancellation reason.
+     * @param reason - Optional cancellation reason.
      */
-    constructor(reason: string = "") {
+    public constructor(reason: string = "") {
         super(reason);
     }
 }

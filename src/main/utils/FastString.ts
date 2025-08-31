@@ -3,10 +3,10 @@
  * See LICENSE.md for licensing information.
  */
 
-/** Regular expression to match upper-case words in a string. */
-import { Alphabet } from "./Alphabet";
-import { isEqual, Equatable } from "./Equatable";
+import { Alphabet } from "./Alphabet.js";
+import { type Equatable, isEqual } from "./Equatable.js";
 
+/** Regular expression to match upper-case words in a string. */
 const WORD_REGEXP = /\b[A-Z]+\b/gi;
 
 export class FastString extends Array<number> implements Equatable {
@@ -18,7 +18,7 @@ export class FastString extends Array<number> implements Equatable {
     public static fromString(s: string): FastString {
         const result = new FastString();
         const words = s.match(WORD_REGEXP);
-        if (words) {
+        if (words != null) {
             for (const word of words) {
                 result.push(0);
                 for (const char of word) {
@@ -33,8 +33,8 @@ export class FastString extends Array<number> implements Equatable {
         return result;
     }
 
-    public toString(): string {
-        return this.map(c => String.fromCharCode(c ? (c + 64) : 32)).join("").trim();
+    public override toString(): string {
+        return this.map(c => String.fromCharCode(c != 0 ? (c + 64) : 32)).join("").trim();
     }
 
     public substitute(alphabet: Alphabet, dest: FastString = this): FastString {
@@ -45,7 +45,7 @@ export class FastString extends Array<number> implements Equatable {
     }
 
     /** @inheritDoc */
-    public equals(other: any): boolean {
+    public equals(other: unknown): boolean {
         return isEqual(this, other, other => {
             const len = this.length;
             if (len !== other.length) {

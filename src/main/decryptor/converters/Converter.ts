@@ -3,9 +3,9 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ConverterOption } from "./options/ConverterOption";
-import { IllegalArgumentError } from "../../utils/error";
-import { Signal } from "../../utils/Signal";
+import { IllegalArgumentError } from "../../utils/error.js";
+import { Signal } from "../../utils/Signal.js";
+import { ConverterOption } from "./options/ConverterOption.js";
 
 /** Information about registered converters. */
 const descriptors: ConverterDescriptor[] = [];
@@ -21,7 +21,7 @@ const ctorMap = new WeakMap<new () => Converter, ConverterDescriptor>();
  *
  * @return The descriptors of all registered converters.
  */
-export function getConverterDescriptors(): ReadonlyArray<ConverterDescriptor> {
+export function getConverterDescriptors(): readonly ConverterDescriptor[] {
     return descriptors;
 }
 
@@ -45,10 +45,10 @@ export function getConverterDescriptor<T extends Converter>(ctor: new () => T): 
 
 export function getConverterDescriptor<T extends Converter>(arg: string | (new () => T)): ConverterDescriptor<T> {
     const info = typeof arg === "string" ? idMap[arg] : ctorMap.get(arg);
-    if (!info) {
+    if (info == null) {
         throw new IllegalArgumentError(`Converter descriptor for '${arg}' not found`);
     }
-    return <ConverterDescriptor<T>>info;
+    return info as ConverterDescriptor<T>;
 }
 
 /**
@@ -149,14 +149,14 @@ export class ConverterDescriptor<T extends Converter = Converter> {
  */
 export interface ConverterJSON {
     type: string;
-    options?: { [ name: string ]: any };
+    options?: { [ name: string ]: unknown };
 }
 
 /**
  * Abstract base class for converters.
  */
 export abstract class Converter {
-    private emitOnChanged = Signal.createEmitter<this>();
+    private readonly emitOnChanged = Signal.createEmitter<this>();
 
     /**
      * Emitted when converter has been changed so output must be updated.
@@ -166,27 +166,27 @@ export abstract class Converter {
     public readonly onChanged: Signal<this> = this.emitOnChanged.signal;
 
     /** The current option values of this converter. */
-    private readonly optionValues: WeakMap<ConverterOption<any, this>, any> = new WeakMap();
+    private readonly optionValues: WeakMap<ConverterOption<unknown, this>, unknown> = new WeakMap();
 
     /** The options of this converter. */
-    public readonly options: ConverterOption<any, this>[];
+    public readonly options?: Array<ConverterOption<string | number | boolean, this>>;
 
     /** The converter descriptor. */
     private readonly descriptor: ConverterDescriptor<this>;
 
     public constructor() {
-        this.descriptor = getConverterDescriptor(<new () => this>this.constructor);
+        this.descriptor = getConverterDescriptor((this.constructor as new () => this));
     }
 
     public static fromJSON<T extends Converter>(json: ConverterJSON): T {
         const converter = getConverterDescriptor(json.type).create();
-        if (json.options) {
+        if (json.options != null) {
             for (const optionName of Object.keys(json.options)) {
                 const optionValue = json.options[optionName];
                 converter.getOption(optionName).setValue(converter, optionValue);
             }
         }
-        return <T>converter;
+        return converter as T;
     }
 
     /** @inheritDoc */
@@ -194,13 +194,13 @@ export abstract class Converter {
         const json: ConverterJSON = {
             type: this.getType()
         };
-        const options = this.getOptions().reduce((options , option) => {
+        const options = this.getOptions().reduce((options, option) => {
             const value = option.getValue(this);
             if (value !== option.getDefaultValue()) {
                 options[option.getId()] = option.getValue(this);
             }
             return options;
-        }, <{ [ name: string ]: any}>{});
+        }, ({} as { [ name: string ]: unknown }));
         if (Object.keys(options).length > 0) {
             json.options = options;
         }
@@ -220,8 +220,8 @@ export abstract class Converter {
      *
      * @return The converter options.
      */
-    public getOptions(): ReadonlyArray<ConverterOption<any, this>> {
-        return this.options || [];
+    public getOptions(): ReadonlyArray<ConverterOption<string | number | boolean, this>> {
+        return this.options ?? [];
     }
 
     /**
@@ -275,7 +275,7 @@ export abstract class Converter {
      */
     public getOptionValue<T>(option: ConverterOption<T, this>): T | null {
         const value = this.optionValues.get(option);
-        return value === undefined ? null : value;
+        return value === undefined ? null : value as T;
     }
 
     /**
@@ -294,7 +294,7 @@ export abstract class Converter {
             } else {
                 this.optionValues.set(option, value);
             }
-            if (onChange) {
+            if (onChange != null) {
                 onChange(this);
             }
             this.emitOnChanged(this);

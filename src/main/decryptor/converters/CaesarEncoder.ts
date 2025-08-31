@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { converter } from "./Converter";
-import { CaesarCipher } from "./CaesarCipher";
+import { CaesarCipher } from "./CaesarCipher.js";
+import { converter } from "./Converter.js";
 
 /**
  * Converter for caesar encoding.

@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Renderer, ElementRef, Directive } from "@angular/core";
+import { Directive, ElementRef, inject, Renderer2 } from "@angular/core";
 
 let inputLabelLinkCounter = 0;
 
@@ -22,14 +22,16 @@ let inputLabelLinkCounter = 0;
     selector: "input[custom-checkbox]"
 })
 export class CustomCheckboxDirective {
-    public constructor(renderer: Renderer, elementRef: ElementRef) {
+    public constructor() {
+        const renderer = inject(Renderer2);
+        const elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
         const inputElement = elementRef.nativeElement;
-        if (!inputElement.id) {
+        if (inputElement.id === "" || inputElement.id == null) {
             inputElement.id = "custom-checkbox-label-link-" + inputLabelLinkCounter++;
         }
         const parentNode = inputElement.parentNode;
-        if (parentNode) {
-            const labelElement = <HTMLLabelElement>renderer.createElement(parentNode, "label");
+        if (parentNode != null) {
+            const labelElement = renderer.createElement("label") as HTMLLabelElement;
             parentNode.insertBefore(labelElement, inputElement);
             parentNode.insertBefore(inputElement, labelElement);
             labelElement.htmlFor = inputElement.id;

@@ -3,36 +3,46 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component } from "@angular/core";
-import { Dialog } from "../../ui/Dialog";
-import { KeywordCracker, KeywordCrackerResult } from "./KeywordCracker";
-import { Cancelable } from "../../utils/Cancelable";
-import { contains } from "../../utils/array";
+import { CommonModule } from "@angular/common";
+import { Component, signal } from "@angular/core";
+
+import template from "../../../../assets/decryptor/crackers/keyword-cracker-dialog.html?raw";
+import { ButtonDirective } from "../../ui/ButtonDirective.js";
+import { Dialog } from "../../ui/Dialog.js";
+import { DialogComponent } from "../../ui/DialogComponent.js";
+import { contains } from "../../utils/array.js";
+import { type Cancelable } from "../../utils/Cancelable.js";
+import { KeywordCracker, KeywordCrackerResult } from "./KeywordCracker.js";
 
 /**
  * Dialog for cracking the keyword of a keyword cipher.
  */
 @Component({
-    templateUrl: "assets/decryptor/crackers/keyword-cracker-dialog.html"
+    imports: [
+        CommonModule,
+        ButtonDirective,
+        DialogComponent
+    ],
+    template
 })
 export class KeywordCrackerDialog extends Dialog<string> {
     /** The cracker to use. */
     private readonly cracker: KeywordCracker;
 
     /** The encoded text. */
-    public encoded: string;
+    public encoded: string = "";
 
     /** The current running cracking process. Null if none. */
     private running: Cancelable<KeywordCrackerResult | null> | null = null;
 
     /** The top 100 recorded cracker results sorted by score. */
-    public results: KeywordCrackerResult[] = [];
+    public results = signal<KeywordCrackerResult[]>([]);
 
     /** The current run. */
-    public run = 0;
+    public run = signal(0);
 
     /** The progress of the current run in percent. */
-    public progress = 0;
+    public progress = signal(0);
 
     public constructor() {
         super();
@@ -53,13 +63,14 @@ export class KeywordCrackerDialog extends Dialog<string> {
      * Starts cracking.
      */
     public start(): void {
-        if (!this.running) {
-            this.run++;
+        if (this.running == null) {
+            this.run.update(run => run + 1);
             this.running = this.cracker.crack(this.encoded, result => {
-                if (!contains(this.results, result)) {
-                    const results = this.results.slice();
+                const origResults = this.results();
+                if (!contains(origResults, result)) {
+                    const results = origResults.slice();
                     const oldResult = results.find(v => v.getMessage() === result.getMessage());
-                    if (oldResult) {
+                    if (oldResult != null) {
                         if (result.getKeyword().length < oldResult.getKeyword().length) {
                             results.splice(results.indexOf(oldResult), 1, result);
                         }
@@ -73,10 +84,10 @@ export class KeywordCrackerDialog extends Dialog<string> {
                         }
                         return scoreDiff;
                     });
-                    this.results = results.slice(0, 100);
+                    this.results.set(results.slice(0, 100));
                 }
             }, (current, max) => {
-                this.progress = Math.round(100 * current / max);
+                this.progress.set(Math.round(100 * current / max));
             });
             this.running.then(() => {
                 this.running = null;
@@ -91,7 +102,7 @@ export class KeywordCrackerDialog extends Dialog<string> {
      * Stops cracking.
      */
     public async stop(): Promise<void> {
-        if (this.running) {
+        if (this.running != null) {
             await this.running.cancel();
             this.running = null;
         }
@@ -102,9 +113,9 @@ export class KeywordCrackerDialog extends Dialog<string> {
      */
     public async clear(): Promise<void> {
         await this.stop();
-        this.run = 0;
-        this.progress = 0;
-        this.results = [];
+        this.run.set(0);
+        this.progress.set(0);
+        this.results.set([]);
     }
 
     /**
@@ -117,8 +128,8 @@ export class KeywordCrackerDialog extends Dialog<string> {
     }
 
     /** @inheritDoc */
-    public close(value: string | null = null): void {
-        this.stop();
+    public override close(value: string | null = null): void {
+        void this.stop();
         super.close(value);
     }
 }

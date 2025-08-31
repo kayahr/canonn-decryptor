@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Serializable, SerializableStatic } from "../utils/Serializable";
-import { Signal } from "../utils/Signal";
+import { type Serializable, type SerializableStatic } from "../utils/Serializable.js";
+import { Signal } from "../utils/Signal.js";
 
 /**
  * Base JSON structure for a project.
@@ -16,8 +16,8 @@ export interface ProjectJSON {
 /**
  * Checks if given JSON defines a project.
  */
-export function isProjectJSON(json: any): json is ProjectJSON {
-    return (json instanceof Object) && typeof json.name === "string";
+export function isProjectJSON(json: unknown): json is ProjectJSON {
+    return (json instanceof Object) && typeof (json as ProjectJSON).name === "string";
 }
 
 /**
@@ -41,7 +41,7 @@ export interface ProjectStatic<T extends Project> extends SerializableStatic<T> 
  * Abstract base class for projects.
  */
 export abstract class Project implements Serializable<ProjectJSON> {
-    private emitOnChanged = Signal.createEmitter();
+    private readonly emitOnChanged = Signal.createEmitter();
 
     public readonly onChanged = this.emitOnChanged.signal;
 

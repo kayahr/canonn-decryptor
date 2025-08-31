@@ -1,6 +1,8 @@
 import * as fs from "fs";
-import { diacriticsToAscii } from "../main/utils/string";
 
+import { diacriticsToAscii } from "../main/utils/string.js";
+
+// eslint-disable-next-line regexp/no-unused-capturing-group
 const WORD_REGEXP = /\b([A-Z]+)\b/g;
 
 class Quadgram {
@@ -15,12 +17,12 @@ class Quadgram {
 }
 
 class Quadgrams {
-    private quadgrams: Quadgram[] = [];
+    private readonly quadgrams: Quadgram[] = [];
     private index: { [quadgram: string]: Quadgram } = {};
 
     public addQuadgram(quadgram: string): void {
-        let entry = this.index[quadgram];
-        if (entry) {
+        const entry = this.index[quadgram];
+        if (entry != null) {
             ++entry.count;
         } else {
             this.quadgrams.push(this.index[quadgram] = new Quadgram(quadgram));
@@ -29,7 +31,7 @@ class Quadgrams {
 
     public processText(text: string): void {
         for (let i = 0, max = Math.max(1, text.length - 3); i !== max; ++i) {
-            this.addQuadgram(text.substr(i, 4));
+            this.addQuadgram(text.substring(i, 4));
         }
     }
 
@@ -46,7 +48,7 @@ class Quadgrams {
 function processText(file: string, quadgrams: Quadgrams): void {
     const text = fs.readFileSync(file).toString().toUpperCase();
     const matches = text.match(WORD_REGEXP);
-    if (matches) {
+    if (matches != null) {
         quadgrams.processText(" " + diacriticsToAscii(matches.join(" ")) + " ");
     }
 }

@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter, converter } from "./Converter";
+import { Converter, converter } from "./Converter.js";
 
 /**
  * Rotates a single character.
@@ -23,6 +23,6 @@ function rotate(char: string): string {
 export class Rot13 extends Converter {
     /** @inheritDoc */
     public convert(input: string): string {
-        return input.replace(/[a-zA-Z]/g, rotate);
+        return input.replace(/[a-z]/gi, rotate);
     }
 }

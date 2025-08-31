@@ -4,8 +4,9 @@
  */
 
 import { Input } from "@angular/core";
-import { ConverterOption } from "./converters/options/ConverterOption";
-import { Converter } from "./converters/Converter";
+
+import { Converter } from "./converters/Converter.js";
+import { ConverterOption } from "./converters/options/ConverterOption.js";
 
 /**
  * Abstract base class for option components.
@@ -13,11 +14,11 @@ import { Converter } from "./converters/Converter";
 export abstract class OptionComponent<T extends ConverterOption> {
     /** The converter option  */
     @Input()
-    protected option: T;
+    protected option!: T;
 
     /** The converter. */
     @Input()
-    protected converter: Converter;
+    protected converter!: Converter;
 
     /**
      * Returns the option type.

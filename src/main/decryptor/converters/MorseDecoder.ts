@@ -3,10 +3,10 @@
  * See LICENSE.md for licensing information.
  */
 
-import { converter } from "./Converter";
-import { stringOption } from "./options/StringOption";
-import { escapeRegExp } from "../../utils/string";
-import { Converter } from "./Converter";
+import { escapeRegExp } from "../../utils/string.js";
+import { converter } from "./Converter.js";
+import { Converter } from "./Converter.js";
+import { stringOption } from "./options/StringOption.js";
 
 /** Regular expression for white space correction. */
 const whiteSpaceCorrection = / (\s*)/g;
@@ -83,7 +83,7 @@ const alphabet: { [ key: string ]: string } = {
  * @return The clear text string.
  */
 function decodeMorse(morse: string): string {
-    return alphabet[morse] || morse;
+    return alphabet[morse] ?? morse;
 }
 
 /**
@@ -105,11 +105,11 @@ export class MorseDecoder extends Converter {
 
     /** The characters to be used for morse dots. */
     @stringOption<MorseDecoder>("dots", "Dots", { defaultValue: ".·*", onChange: decoder => decoder.resetCaches })
-    private dots: string;
+    private dots: string = ".·*";
 
     /** The characters to be used for morse dashes. */
     @stringOption<MorseDecoder>("dashes", "Dashes", { defaultValue: "_-−", onChange: decoder => decoder.resetCaches })
-    private dashes: string;
+    private dashes: string = "_-−";
 
     /**
      * Creates a new morse decoder.
@@ -178,10 +178,7 @@ export class MorseDecoder extends Converter {
      * @return The regular expression to replace dot characters.
      */
     private getDotsRegExp(): RegExp {
-        if (!this.dotsRegExp) {
-            this.dotsRegExp = new RegExp(`[${escapeRegExp(this.dots)}]`, "g");
-        }
-        return this.dotsRegExp;
+        return this.dotsRegExp ??= new RegExp(`[${escapeRegExp(this.dots)}]`, "g");
     }
 
     /**
@@ -190,10 +187,7 @@ export class MorseDecoder extends Converter {
      * @return The regular expression to replace dash characters.
      */
     private getDashesRegExp(): RegExp {
-        if (!this.dashesRegExp) {
-            this.dashesRegExp = new RegExp(`[${escapeRegExp(this.dashes)}]`, "g");
-        }
-        return this.dashesRegExp;
+        return this.dashesRegExp ??= new RegExp(`[${escapeRegExp(this.dashes)}]`, "g");
     }
 
     /**
@@ -202,7 +196,7 @@ export class MorseDecoder extends Converter {
      * @return The regular expression to match a morse character.
      */
     private getMorseRegExp(): RegExp {
-        if (!this.morseRegExp) {
+        if (this.morseRegExp == null) {
             const range = this.getRange();
             this.morseRegExp = new RegExp(`(${range}+)`, "g");
         }
@@ -215,9 +209,9 @@ export class MorseDecoder extends Converter {
      * @return The regular expression to match a morse character group.
      */
     private getGroupRegExp(): RegExp {
-        if (!this.groupRegExp) {
+        if (this.groupRegExp == null) {
             const range = this.getRange();
-            this.groupRegExp = new RegExp(`(^|\\s+)(${range}+(?:\\s+${range}+)*)($|\\s+)`, "ig");
+            this.groupRegExp = new RegExp(`(^|\\s+)(${range}+(?:\\s+${range}+)*)($|\\s+)`, "gi");
         }
         return this.groupRegExp;
     }
@@ -236,7 +230,7 @@ export class MorseDecoder extends Converter {
     public convert(input: string): string {
         const dots = this.getDotsRegExp();
         const dashes = this.getDashesRegExp();
-        return input.replace(this.getGroupRegExp(), (all, prefix, match, suffix) =>
+        return input.replace(this.getGroupRegExp(), (all, prefix: string, match: string, suffix: string) =>
             prefix + match.replace(dots, ".").replace(dashes, "-").replace(this.getMorseRegExp(), decodeMorse)
                 .replace(whiteSpaceCorrection, "$1") + suffix
         );

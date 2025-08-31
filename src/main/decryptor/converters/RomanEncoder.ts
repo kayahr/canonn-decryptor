@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter, converter } from "./Converter";
+import { Converter, converter } from "./Converter.js";
 
 /** Table with decimal values and their roman numeral counter-part. */
 const conversions = [
@@ -23,7 +23,9 @@ const conversions = [
 ];
 
 const range = "[0-9]+";
+// eslint-disable-next-line regexp/no-unused-capturing-group, regexp/prefer-d
 const decimalRegExp = new RegExp(`(${range})`, "g");
+// eslint-disable-next-line regexp/prefer-d
 const groupRegExp = new RegExp(`(^|\\s+)(${range}(?:\\s+${range})*)($|\\s+)`, "g");
 
 /**

@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter, converter } from "./Converter";
+import { Converter, converter } from "./Converter.js";
 
 /**
  * Reverses the given string.

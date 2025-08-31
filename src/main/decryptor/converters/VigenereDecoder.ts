@@ -3,14 +3,14 @@
  * See LICENSE.md for licensing information.
  */
 
-import { converter } from "./Converter";
-import { VigenereCipher } from "./VigenereCipher";
+import { converter } from "./Converter.js";
+import { VigenereCipher } from "./VigenereCipher.js";
 
 /**
- * Vigènere decoder.
+ * Vigenère decoder.
  */
-@converter<VigenereDecoder>("vigenere-decoder", "vigenere", "Vigènere Decoder",
-    "Decodes text encrypted with the Vigènere square.")
+@converter<VigenereDecoder>("vigenere-decoder", "vigenere", "Vigenère Decoder",
+    "Decodes text encrypted with the Vigenère square.")
 export class VigenereDecoder extends VigenereCipher {
     /** @inheritDoc */
     protected convertChar(char: number, key: number): number {

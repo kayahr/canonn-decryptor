@@ -3,8 +3,10 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, ViewContainerRef, Renderer } from "@angular/core";
-import { DialogService } from "./DialogService";
+import { CommonModule } from "@angular/common";
+import { Component, inject, Renderer2, ViewContainerRef } from "@angular/core";
+
+import { DialogService } from "./DialogService.js";
 
 /**
  * The dialog outlet component used in the main HTML file to define the area in which dialog components are
@@ -12,10 +14,16 @@ import { DialogService } from "./DialogService";
  */
 @Component({
     selector: "dialog-outlet",
+    imports: [
+        CommonModule
+    ],
     template: " "
 })
 export class DialogOutletComponent {
-    public constructor(dialogService: DialogService, viewContainer: ViewContainerRef, renderer: Renderer) {
+    public constructor() {
+        const dialogService = inject(DialogService);
+        const viewContainer = inject(ViewContainerRef);
+        const renderer = inject(Renderer2);
         dialogService.registerOutlet(viewContainer, renderer);
     }
 }

@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ConverterOption, OptionTarget, converterOption, ConverterOptionArgs } from "./ConverterOption";
-import { Converter } from "../Converter";
+import { Converter } from "../Converter.js";
+import { ConverterOption, converterOption, type ConverterOptionArgs, type OptionTarget } from "./ConverterOption.js";
 
 /**
  * The arguments of a boolean option.
@@ -30,6 +30,6 @@ export function booleanOption<T extends Converter>(id: string, title: string, ar
  */
 export class BooleanOption<T extends Converter = Converter> extends ConverterOption<boolean, T> {
     public constructor(id: string, title: string, args: BooleanOptionArgs<T>) {
-        super("boolean", id, title, args.defaultValue != null ? args.defaultValue : false, args);
+        super("boolean", id, title, args.defaultValue ?? false, args);
     }
 }

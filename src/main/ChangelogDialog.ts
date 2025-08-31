@@ -3,13 +3,23 @@
  * See LICENSE.md for licensing information.
  */
 
+import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
-import { Dialog } from "./ui/Dialog";
+
+import template from "../../assets/changelog-dialog.html?raw";
+import { ButtonDirective } from "./ui/ButtonDirective.js";
+import { Dialog } from "./ui/Dialog.js";
+import { DialogComponent } from "./ui/DialogComponent.js";
 
 /**
  * Displays the changelog in a dialog.
  */
 @Component({
-    templateUrl: "assets/changelog-dialog.html"
+    imports: [
+        CommonModule,
+        ButtonDirective,
+        DialogComponent
+    ],
+    template
 })
 export class ChangelogDialog extends Dialog<string> {}

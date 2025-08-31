@@ -3,17 +3,29 @@
  * See LICENSE.md for licensing information.
  */
 
+import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
-import { OptionComponent } from "./OptionComponent";
-import { StringOption } from "./converters/options/StringOption";
-import { StringValue } from "../ui/StringValue";
+import { FormsModule } from "@angular/forms";
+
+import template from "../../../assets/decryptor/string-option.html?raw";
+import { LabelDirective } from "../ui/LabelDirective.js";
+import { NoUpdateOnEditDirective } from "../ui/NoUpdateOnEditDirective.js";
+import { type StringValue } from "../ui/StringValue.js";
+import { StringOption } from "./converters/options/StringOption.js";
+import { OptionComponent } from "./OptionComponent.js";
 
 /**
  * Displays a decryptor string option.
  */
 @Component({
     selector: "decryptor-string-option",
-    templateUrl: "assets/decryptor/string-option.html"
+    imports: [
+        CommonModule,
+        FormsModule,
+        NoUpdateOnEditDirective,
+        LabelDirective
+    ],
+    template
 })
 export class StringOptionComponent extends OptionComponent<StringOption> {
     /**

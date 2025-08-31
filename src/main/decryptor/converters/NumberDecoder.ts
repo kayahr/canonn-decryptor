@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter, converter } from "./Converter";
-import { numberOption } from "./options/NumberOption";
+import { Converter, converter } from "./Converter.js";
+import { numberOption } from "./options/NumberOption.js";
 
 /**
  * Number decoder.
@@ -20,14 +20,16 @@ export class NumberDecoder extends Converter {
 
     /** The number base. */
     @numberOption<NumberDecoder>("base", "Base", {
-        min: 2, max: 36, defaultValue: 10,
+        min: 2,
+        max: 36,
+        defaultValue: 10,
         onChange: decoder => decoder.resetCaches()
     })
-    private base: number;
+    private base: number = 10;
 
     /** The number shift.. */
     @numberOption<NumberDecoder>("shift", "Shift", { defaultValue: 64 })
-    private shift: number;
+    private shift: number = 64;
 
     /**
      * Creates a new number decoder.
@@ -97,9 +99,9 @@ export class NumberDecoder extends Converter {
      * @return The regular expression to match a single numeric value.
      */
     private getNumberRegExp(): RegExp {
-        if (!this.numberRegExp) {
+        if (this.numberRegExp == null) {
             const range = this.getRange();
-            this.numberRegExp = new RegExp(`\\s*(${range})( *)`, "ig");
+            this.numberRegExp = new RegExp(`\\s*(${range})( *)`, "gi");
         }
         return this.numberRegExp;
     }
@@ -110,9 +112,9 @@ export class NumberDecoder extends Converter {
      * @return The regular expression to match a group of numeric values.
      */
     private getGroupRegExp(): RegExp {
-        if (!this.groupRegExp) {
+        if (this.groupRegExp == null) {
             const range = this.getRange();
-            this.groupRegExp = new RegExp(`\\b(${range}(?: +${range})*)\\b`, "ig");
+            this.groupRegExp = new RegExp(`\\b(${range}(?: +${range})*)\\b`, "gi");
         }
         return this.groupRegExp;
     }
@@ -128,8 +130,8 @@ export class NumberDecoder extends Converter {
     /** @inheritDoc */
     public convert(input: string): string {
         return input.replace(this.getGroupRegExp(), match =>
-            match.replace(this.getNumberRegExp(), (match, dummy, spaces) =>
-                String.fromCharCode(this.shift + parseInt(match, this.base)) + spaces.substr(1)
+            match.replace(this.getNumberRegExp(), (match, dummy, spaces: string) =>
+                String.fromCharCode(this.shift + parseInt(match, this.base)) + spaces.substring(1)
             )
         );
     }

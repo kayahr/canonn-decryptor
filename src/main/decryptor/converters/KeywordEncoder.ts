@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { converter } from "./Converter";
-import { KeywordCipher } from "./KeywordCipher";
+import { converter } from "./Converter.js";
+import { KeywordCipher } from "./KeywordCipher.js";
 
 /**
  * Keyword encoder.

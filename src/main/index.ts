@@ -3,9 +3,24 @@
  * See LICENSE.md for licensing information.
  */
 
-import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
-import { AppModule } from "./AppModule";
+import "core-js";
+import "zone.js";
+import "@angular/compiler";
+
 import { enableProdMode } from "@angular/core";
+import { bootstrapApplication } from "@angular/platform-browser";
+import { provideRouter, type Routes, withHashLocation } from "@angular/router";
+
+import { AppComponent } from "./AppComponent.js";
+import { DecryptorComponent } from "./decryptor/DecryptorComponent.js";
+
+const routes: Routes = [
+    { path: "", component: DecryptorComponent }
+];
 
 enableProdMode();
-platformBrowserDynamic().bootstrapModule(AppModule);
+bootstrapApplication(AppComponent, {
+    providers: [
+        provideRouter(routes, withHashLocation())
+    ]
+}).catch(console.error);

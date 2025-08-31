@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Renderer, ElementRef, Directive } from "@angular/core";
+import { Directive, ElementRef } from "@angular/core";
 
 /**
  * A directive for automatically focusing a textarea or input field on init.
@@ -18,13 +18,13 @@ import { Renderer, ElementRef, Directive } from "@angular/core";
     selector: "textarea[focus], input[focus]"
 })
 export class FocusDirective {
-    private elementRef: ElementRef;
+    private readonly elementRef: ElementRef<HTMLElement>;
 
-    public constructor(renderer: Renderer, elementRef: ElementRef) {
+    public constructor(elementRef: ElementRef<HTMLElement>) {
         this.elementRef = elementRef;
     }
 
-    public ngOnInit() {
+    public ngOnInit(): void {
         this.elementRef.nativeElement.focus();
     }
 }

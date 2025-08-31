@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter } from "./Converter";
-import { stringOption } from "./options/StringOption";
+import { Converter } from "./Converter.js";
+import { stringOption } from "./options/StringOption.js";
 
 /** The standard alphabet. */
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -15,7 +15,7 @@ const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 export abstract class KeywordCipher extends Converter {
     /** The keyword to encode/decode with. */
     @stringOption<KeywordCipher>("keyword", "Keyword", { onChange: converter => converter.resetCaches() })
-    protected keyword: string;
+    protected keyword: string = "";
 
     /** The alphabet generated for the configured keyword. */
     protected alphabet: string | null = null;
@@ -39,14 +39,12 @@ export abstract class KeywordCipher extends Converter {
      * @return The generated alphabet.
      */
     public getAlphabet(): string {
-        if (this.alphabet == null) {
-            this.alphabet = this.keyword
-                .toUpperCase().split("")
-                .filter(char => char >= "A" && char <= "Z")
-                .concat(ALPHABET)
-                .filter((char, index, alphabet) => !(alphabet.indexOf(char) < index))
-                .join("");
-        }
+        this.alphabet ??= this.keyword
+            .toUpperCase().split("")
+            .filter(char => char >= "A" && char <= "Z")
+            .concat(ALPHABET)
+            .filter((char, index, alphabet) => !(alphabet.indexOf(char) < index))
+            .join("");
         return this.alphabet;
     }
 

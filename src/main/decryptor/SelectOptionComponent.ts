@@ -3,17 +3,29 @@
  * See LICENSE.md for licensing information.
  */
 
+import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
-import { OptionComponent } from "./OptionComponent";
-import { StringValue } from "../ui/StringValue";
-import { SelectOption, SelectItem } from "./converters/options/SelectOption";
+import { FormsModule } from "@angular/forms";
+
+import template from "../../../assets/decryptor/select-option.html?raw";
+import { LabelDirective } from "../ui/LabelDirective.js";
+import { NoUpdateOnEditDirective } from "../ui/NoUpdateOnEditDirective.js";
+import { type StringValue } from "../ui/StringValue.js";
+import { type SelectItem, SelectOption } from "./converters/options/SelectOption.js";
+import { OptionComponent } from "./OptionComponent.js";
 
 /**
  * Displays a decryptor select option.
  */
 @Component({
     selector: "decryptor-select-option",
-    templateUrl: "assets/decryptor/select-option.html"
+    imports: [
+        CommonModule,
+        FormsModule,
+        NoUpdateOnEditDirective,
+        LabelDirective
+    ],
+    template
 })
 export class SelectOptionComponent extends OptionComponent<SelectOption> {
     /**
@@ -39,7 +51,7 @@ export class SelectOptionComponent extends OptionComponent<SelectOption> {
      *
      * @return The selectable items.
      */
-    public get items(): ReadonlyArray<SelectItem> {
+    public get items(): readonly SelectItem[] {
         return this.option.getItems();
     }
 }

@@ -126,7 +126,7 @@ export class Alphabet extends Array<number> {
      *
      * @return The string representation of the alphabet.
      */
-    public toString(): string {
-        return this.map(c => String.fromCharCode(c + 64)).join("").substr(1);
+    public override toString(): string {
+        return this.map(c => String.fromCharCode(c + 64)).join("").substring(1);
     }
 }

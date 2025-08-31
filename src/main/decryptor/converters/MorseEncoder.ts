@@ -3,49 +3,49 @@
  * See LICENSE.md for licensing information.
  */
 
-import { converter } from "./Converter";
-import { stringOption } from "./options/StringOption";
-import { escapeRegExp } from "../../utils/string";
-import { Converter } from "./Converter";
+import { escapeRegExp } from "../../utils/string.js";
+import { converter } from "./Converter.js";
+import { Converter } from "./Converter.js";
+import { stringOption } from "./options/StringOption.js";
 
 /** Mapping table from cleartext to morse. */
 const alphabet: { [ key: string ]: string } = {
-    "A": ".-",
-    "B": "-...",
-    "C": "-.-.",
-    "D": "-..",
-    "E": ".",
-    "F": "..-.",
-    "G": "--.",
-    "H": "....",
-    "I": "..",
-    "J": ".---",
-    "K": "-.-",
-    "L": ".-..",
-    "M": "--",
-    "N": "-.",
-    "O": "---",
-    "P": ".--.",
-    "Q": "--.-",
-    "R": ".-.",
-    "S": "...",
-    "T": "-",
-    "U": "..-",
-    "V": "...-",
-    "W": ".--",
-    "X": "-..-",
-    "Y": "-.--",
-    "Z": "--..",
-    "0": "-----",
-    "1": ".----",
-    "2": "..---",
-    "3": "...--",
-    "4": "....-",
-    "5": ".....",
-    "6": "-....",
-    "7": "--...",
-    "8": "---..",
-    "9": "----.",
+    A: ".-",
+    B: "-...",
+    C: "-.-.",
+    D: "-..",
+    E: ".",
+    F: "..-.",
+    G: "--.",
+    H: "....",
+    I: "..",
+    J: ".---",
+    K: "-.-",
+    L: ".-..",
+    M: "--",
+    N: "-.",
+    O: "---",
+    P: ".--.",
+    Q: "--.-",
+    R: ".-.",
+    S: "...",
+    T: "-",
+    U: "..-",
+    V: "...-",
+    W: ".--",
+    X: "-..-",
+    Y: "-.--",
+    Z: "--..",
+    0: "-----",
+    1: ".----",
+    2: "..---",
+    3: "...--",
+    4: "....-",
+    5: ".....",
+    6: "-....",
+    7: "--...",
+    8: "---..",
+    9: "----.",
     ".": ".-.-.-",
     ",": "--..--",
     "?": "..--..",
@@ -60,9 +60,9 @@ const alphabet: { [ key: string ]: string } = {
     "=": "-...-",
     "+": ".-.-.",
     "-": "-....-",
-    "_": "..--.-",
+    _: "..--.-",
     "\"": ".-..-.",
-    "$": "...-..-",
+    $: "...-..-",
     "@": ".--.-."
 };
 
@@ -82,11 +82,11 @@ const groupReplace = new RegExp("(" + range + "+)", "gi");
 export class MorseEncoder extends Converter {
     /** The character to be used for morse dot. */
     @stringOption<MorseEncoder>("dot", "Dot", { defaultValue: ".", allowEmpty: false, maxLength: 1 })
-    private dot: string;
+    private dot: string = ".";
 
     /** The character to be used for morse dash. */
     @stringOption<MorseEncoder>("dash", "Dash", { defaultValue: "-", allowEmpty: false, maxLength: 1 })
-    private dash: string;
+    private dash: string = "-";
 
     /**
      * Creates a new morse decoder.
@@ -154,13 +154,13 @@ export class MorseEncoder extends Converter {
             }
 
             return parts.map((text, index) => {
-                if (index & 1) {
+                if ((index & 1) !== 0) {
                     return text.toUpperCase().replace(characterReplace, c => alphabet[c] + " ").trim()
-                        .replace(/[\.-]/g, char => char === "." ? this.dot : this.dash);
+                        .replace(/[.-]/g, char => char === "." ? this.dot : this.dash);
                 } else {
                     return text;
                 }
-            }).filter(text => !!text).map(text => text.replace(/^(\s*)\s$/, "$1")).join(" ");
+            }).filter(text => text.length > 0).map(text => text.replace(/^(\s*)\s$/, "$1")).join(" ");
         }).join("\n");
     }
 }

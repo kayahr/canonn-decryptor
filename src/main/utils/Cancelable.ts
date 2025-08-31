@@ -16,6 +16,6 @@ export interface Cancelable<T = any> extends Promise<T> {
  * @param object  The object to check.
  * @return True if object is a cancelable promise, false if not.
  */
-export function isCancelable(object: any): object is Cancelable {
-    return typeof(object.then) === "function" && typeof(object.cancel) === "function";
+export function isCancelable(object: unknown): object is Cancelable {
+    return object instanceof Object && typeof (object as Cancelable).then === "function" && typeof (object as Cancelable).cancel === "function";
 }

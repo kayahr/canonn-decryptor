@@ -4,8 +4,9 @@
  */
 
 import { Injectable } from "@angular/core";
-import { DecryptorProject } from "./project/DecryptorProject";
-import { ProjectState } from "../project/ProjectState";
+
+import { ProjectState } from "../project/ProjectState.js";
+import { DecryptorProject } from "./project/DecryptorProject.js";
 
 /**
  * Crates an initial empty project to be displayed on app start.
@@ -22,7 +23,7 @@ function createInitialProject(): DecryptorProject {
 /**
  * The decryptor state holding the current decryptor project.
  */
-@Injectable()
+@Injectable({ providedIn: "root" })
 export class DecryptorState extends ProjectState<DecryptorProject> {
     public constructor() {
         super(createInitialProject());

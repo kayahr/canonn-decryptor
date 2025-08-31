@@ -6,10 +6,10 @@
 /**
  * Interface for target object which holds the converter options.
  */
-import { Converter } from "../Converter";
+import { Converter } from "../Converter.js";
 
-export interface OptionTarget<T extends Converter> {
-    options: ConverterOption<any, T>[];
+export interface OptionTarget<C extends Converter> {
+    options?: Array<ConverterOption<unknown, C>> | null;
 }
 
 /**
@@ -25,19 +25,18 @@ export interface ConverterOptionArgs<T, C extends Converter> {
 /**
  * Base function called by all option property decorators.
  */
-export function converterOption<T, C extends Converter>(target: OptionTarget<C>, propertyKey: string, option:
-        ConverterOption<T, C>): void {
-    const options = target.options = target.options ? target.options.slice() : [];
+export function converterOption<T, C extends Converter>(target: OptionTarget<C>, propertyKey: string, option: ConverterOption<T, C>): void {
+    const options = target.options = target.options != null ? target.options.slice() : [];
     options.push(option);
     options.sort((a, b) => a.getSortIndex() - b.getSortIndex());
     Object.defineProperty(target, propertyKey, {
         configurable: false,
         enumerable: true,
         get: function (this: Converter): T {
-            return option.getValue(<C>this);
+            return option.getValue((this as C));
         },
         set: function (this: Converter, value: T): void {
-            option.setValue(<C>this, value);
+            option.setValue((this as C), value);
         }
     });
 }
@@ -59,9 +58,9 @@ export abstract class ConverterOption<T = string | number | boolean, C extends C
         this.id = id;
         this.title = title;
         this.defaultValue = defaultValue;
-        this.onChange = args.onChange || null;
-        this.disabled = args.disabled || null;
-        this.sortIndex = args.sortIndex || 0;
+        this.onChange = args.onChange ?? null;
+        this.disabled = args.disabled ?? null;
+        this.sortIndex = args.sortIndex ?? 0;
     }
 
     /**
@@ -116,7 +115,7 @@ export abstract class ConverterOption<T = string | number | boolean, C extends C
      * @return True if disabled, false if not.
      */
     public isDisabled(converter: C): boolean {
-        return this.disabled ? this.disabled(converter) : false;
+        return (this.disabled != null) ? this.disabled(converter) : false;
     }
 
     /**
@@ -148,6 +147,6 @@ export abstract class ConverterOption<T = string | number | boolean, C extends C
      */
     public getValue(converter: C): T {
         const value = converter.getOptionValue(this);
-        return value != null ? value : this.defaultValue;
+        return value ?? this.defaultValue;
     }
 }

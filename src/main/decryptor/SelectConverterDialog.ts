@@ -3,15 +3,25 @@
  * See LICENSE.md for licensing information.
  */
 
+import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
-import { Dialog } from "../ui/Dialog";
-import { ConverterDescriptor, getConverterDescriptors } from "./converters/Converter";
+
+import template from "../../../assets/decryptor/select-converter-dialog.html?raw";
+import { ButtonDirective } from "../ui/ButtonDirective.js";
+import { Dialog } from "../ui/Dialog.js";
+import { DialogComponent } from "../ui/DialogComponent.js";
+import { ConverterDescriptor, getConverterDescriptors } from "./converters/Converter.js";
 
 /**
  * Displays a list of available converters and let the user select one of them.
  */
 @Component({
-    templateUrl: "assets/decryptor/select-converter-dialog.html"
+    imports: [
+        CommonModule,
+        ButtonDirective,
+        DialogComponent
+    ],
+    template
 })
 export class SelectConverterDialog extends Dialog<string> {
     /**
@@ -26,7 +36,7 @@ export class SelectConverterDialog extends Dialog<string> {
         for (const descriptor of getConverterDescriptors()) {
             const groupId = descriptor.getGroupId();
             let group = index[groupId];
-            if (!group) {
+            if (group == null) {
                 groups.push(group = index[groupId] = []);
             }
             group.push(descriptor);

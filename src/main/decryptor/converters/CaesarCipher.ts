@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter } from "./Converter";
-import { numberOption } from "./options/NumberOption";
+import { Converter } from "./Converter.js";
+import { numberOption } from "./options/NumberOption.js";
 
 /**
  * Abstract base class for the caesar decoder and encoder.
@@ -12,10 +12,11 @@ import { numberOption } from "./options/NumberOption";
 export abstract class CaesarCipher extends Converter {
     /** The alphabet rotation. */
     @numberOption<CaesarCipher>("rotation", "Rotation", {
-        max: 25, defaultValue: 13,
+        max: 25,
+        defaultValue: 13,
         disabled: converter => converter.isAutomatic()
     })
-    protected rotation: number;
+    protected rotation: number = 13;
 
     /** The rotation direction. For the encoder it is 1, for the decoder it is -1. */
     protected abstract direction: number;

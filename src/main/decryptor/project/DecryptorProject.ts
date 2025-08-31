@@ -3,10 +3,10 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Serializable } from "../../utils/Serializable";
-import { DecryptorInput, DecryptorInputJSON } from "./DecryptorInput";
-import { Project, ProjectJSON, isProjectJSON } from "../../project/Project";
-import { IllegalArgumentError } from "../../utils/error";
+import { isProjectJSON, Project, type ProjectJSON } from "../../project/Project.js";
+import { IllegalArgumentError } from "../../utils/error.js";
+import { type Serializable } from "../../utils/Serializable.js";
+import { DecryptorInput, type DecryptorInputJSON } from "./DecryptorInput.js";
 
 /**
  * JSON structure of a serialized decryptor project.
@@ -21,8 +21,8 @@ export interface DecryptorProjectJSON extends ProjectJSON {
  * @param json  The JSON to check.
  * @return True if JSON is a serialized decryptor project, false if not.
  */
-export function isDecryptorProjectJSON(json: any): json is DecryptorProjectJSON {
-    return json instanceof Object && json.inputs instanceof Array && isProjectJSON(json);
+export function isDecryptorProjectJSON(json: unknown): json is DecryptorProjectJSON {
+    return json instanceof Object && (json as DecryptorProjectJSON).inputs instanceof Array && isProjectJSON(json);
 }
 
 /**
@@ -30,7 +30,7 @@ export function isDecryptorProjectJSON(json: any): json is DecryptorProjectJSON 
  */
 export class DecryptorProject extends Project implements Serializable<DecryptorProjectJSON> {
     /** The decryptor inputs. */
-    private inputs: DecryptorInput[];
+    private readonly inputs: DecryptorInput[];
 
     public constructor(name: string = "") {
         super(name);
@@ -52,7 +52,7 @@ export class DecryptorProject extends Project implements Serializable<DecryptorP
      * @param json  The JSON to check.
      * @return True if JSON is a serialized decryptor project, false if not.
      */
-    public static isProjectJSON(json: any): json is DecryptorProjectJSON {
+    public static isProjectJSON(json: unknown): json is DecryptorProjectJSON {
         return isDecryptorProjectJSON(json);
     }
 
@@ -63,7 +63,7 @@ export class DecryptorProject extends Project implements Serializable<DecryptorP
     }
 
     /** @inheritDoc */
-    public toJSON(): DecryptorProjectJSON {
+    public override toJSON(): DecryptorProjectJSON {
         return Object.assign(super.toJSON(), {
             inputs: this.inputs.map(input => input.toJSON())
         });

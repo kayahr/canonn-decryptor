@@ -3,8 +3,10 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, ViewContainerRef, Renderer } from "@angular/core";
-import { ToastService } from "./ToastService";
+import { CommonModule } from "@angular/common";
+import { Component, inject, Renderer2, ViewContainerRef } from "@angular/core";
+
+import { ToastService } from "./ToastService.js";
 
 /**
  * The toast outlet component used in the main HTML file to define the area in which toast components are
@@ -12,10 +14,16 @@ import { ToastService } from "./ToastService";
  */
 @Component({
     selector: "toast-outlet",
+    imports: [
+        CommonModule
+    ],
     template: " "
 })
 export class ToastOutletComponent {
-    public constructor(toastService: ToastService, viewContainer: ViewContainerRef, renderer: Renderer) {
+    public constructor() {
+        const toastService = inject(ToastService);
+        const viewContainer = inject(ViewContainerRef);
+        const renderer = inject(Renderer2);
         toastService.registerOutlet(viewContainer, renderer);
     }
 }

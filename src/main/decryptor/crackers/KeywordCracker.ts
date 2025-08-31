@@ -3,28 +3,28 @@
  * See LICENSE.md for licensing information.
  */
 
-import { quadgrams } from "../../utils/Quadgrams";
-import { FastString } from "../../utils/FastString";
-import { Alphabet } from "../../utils/Alphabet";
-import { KeywordDecoder } from "../converters/KeywordDecoder";
-import { sleep } from "../../utils/async";
-import { Cancelable } from "../../utils/Cancelable";
-import { cancelable } from "../../utils/promise";
-import { Canceled } from "../../utils/Canceled";
-import { Equatable, isEqual } from "../../utils/Equatable";
+import { Alphabet } from "../../utils/Alphabet.js";
+import { sleep } from "../../utils/async.js";
+import { type Cancelable } from "../../utils/Cancelable.js";
+import { Canceled } from "../../utils/Canceled.js";
+import { type Equatable, isEqual } from "../../utils/Equatable.js";
+import { FastString } from "../../utils/FastString.js";
+import { cancelable } from "../../utils/promise.js";
+import { quadgrams } from "../../utils/Quadgrams.js";
+import { KeywordDecoder } from "../converters/KeywordDecoder.js";
 
 /**
  * A single keyword cracker result.
  */
 export class KeywordCrackerResult implements Equatable {
     /** The score of the decoded message. The higher the more likely this is a real english text. */
-    private score: number;
+    private readonly score: number;
 
     /** The keyword with which the text was encrypted. */
-    private keyword: string;
+    private readonly keyword: string;
 
     /** The decoded message. */
-    private message: string;
+    private readonly message: string;
 
     /**
      * Creates a new keyword cracker result.
@@ -40,7 +40,7 @@ export class KeywordCrackerResult implements Equatable {
     }
 
     /** @inheritDoc */
-    public equals(obj: any): boolean {
+    public equals(obj: unknown): boolean {
         return isEqual(this, obj, other => other.score === this.score && other.keyword === this.keyword
             && other.message === this.message);
     }
@@ -120,7 +120,7 @@ export class KeywordCracker {
             }
             len++;
         }
-        return inverted.toString().substr(0, len);
+        return inverted.toString().substring(0, len);
     }
 
     /**
@@ -135,28 +135,28 @@ export class KeywordCracker {
         let cancel: Canceled | null = null;
         return cancelable(async () => {
             const decoder = new KeywordDecoder();
-            let fastEncoded = FastString.fromString(encoded);
+            const fastEncoded = FastString.fromString(encoded);
             let bestResult: KeywordCrackerResult | null = null;
             const fudgeFactor = this.fudgeFactor * fastEncoded.length;
-            let alphabet = Alphabet.createRandom();
+            const alphabet = Alphabet.createRandom();
             const decoded = fastEncoded.substitute(alphabet, new FastString());
             let score = quadgrams.getScore(decoded);
             let bestScore = score;
-            let newAlphabet = new Alphabet();
+            const newAlphabet = new Alphabet();
             let tries = 0;
             while (tries < this.maxTries) {
-                if (onProgress) {
+                if (onProgress != null) {
                     onProgress(tries * this.cycles, this.maxTries * this.cycles);
                 }
                 let divisor = this.initialDivisor;
                 alphabet.clone(newAlphabet);
                 for (let cycle = 0; cycle !== this.cycles; ++cycle) {
-                    if (cancel) {
+                    if (cancel != null) {
                         throw cancel;
                     }
                     ++tries;
-                    let a = 1 + Math.round(Math.random() * 25);
-                    let b = 1 + Math.round(Math.random() * 25);
+                    const a = 1 + Math.round(Math.random() * 25);
+                    const b = 1 + Math.round(Math.random() * 25);
                     newAlphabet.swap(a, b);
                     const newScore = quadgrams.getScore(fastEncoded.substitute(newAlphabet, decoded));
                     if (newScore >= bestScore) {
@@ -164,7 +164,7 @@ export class KeywordCracker {
                         const keyword = this.createKeyword(newAlphabet, fastEncoded, decoded);
                         decoder.setKeyword(keyword);
                         bestResult = new KeywordCrackerResult(newScore, keyword, decoder.convert(encoded));
-                        if (onResult) {
+                        if (onResult != null) {
                             onResult(bestResult);
                         }
                     }

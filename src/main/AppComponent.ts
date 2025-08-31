@@ -3,29 +3,40 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, OnInit } from "@angular/core";
-import { ChangelogDialog } from "./ChangelogDialog";
-import { DialogService } from "./ui/DialogService";
+import { CommonModule } from "@angular/common";
+import { Component, inject, type OnInit } from "@angular/core";
+import { RouterModule } from "@angular/router";
 
-const appVersion = "1.0.0";
+import template from "../../assets/app.html?raw";
+import packageJSON from "../../package.json" with { type: "json" };
+import { ChangelogDialog } from "./ChangelogDialog.js";
+import { ButtonDirective } from "./ui/ButtonDirective.js";
+import { DialogOutletComponent } from "./ui/DialogOutletComponent.js";
+import { DialogService } from "./ui/DialogService.js";
+import { ToastOutletComponent } from "./ui/ToastOutletComponent.js";
+
+const appVersion = packageJSON.version;
 
 const appVersionKey = "canonn-decryptor.appVersion";
 
 @Component({
     selector: "body",
-    templateUrl: "assets/app.html"
+    imports: [
+        CommonModule,
+        RouterModule,
+        DialogOutletComponent,
+        ToastOutletComponent,
+        ButtonDirective
+    ],
+    template
 })
 export class AppComponent implements OnInit {
-    private dialogService: DialogService;
+    private readonly dialogService = inject(DialogService);
 
-    public constructor(dialogService: DialogService) {
-        this.dialogService = dialogService;
-    }
-
-    public ngOnInit() {
+    public ngOnInit(): void {
         // Automatically open changelog dialog if last used version it not the current version
         const oldAppVersion = localStorage.getItem(appVersionKey);
-        if (oldAppVersion && oldAppVersion !== appVersion) {
+        if (oldAppVersion != null && oldAppVersion !== appVersion) {
             this.openChangelog();
         }
         localStorage.setItem(appVersionKey, appVersion);
@@ -44,6 +55,6 @@ export class AppComponent implements OnInit {
      * Opens the changelog dialog.
      */
     public openChangelog(): void {
-        this.dialogService.openDialog(ChangelogDialog);
+        void this.dialogService.openDialog(ChangelogDialog);
     }
 }

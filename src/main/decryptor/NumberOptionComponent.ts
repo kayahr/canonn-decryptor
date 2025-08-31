@@ -3,17 +3,29 @@
  * See LICENSE.md for licensing information.
  */
 
+import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
-import { NumberOption } from "./converters/options/NumberOption";
-import { OptionComponent } from "./OptionComponent";
-import { StringValue } from "../ui/StringValue";
+import { FormsModule } from "@angular/forms";
+
+import template from "../../../assets/decryptor/number-option.html?raw";
+import { LabelDirective } from "../ui/LabelDirective.js";
+import { NoUpdateOnEditDirective } from "../ui/NoUpdateOnEditDirective.js";
+import { type StringValue } from "../ui/StringValue.js";
+import { NumberOption } from "./converters/options/NumberOption.js";
+import { OptionComponent } from "./OptionComponent.js";
 
 /**
  * Displays a decryptor string option.
  */
 @Component({
     selector: "decryptor-number-option",
-    templateUrl: "assets/decryptor/number-option.html"
+    imports: [
+        CommonModule,
+        FormsModule,
+        NoUpdateOnEditDirective,
+        LabelDirective
+    ],
+    template
 })
 export class NumberOptionComponent extends OptionComponent<NumberOption> {
     /**

@@ -3,10 +3,10 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Serializable } from "../../utils/Serializable";
-import { DecryptorOutputJSON, DecryptorOutput } from "./DecryptorOutput";
-import { Signal } from "../../utils/Signal";
-import { IllegalStateError, IllegalArgumentError } from "../../utils/error";
+import { IllegalArgumentError, IllegalStateError } from "../../utils/error.js";
+import { type Serializable } from "../../utils/Serializable.js";
+import { Signal } from "../../utils/Signal.js";
+import { DecryptorOutput, type DecryptorOutputJSON } from "./DecryptorOutput.js";
 
 /**
  * JSON structure of a serialized decryptor node.
@@ -19,7 +19,7 @@ export interface DecryptorNodeJSON {
  * Shared abstract base class for decryptor inputs and outputs.
  */
 export abstract class DecryptorNode implements Serializable<DecryptorNodeJSON> {
-    private emitOnChanged = Signal.createEmitter<this>();
+    private readonly emitOnChanged = Signal.createEmitter<this>();
 
     /**
      * Emitted when the node has been changed.
@@ -51,7 +51,7 @@ export abstract class DecryptorNode implements Serializable<DecryptorNodeJSON> {
     /** @inheritDoc */
     public toJSON(): DecryptorNodeJSON {
         const json: DecryptorNodeJSON = {};
-        if (this.outputs.length) {
+        if (this.outputs.length > 0) {
             json.outputs = this.outputs.map(node => node.toJSON());
         }
         return json;
@@ -70,7 +70,7 @@ export abstract class DecryptorNode implements Serializable<DecryptorNodeJSON> {
      * outputs are also updated.
      */
     protected update(): void {
-        const newValue = this.convert(this.parent ? this.parent.getValue() : "");
+        const newValue = this.convert(this.parent != null ? this.parent.getValue() : "");
         if (newValue !== this.value) {
             this.value = newValue;
             for (const output of this.outputs) {
@@ -96,7 +96,7 @@ export abstract class DecryptorNode implements Serializable<DecryptorNodeJSON> {
      * @throws IllegalStateError  When node has no parent node.
      */
     public getParent(): DecryptorNode {
-        if (!this.parent) {
+        if (this.parent == null) {
             throw new IllegalStateError("Node has no parent");
         }
         return this.parent;

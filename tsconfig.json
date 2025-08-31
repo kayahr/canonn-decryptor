@@ -1,24 +1,32 @@
 {
     "$schema": "http://json.schemastore.org/tsconfig",
+    "compileOnSave": true,
     "compilerOptions": {
-        "target": "es5",
-        "lib": [ "es2015.iterable", "es2015.collection", "es2015.promise", "es2015.core", "es5", "dom" ],
-        "module": "commonjs",
-        "rootDir": "src",
-        "outDir": "lib",
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "sourceMap": true,
         "declaration": true,
+        "forceConsistentCasingInFileNames": true,
+        "lib": [
+            "ES2022",
+            "DOM"
+        ],
+        "module": "node20",
+        "useDefineForClassFields": false,
+        "newLine": "lf",
+        "noEmitOnError": false,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitOverride": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "strict": true,
+        "noImplicitReturns": true,
         "noImplicitThis": true,
         "noUnusedLocals": true,
         "noUnusedParameters": false,
+        "outDir": "lib",
+        "preserveSymlinks": true,
+        "rootDir": "src",
         "skipLibCheck": true,
-        "alwaysStrict": true,
-        "forceConsistentCasingInFileNames": true,
-        "importHelpers": true
+        "sourceMap": true,
+        "strict": true,
+        "target": "es2022"
     }
 }

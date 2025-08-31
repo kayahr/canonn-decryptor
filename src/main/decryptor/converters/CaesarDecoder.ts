@@ -3,11 +3,11 @@
  * See LICENSE.md for licensing information.
  */
 
-import { CaesarCipher } from "./CaesarCipher";
-import { converter } from "./Converter";
-import { booleanOption } from "./options/BooleanOption";
-import { quadgrams } from "../../utils/Quadgrams";
-import { FastString } from "../../utils/FastString";
+import { FastString } from "../../utils/FastString.js";
+import { quadgrams } from "../../utils/Quadgrams.js";
+import { CaesarCipher } from "./CaesarCipher.js";
+import { converter } from "./Converter.js";
+import { booleanOption } from "./options/BooleanOption.js";
 
 /**
  * Converter for caesar decoding.
@@ -17,7 +17,7 @@ import { FastString } from "../../utils/FastString";
 export class CaesarDecoder extends CaesarCipher {
     /** The alphabet rotation. */
     @booleanOption<CaesarDecoder>("auto", "Automatic", { defaultValue: true, sortIndex: -1 })
-    protected automatic: boolean;
+    protected automatic: boolean = true;
 
     /** @inheritDoc */
     protected readonly direction = -1;
@@ -37,14 +37,14 @@ export class CaesarDecoder extends CaesarCipher {
     }
 
     /** @inheritDoc */
-    protected isAutomatic(): boolean {
+    protected override isAutomatic(): boolean {
         return this.automatic;
     }
 
     /** @inheritDoc */
-    public convert(input: string): string {
+    public override convert(input: string): string {
         if (this.automatic) {
-            let scores: { score: number, rotation: number }[] = [];
+            const scores: Array<{ score: number, rotation: number }> = [];
             for (let rotation = 0; rotation < 26; ++rotation) {
                 const score = quadgrams.getScore(FastString.fromString(this.rotateText(input, -rotation)));
                 scores.push({ score, rotation });

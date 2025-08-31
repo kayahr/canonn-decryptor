@@ -3,16 +3,27 @@
  * See LICENSE.md for licensing information.
  */
 
+import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
-import { OptionComponent } from "./OptionComponent";
-import { BooleanOption } from "./converters/options/BooleanOption";
+import { FormsModule } from "@angular/forms";
 
+import template from "../../../assets/decryptor/boolean-option.html?raw";
+import { CustomCheckboxDirective } from "../ui/CustomCheckboxDirective.js";
+import { LabelDirective } from "../ui/LabelDirective.js";
+import { BooleanOption } from "./converters/options/BooleanOption.js";
+import { OptionComponent } from "./OptionComponent.js";
 /**
  * Displays a decryptor boolean option.
  */
 @Component({
     selector: "decryptor-boolean-option",
-    templateUrl: "assets/decryptor/boolean-option.html"
+    imports: [
+        CommonModule,
+        FormsModule,
+        LabelDirective,
+        CustomCheckboxDirective
+    ],
+    template
 })
 export class BooleanOptionComponent extends OptionComponent<BooleanOption> {
     /**

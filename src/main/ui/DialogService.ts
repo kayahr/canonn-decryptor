@@ -3,29 +3,26 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Injectable, ViewContainerRef, ComponentFactoryResolver, Renderer } from "@angular/core";
-import { Dialog } from "./Dialog";
-import { ConfirmDialog } from "./ConfirmDialog";
+import { Injectable, Renderer2, ViewContainerRef } from "@angular/core";
+
+import { IllegalStateError } from "../utils/error.js";
+import { ConfirmDialog } from "./ConfirmDialog.js";
+import { Dialog } from "./Dialog.js";
 
 /**
  * The dialog service used to spawn new dialogs.
  */
-@Injectable()
+@Injectable({ providedIn: "root" })
 export class DialogService {
-    private componentFactoryResolver: ComponentFactoryResolver;
-    private viewContainer: ViewContainerRef;
-    private renderer: Renderer;
-
-    public constructor(componentFactoryResolver: ComponentFactoryResolver) {
-        this.componentFactoryResolver = componentFactoryResolver;
-    }
+    private viewContainer: ViewContainerRef | null = null;
+    private renderer: Renderer2 | null = null;
 
     /**
      * Registers a dialog outlet on the service so the service knows where to place new dialogs. Is called
      * internally by [DialogOutletComponent]. All you have to do is use the dialog outlet component somewhere in your
      * main HTML file.
      */
-    public registerOutlet(viewContainer: ViewContainerRef, renderer: Renderer) {
+    public registerOutlet(viewContainer: ViewContainerRef, renderer: Renderer2): void {
         this.viewContainer = viewContainer;
         this.renderer = renderer;
     }
@@ -42,17 +39,18 @@ export class DialogService {
             dialogComponent: { new (...args: any[]): T & Dialog<V> },
             init?: (dialog: T) => void): Promise<V | null> {
         const viewContainer = this.viewContainer;
-        const dialogComponentFactory = this.componentFactoryResolver.resolveComponentFactory(dialogComponent);
-        const dialogComponentRef = viewContainer.createComponent(dialogComponentFactory);
-        const dialog = dialogComponentRef.instance;
-        const element = dialogComponentRef.location.nativeElement;
-        if (init) {
-            init(dialog);
+        const renderer = this.renderer;
+        if (viewContainer == null || renderer == null) {
+            throw new IllegalStateError("Dialog service outlet to registered");
         }
-        setTimeout(() => this.renderer.setElementClass(element, "open", true), 0);
+        const dialogComponentRef = viewContainer.createComponent(dialogComponent);
+        const dialog = dialogComponentRef.instance;
+        const element = dialogComponentRef.location.nativeElement as HTMLElement;
+        init?.(dialog);
+        setTimeout(() => renderer.addClass(element, "open"), 0);
         return new Promise<V | null>(resolve => {
             dialog.onClosed.subscribe((value: V | null) => {
-                this.renderer.setElementClass(element, "open", false);
+                renderer.removeClass(element, "open");
                 setTimeout(() => dialogComponentRef.destroy(), 250);
                 resolve(value);
             });
