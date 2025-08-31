@@ -6,7 +6,7 @@ export default defineConfig(
         include: [ "src/test/**/*.test.ts" ],
         reporters: [
             "default",
-            [ "junit", { outputFile: "lib/test/junit.xml", suiteName: "${projectName} tests" } ]
+            [ "junit", { outputFile: "lib/test/junit.xml", suiteName: "unit tests" } ]
         ],
         env: {
             NODE_OPTIONS: `${process.env.NODE_OPTIONS ?? ""} --expose-gc`

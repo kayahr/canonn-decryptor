@@ -41,7 +41,7 @@ export class DialogService {
         const viewContainer = this.viewContainer;
         const renderer = this.renderer;
         if (viewContainer == null || renderer == null) {
-            throw new IllegalStateError("Dialog service outlet to registered");
+            throw new IllegalStateError("Dialog service outlet not registered");
         }
         const dialogComponentRef = viewContainer.createComponent(dialogComponent);
         const dialog = dialogComponentRef.instance;

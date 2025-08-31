@@ -85,7 +85,7 @@ export abstract class Project implements Serializable<ProjectJSON> {
     }
 
     /**
-     * Marks the project has saved (or resets this state if false is specified as parameter.
+     * Marks the project as saved (or resets this state if false is specified as parameter.
      *
      * @param saved  Optionally set this parameter to false to mark the project as unsaved.
      */

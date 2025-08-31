@@ -227,18 +227,18 @@ export class Signal<T = void, R = any> implements Observable<T> {
      * @return The debounced signal.
      */
     public debounce(throttle: number): Signal<T> {
-        let timer: number;
+        let timer: ReturnType<typeof setTimeout>;
         return new Signal<T, Subscription>(emit => {
             const subscription = this.subscribe(arg => {
                 if (timer != null) {
                     clearTimeout(timer);
                 }
-                timer = window.setTimeout(() => emit(arg), throttle);
+                timer = setTimeout(() => emit(arg), throttle);
             });
             return subscription;
         }, subscription => {
             if (timer != null) {
-                window.clearTimeout(timer);
+                clearTimeout(timer);
             }
             subscription.unsubscribe();
         });

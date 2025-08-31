@@ -9,7 +9,7 @@ import { ProjectState } from "../project/ProjectState.js";
 import { DecryptorProject } from "./project/DecryptorProject.js";
 
 /**
- * Crates an initial empty project to be displayed on app start.
+ * Creates an initial empty project to be displayed on app start.
  *
  * @return An initial empty project.
  */

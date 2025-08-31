@@ -99,9 +99,9 @@ export class BoundFunction<T = unknown> implements Equatable {
      * @return The cancelable asynchronous response of the function call.
      */
     public deferFor(timeout: number, ...args: unknown[]): Cancelable<T> {
-        let handle: number;
+        let handle: ReturnType<typeof setTimeout>;
         return cancelable(new Promise<any>((resolve, reject) => {
-            handle = window.setTimeout(() => {
+            handle = setTimeout(() => {
                 try {
                     resolve(this.func.call(this.context, ...this.args, ...args));
                 } catch (e) {
@@ -109,7 +109,7 @@ export class BoundFunction<T = unknown> implements Equatable {
                 }
             }, timeout);
         }), canceled => {
-            window.clearTimeout(handle);
+            clearTimeout(handle);
             throw canceled;
         });
     }
