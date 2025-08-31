@@ -3,7 +3,6 @@
  * See LICENSE.md for licensing information.
  */
 
-import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
@@ -20,7 +19,6 @@ const appVersion = packageJSON.version;
 @Component({
     selector: "body",
     imports: [
-        CommonModule,
         RouterModule,
         DialogOutletComponent,
         ToastOutletComponent,

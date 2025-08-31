@@ -10,17 +10,21 @@
 
 <div class="inputs">
   <div class="panels">
-    <div class="panel" *ngFor="let input of project.getInputs()">
-      <decryptor-input [input]="input"></decryptor-input>
-    </div>
+    @for (input of project.getInputs(); track $index) {
+      <div class="panel">
+        <decryptor-input [input]="input"></decryptor-input>
+      </div>
+    }
   </div>
 </div>
 
-<div *ngIf="showInstructions" class="instructions">
-  <h1>Getting started</h1>
-  <ol>
-    <li>Enter the data you want to decrypt into the input box above.</li>
-    <li>Press the <em>Decrypt</em> button in the input box title.</li>
-    <li>Choose the converter you want to use for decrypting the input.</li>
-  </ol>
-</div>
+@if (showInstructions) {
+  <div class="instructions">
+    <h1>Getting started</h1>
+    <ol>
+      <li>Enter the data you want to decrypt into the input box above.</li>
+      <li>Press the <em>Decrypt</em> button in the input box title.</li>
+      <li>Choose the converter you want to use for decrypting the input.</li>
+    </ol>
+  </div>
+}

@@ -22,7 +22,6 @@ import "./converters/Rot13.js";
 import "./converters/VigenereDecoder.js";
 import "./converters/VigenereEncoder.js";
 
-import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -45,7 +44,6 @@ import { DecryptorProject } from "./project/DecryptorProject.js";
 @Component({
     selector: "decryptor",
     imports: [
-        CommonModule,
         FormsModule,
         InputComponent,
         NoUpdateOnEditDirective,

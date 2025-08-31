@@ -3,7 +3,6 @@
  * See LICENSE.md for licensing information.
  */
 
-import { CommonModule } from "@angular/common";
 import { Component, inject, Renderer2, ViewContainerRef } from "@angular/core";
 
 import { DialogService } from "./DialogService.js";
@@ -14,9 +13,6 @@ import { DialogService } from "./DialogService.js";
  */
 @Component({
     selector: "dialog-outlet",
-    imports: [
-        CommonModule
-    ],
     template: " "
 })
 export class DialogOutletComponent {

@@ -1,4 +1,3 @@
-import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 
 import template from "../../../assets/ui/dialog.html?raw";
@@ -8,9 +7,6 @@ import template from "../../../assets/ui/dialog.html?raw";
  */
 @Component({
     selector: "div.dialog",
-    imports: [
-        CommonModule
-    ],
     template
 })
 export class DialogComponent {}

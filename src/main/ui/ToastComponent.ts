@@ -1,4 +1,3 @@
-import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 
 import template from "../../../assets/ui/toast.html?raw";
@@ -8,9 +7,6 @@ import template from "../../../assets/ui/toast.html?raw";
  */
 @Component({
     selector: "div.toast",
-    imports: [
-        CommonModule
-    ],
     template
 })
 export class ToastComponent {

@@ -3,7 +3,6 @@
  * See LICENSE.md for licensing information.
  */
 
-import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
@@ -18,7 +17,6 @@ import { OptionComponent } from "./OptionComponent.js";
 @Component({
     selector: "decryptor-boolean-option",
     imports: [
-        CommonModule,
         FormsModule,
         LabelDirective,
         CustomCheckboxDirective

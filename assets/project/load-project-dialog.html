@@ -1,18 +1,23 @@
 <div class="dialog load-project-dialog">
   <h1>Load</h1>
   <button class="close" (click)="close()"></button>
-  <p *ngIf="!projectNames.length">
-    No saved projects found.
-  </p>
-  <div *ngIf="projectNames.length" class="projects">
-    <div class="project" *ngFor="let projectName of projectNames">
-      <div class="load">
-        <button (click)="close(projectName)">{{ projectName }}</button>
-      </div>
-      <div class="delete">
-        <button class="delete" (click)="delete(projectName)"></button>
-      </div>
+  @if (!projectNames.length) {
+    <p>
+      No saved projects found.
+    </p>
+  } @else {
+    <div class="projects">
+      @for (projectName of projectNames; track projectName) {
+        <div class="project">
+          <div class="load">
+            <button (click)="close(projectName)">{{ projectName }}</button>
+          </div>
+          <div class="delete">
+            <button class="delete" (click)="delete(projectName)"></button>
+          </div>
+        </div>
+      }
     </div>
-  </div>
+  }
   <button class="cancel" (click)="close()">Cancel</button>
 </div>

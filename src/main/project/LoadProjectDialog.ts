@@ -3,7 +3,6 @@
  * See LICENSE.md for licensing information.
  */
 
-import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
 
 import template from "../../../assets/project/load-project-dialog.html?raw";
@@ -21,7 +20,6 @@ import { ProjectService } from "./ProjectService.js";
  */
 @Component({
     imports: [
-        CommonModule,
         ButtonDirective,
         DialogComponent
     ],

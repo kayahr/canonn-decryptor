@@ -3,7 +3,6 @@
  * See LICENSE.md for licensing information.
  */
 
-import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 
 import template from "../../../assets/ui/confirm-dialog.html?raw";
@@ -16,7 +15,6 @@ import { DialogComponent } from "./DialogComponent.js";
  */
 @Component({
     imports: [
-        CommonModule,
         ButtonDirective,
         DialogComponent
     ],

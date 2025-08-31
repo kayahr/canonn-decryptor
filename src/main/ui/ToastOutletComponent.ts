@@ -3,7 +3,6 @@
  * See LICENSE.md for licensing information.
  */
 
-import { CommonModule } from "@angular/common";
 import { Component, inject, Renderer2, ViewContainerRef } from "@angular/core";
 
 import { ToastService } from "./ToastService.js";
@@ -14,9 +13,6 @@ import { ToastService } from "./ToastService.js";
  */
 @Component({
     selector: "toast-outlet",
-    imports: [
-        CommonModule
-    ],
     template: " "
 })
 export class ToastOutletComponent {

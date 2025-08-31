@@ -1,5 +1,7 @@
 <select [(ngModel)]="value"
         [label]="title"
         [attr.disabled]="disabled">
-  <option *ngFor="let item of items" [attr.value]="item.value">{{ item.label }}</option>
+  @for (item of items; track item.value) {
+    <option [attr.value]="item.value">{{ item.label }}</option>
+  }
 </select>

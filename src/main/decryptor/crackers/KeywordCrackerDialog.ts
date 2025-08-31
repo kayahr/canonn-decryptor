@@ -3,7 +3,6 @@
  * See LICENSE.md for licensing information.
  */
 
-import { CommonModule } from "@angular/common";
 import { Component, signal } from "@angular/core";
 
 import template from "../../../../assets/decryptor/crackers/keyword-cracker-dialog.html?raw";
@@ -19,7 +18,6 @@ import { KeywordCracker, KeywordCrackerResult } from "./KeywordCracker.js";
  */
 @Component({
     imports: [
-        CommonModule,
         ButtonDirective,
         DialogComponent
     ],

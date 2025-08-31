@@ -6,28 +6,37 @@
     <em>englishness</em>-score. Click on a result to accept it.
   </p>
   <div class="controls">
-    <span class="progress" *ngIf="running">
-      Run {{ run() }} ({{ progress() }}%)
-    </span>
-    <span *ngIf="!running">
-      Cracking stopped
-    </span>
+    @if (running) {
+      <span class="progress">
+        Run {{ run() }} ({{ progress() }}%)
+      </span>
+    } @else {
+      <span>
+        Cracking stopped
+      </span>
+    }
     <nav>
-      <button *ngIf="running" class="stop" (click)="stop()">Stop</button>
-      <button *ngIf="!running" class="clear" (click)="clear()">Clear</button>
-      <button *ngIf="!running" class="start" (click)="start()">Start</button>
+      @if (running) {
+        <button class="stop" (click)="stop()">Stop</button>
+      } @else {
+        <button class="clear" (click)="clear()">Clear</button>
+        <button class="start" (click)="start()">Start</button>
+      }
     </nav>
   </div>
   <div class="results">
-    <div class="result" *ngFor="let result of results()"  (click)="close(result.getKeyword())">
-      <h1>{{ result.getKeyword() }} <span class="score">({{ result.getScore().toFixed(2) }})</span></h1>
+    @for (result of results(); track $index) {
+      <div class="result" (click)="close(result.getKeyword())">
+        <h1>{{ result.getKeyword() }} <span class="score">({{ result.getScore().toFixed(2) }})</span></h1>
+        <p>
+          {{ result.getMessage() }}
+        </p>
+      </div>
+    } @empty {
       <p>
-        {{ result.getMessage() }}
+        No results recorded so far.
       </p>
-    </div>
-    <p *ngIf="emptyResult">
-      No results recorded so far.
-    </p>
+    }
   </div>
   <button class="cancel" (click)="close()">Cancel</button>
 </div>

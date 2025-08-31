@@ -3,7 +3,6 @@
  * See LICENSE.md for licensing information.
  */
 
-import { CommonModule } from "@angular/common";
 import { Component, inject, Input } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
@@ -23,7 +22,6 @@ import { SelectConverterDialog } from "./SelectConverterDialog.js";
  */
 @Component({
     imports: [
-        CommonModule,
         OutputComponent,
         FormsModule,
         ButtonDirective,

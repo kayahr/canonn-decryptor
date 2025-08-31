@@ -2,14 +2,18 @@
   <h1>Select converter</h1>
   <button class="close" (click)="close()"></button>
   <div class="converters">
-    <div class="group" *ngFor="let group of converterGroups">
-      <div class="converter" *ngFor="let converter of group" (click)="close(converter.getId())">
-        <h1><a href="javascript:void(0)" (click)="close(converter.getId())">{{ converter.getTitle() }}</a></h1>
-        <p>
-          {{ converter.getDescription() }}
-        </p>
+    @for (group of converterGroups; track $index) {
+      <div class="group">
+        @for (converter of group; track converter.getId()) {
+          <div class="converter" (click)="close(converter.getId())">
+            <h1><a href="javascript:void(0)" (click)="close(converter.getId())">{{ converter.getTitle() }}</a></h1>
+            <p>
+              {{ converter.getDescription() }}
+            </p>
+          </div>
+        }
       </div>
-    </div>
+    }
   </div>
   <button class="cancel" (click)="close()">Cancel</button>
 <div>

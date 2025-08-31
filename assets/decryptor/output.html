@@ -2,29 +2,32 @@
   <div class="title">
     <h1>{{ title }}</h1>
     <nav>
-      <button *ngIf="crackable" class="crack" (click)="crack()">Crack</button>
+      @if (crackable) {<button class="crack" (click)="crack()">Crack</button>}
       <button class="decrypt" (click)="addOutput()">Decrypt</button>
       <button class="remove" (click)="remove()">Remove</button>
     </nav>
   </div>
   <div class="params">
-    <ng-container *ngFor="let option of options">
-      <decryptor-string-option *ngIf="option.getType() == 'string'" class="param"
-          [converter]="converter" [option]="option"></decryptor-string-option>
-      <decryptor-number-option *ngIf="option.getType() == 'number'" class="param"
-          [converter]="converter" [option]="option"></decryptor-number-option>
-      <decryptor-boolean-option *ngIf="option.getType() == 'boolean'" class="param"
-          [converter]="converter" [option]="option"></decryptor-boolean-option>
-      <decryptor-select-option *ngIf="option.getType() == 'select'" class="param"
-          [converter]="converter" [option]="option"></decryptor-select-option>
-    </ng-container>
+    @for (option of options; track option.getId()) {
+      @if (option.getType() == 'string') {
+        <decryptor-string-option class="param" [converter]="converter" [option]="option"></decryptor-string-option>
+      } @else if (option.getType() == 'number') {
+        <decryptor-number-option class="param" [converter]="converter" [option]="option"></decryptor-number-option>
+      } @else if (option.getType() == 'boolean') {
+        <decryptor-boolean-option class="param" [converter]="converter" [option]="option"></decryptor-boolean-option>
+      } @else if (option.getType() == 'select') {
+        <decryptor-select-option class="param" [converter]="converter" [option]="option"></decryptor-select-option>
+      }
+    }
   </div>
   <p>{{ value }}</p>
 </div>
 <div class="outputs">
   <div class="panels">
-    <div class="panel" *ngFor="let output of outputs">
-      <decryptor-output [output]="output"></decryptor-output>
-    </div>
+    @for (output of outputs; track $index) {
+      <div class="panel">
+        <decryptor-output [output]="output"></decryptor-output>
+      </div>
+    }
   </div>
 </div>

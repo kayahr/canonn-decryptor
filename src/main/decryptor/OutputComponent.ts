@@ -3,7 +3,6 @@
  * See LICENSE.md for licensing information.
  */
 
-import { CommonModule } from "@angular/common";
 import { Component, inject, Input } from "@angular/core";
 
 import template from "../../../assets/decryptor/output.html?raw";
@@ -26,7 +25,6 @@ import { StringOptionComponent } from "./StringOptionComponent.js";
 @Component({
     selector: "decryptor-output",
     imports: [
-        CommonModule,
         StringOptionComponent,
         NumberOptionComponent,
         BooleanOptionComponent,

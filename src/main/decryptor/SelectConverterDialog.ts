@@ -3,7 +3,6 @@
  * See LICENSE.md for licensing information.
  */
 
-import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 
 import template from "../../../assets/decryptor/select-converter-dialog.html?raw";
@@ -17,7 +16,6 @@ import { ConverterDescriptor, getConverterDescriptors } from "./converters/Conve
  */
 @Component({
     imports: [
-        CommonModule,
         ButtonDirective,
         DialogComponent
     ],
