@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2017 Klaus Reimer <k@ailis.de>
+ * See LICENSE.md for licensing information.
+ */
+
 import { Component } from "@angular/core";
 
 import template from "../../../assets/ui/dialog.html?raw";

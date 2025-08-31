@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2017 Klaus Reimer <k@ailis.de>
+ * See LICENSE.md for licensing information.
+ */
+
 import quadgramsJSON from "../../../assets/fitness/ngrams.json" with { type: "json" };
 import { FastString } from "../utils/FastString.js";
 
