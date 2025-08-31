@@ -16,16 +16,6 @@
             "runOptions": {
                 "runOn": "folderOpen"
             }
-        },
-        {
-            "label": "Run unit tests",
-            "type": "npm",
-            "script": "check",
-            "problemMatcher": [],
-            "group": {
-                "kind": "test",
-                "isDefault": true
-            }
         }
     ]
 }
