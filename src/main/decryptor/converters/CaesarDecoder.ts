@@ -14,43 +14,24 @@ import { booleanOption } from "./options/BooleanOption.js";
  */
 @converter<CaesarDecoder>("caesar-decoder", "caesar", "Caesar Decoder",
     "Decodes text encrypted by simple alphabet rotation.")
-export class CaesarDecoder extends CaesarCipher {
+export class CaesarDecoder extends CaesarCipher<CaesarDecoder> {
     /** The alphabet rotation. */
     @booleanOption<CaesarDecoder>("auto", "Automatic", { defaultValue: true, sortIndex: -1 })
-    protected automatic: boolean = true;
+    public auto!: boolean;
 
     /** @inheritDoc */
     protected readonly direction = -1;
 
-    /**
-     * Creates a new caesar converter.
-     *
-     * @param automatic  Optional automatic flag. Defaults to true.
-     * @param rotation   Optional initial alphabet rotation. Defaults to 13. Only makes sense when not running in auto
-     *                   mode.
-     */
-    public constructor(automatic?: boolean, rotation?: number) {
-        super(rotation);
-        if (automatic != null) {
-            this.automatic = automatic;
-        }
-    }
-
-    /** @inheritDoc */
-    protected override isAutomatic(): boolean {
-        return this.automatic;
-    }
-
     /** @inheritDoc */
     public override convert(input: string): string {
-        if (this.automatic) {
+        if (this.auto) {
             const scores: Array<{ score: number, rotation: number }> = [];
             for (let rotation = 0; rotation < 26; ++rotation) {
                 const score = quadgrams.getScore(FastString.fromString(this.rotateText(input, -rotation)));
                 scores.push({ score, rotation });
             }
             scores.sort((a, b) => b.score - a.score);
-            this.setRotation(scores[0].rotation);
+            this.rotation = scores[0].rotation;
         }
         return super.convert(input);
     }

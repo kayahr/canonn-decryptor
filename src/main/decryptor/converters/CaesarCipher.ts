@@ -9,29 +9,17 @@ import { numberOption } from "./options/NumberOption.js";
 /**
  * Abstract base class for the caesar decoder and encoder.
  */
-export abstract class CaesarCipher extends Converter {
+export abstract class CaesarCipher<T> extends Converter<T> {
     /** The alphabet rotation. */
-    @numberOption<CaesarCipher>("rotation", "Rotation", {
+    @numberOption<CaesarCipher<T>>("rotation", "Rotation", {
         max: 25,
         defaultValue: 13,
         disabled: converter => converter.isAutomatic()
     })
-    protected rotation: number = 13;
+    public rotation!: number;
 
     /** The rotation direction. For the encoder it is 1, for the decoder it is -1. */
     protected abstract direction: number;
-
-    /**
-     * Creates a new caesar converter.
-     *
-     * @param rotation  Optional initial alphabet rotation. Defaults to 13.
-     */
-    public constructor(rotation?: number) {
-        super();
-        if (rotation != null) {
-            this.rotation = rotation;
-        }
-    }
 
     /**
      * Checks if rotation is calculated automatically.
@@ -40,22 +28,6 @@ export abstract class CaesarCipher extends Converter {
      */
     protected isAutomatic(): boolean {
         return false;
-    }
-
-    /**
-     * Returns the current alphabet rotation.
-     */
-    public getRotation(): number {
-        return this.rotation;
-    }
-
-    /**
-     * Sets the alphabet rotation.
-     *
-     * @param rotation  The alphabet rotation to set.
-     */
-    public setRotation(rotation: number): void {
-        this.rotation = rotation;
     }
 
     /**
