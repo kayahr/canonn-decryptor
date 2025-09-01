@@ -2,7 +2,8 @@
   <input #projectNameInput type="text" [(ngModel)]="projectName" no-update-on-edit placeholder="Unnamed project"
          (keydown.enter)="save() && $event.target.blur()" />
   <nav>
-    <button class="save" [disabled]="saved" (click)="save()">Save</button>
+    <button class="clear" [disabled]="empty" (click)="clear()">Clear</button>
+    <button class="save" [disabled]="saved || empty" (click)="save()">Save</button>
     <button class="load" (click)="load()">Load</button>
     <button class="add-input" (click)="addInput()">Add Input</button>
   </nav>

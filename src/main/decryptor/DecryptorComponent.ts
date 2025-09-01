@@ -78,6 +78,22 @@ export class DecryptorComponent extends ProjectComponent<DecryptorProject> {
     }
 
     /**
+     * True if the current project is empty (initial state).
+     */
+    public get empty(): boolean {
+        return this.state.getProject().isEmpty();
+    }
+
+    /**
+     * Clears the current project after user confirmation.
+     */
+    public async clear(): Promise<void> {
+        if (await this.dialogService.confirm("Are you sure you want to clear the project?")) {
+            this.state.getProject().clear();
+        }
+    }
+
+    /**
      * Adds a new input to the project.
      */
     public addInput(): void {

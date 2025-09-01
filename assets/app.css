@@ -293,12 +293,16 @@ button::before {
     margin-right: 0.25em;
 }
 
-button.load::before {
-    content: "\f07c";
+button.clear::before {
+    content: "\f1f8";
 }
 
 button.save::before {
     content: "\f0c7";
+}
+
+button.load::before {
+    content: "\f07c";
 }
 
 

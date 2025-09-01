@@ -115,4 +115,35 @@ export class DecryptorProject extends Project implements Serializable<DecryptorP
     public getInputs(): DecryptorInput[] {
         return this.inputs.slice();
     }
+
+    /**
+     * Checks if the project is in its initial empty state.
+     *
+     * A project is considered empty when:
+     *
+     * - The project name is empty
+     * - There is exactly one input
+     * - The input text is empty
+     * - The input has no outputs
+     *
+     * @returns True if project is empty, false otherwise.
+     */
+    public isEmpty(): boolean {
+        if (this.getName().trim() !== "") return false;
+        if (this.inputs.length !== 1) return false;
+        const input = this.inputs[0];
+        if (input.getInput() !== "") return false;
+        return input.getOutputs().length === 0;
+    }
+
+    /**
+     * Clears the project by removing all inputs, adding a new empty input and resetting the name.
+     */
+    public clear(): void {
+        for (const input of this.getInputs()) {
+            this.removeInput(input);
+        }
+        this.setName("");
+        this.addInput();
+    }
 }
