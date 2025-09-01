@@ -152,10 +152,20 @@ export interface ConverterJSON {
     options?: { [ name: string ]: unknown };
 }
 
+/** Allowed primitive values for converter options. */
+export type OptionPrimitive = string | number | boolean;
+
+/**
+ * The converter options extracted from the given converter.
+ */
+export type ConverterOptions<T> = {
+    [K in keyof T as T[K] extends OptionPrimitive ? K : never]?: T[K];
+};
+
 /**
  * Abstract base class for converters.
  */
-export abstract class Converter {
+export abstract class Converter<T = unknown> {
     private readonly emitOnChanged = Signal.createEmitter<this>();
 
     /**
@@ -174,8 +184,13 @@ export abstract class Converter {
     /** The converter descriptor. */
     private readonly descriptor: ConverterDescriptor<this>;
 
-    public constructor() {
+    public constructor(options?: ConverterOptions<T>) {
         this.descriptor = getConverterDescriptor((this.constructor as new () => this));
+        if (options != null) {
+            for (const [ name, value ] of Object.entries(options)) {
+                this.getOption(name).setValue(this, value);
+            }
+        }
     }
 
     public static fromJSON<T extends Converter>(json: ConverterJSON): T {

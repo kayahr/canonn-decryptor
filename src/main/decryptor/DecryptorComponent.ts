@@ -13,6 +13,7 @@ import "./converters/KeywordEncoder.js";
 import "./converters/MorseDecoder.js";
 import "./converters/MorseEncoder.js";
 import "./converters/NumberDecoder.js";
+import "./converters/NumberEncoder.js";
 import "./converters/OneTimePadDecoder.js";
 import "./converters/OneTimePadEncoder.js";
 import "./converters/Reverse.js";

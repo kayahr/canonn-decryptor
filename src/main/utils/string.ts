@@ -199,3 +199,15 @@ export function fromByteArray(bytes: ArrayLike<number>, index: number = 0,
     }
     return out;
 }
+
+/**
+ * Unescapes backslash sequences in the given string.
+ *
+ * @param s - The string to unescape.
+ * @returns The unescaped string.
+ */
+export function unescape(s: string): string {
+    return s.replace(/\\u([0-9a-fA-F]{4})/g, (_, h: string) => String.fromCharCode(parseInt(h, 16)))
+        .replace(/\\n/g, "\n")
+        .replace(/\\t/g, "\t");
+}

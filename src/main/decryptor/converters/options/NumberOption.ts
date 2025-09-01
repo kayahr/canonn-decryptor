@@ -39,8 +39,8 @@ export class NumberOption<T extends Converter = Converter> extends ConverterOpti
 
     public constructor(id: string, title: string, args: NumberOptionArgs<T>) {
         super("number", id, title, args.defaultValue ?? 0, args);
-        this.max = args.max ?? Number.MAX_SAFE_INTEGER;
-        this.min = args.min ?? 0;
+        this.max = args.max ?? 65535;
+        this.min = args.min ?? -65535;
         this.step = args.step ?? 1;
     }
 
