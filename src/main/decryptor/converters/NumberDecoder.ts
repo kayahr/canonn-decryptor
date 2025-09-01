@@ -38,7 +38,7 @@ export class NumberDecoder extends Converter {
      */
     private getRange(): string {
         const base = this.base;
-        return "[0-" + Math.min(9, base - 1) + (base > 10 ? "a-" + String.fromCharCode(86 + base) : "") + "]+";
+        return "-?[0-" + Math.min(9, base - 1) + (base > 10 ? "a-" + String.fromCharCode(86 + base) : "") + "]+";
     }
 
     /**
@@ -62,7 +62,7 @@ export class NumberDecoder extends Converter {
     private getGroupRegExp(): RegExp {
         if (this.groupRegExp == null) {
             const range = this.getRange();
-            this.groupRegExp = new RegExp(`\\b(${range}(?: +${range})*)\\b`, "gi");
+            this.groupRegExp = new RegExp(`(?<!\\w)(${range}(?: +${range})*)(?!\\w)`, "gi");
         }
         return this.groupRegExp;
     }

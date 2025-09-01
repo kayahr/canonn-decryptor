@@ -65,6 +65,9 @@ describe("NumberDecoder", () => {
             expect(new NumberDecoder({ base: 16, shift: 0 }).convert("41 42 43 0a 44 45 46")).toEqual(
                 "ABC\nDEF");
         });
+        it("decodes negative numbers in sequence", () => {
+            expect(new NumberDecoder({ shift: 66 }).convert("-1 0 1")).toEqual("ABC");
+        });
     });
 
     describe("toJSON", () => {
