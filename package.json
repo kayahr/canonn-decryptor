@@ -1,7 +1,7 @@
 {
   "$schema": "http://json.schemastore.org/package",
   "name": "canonn-decryptor",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "type": "module",
   "description": "Tool to decrypt the mysteries of the Elite Dangerous universe",
   "keywords": [
