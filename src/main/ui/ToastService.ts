@@ -34,7 +34,7 @@ export class ToastService {
      *                  - duration: Display time in ms. Defaults to word-count-based duration.
      *                  - type: "info" (default) or "warning".
      */
-    public showToast(text: string, options?: { duration?: number; type?: "info" | "warning" }): void {
+    public showToast(text: string, options?: { duration?: number, type?: "info" | "warning" }): void {
         const viewContainer = this.viewContainer;
         const renderer = this.renderer;
         if (viewContainer == null || renderer == null) {
