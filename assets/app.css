@@ -2,7 +2,7 @@
 @import "reset.css";
 
 /* Webfonts */
-@import "fonts/font-awesome.css";
+@import "fonts/fontawesome/css/all.css";
 @import "fonts/Euro_Caps.css";
 @import "fonts/Roboto.css";
 @import "fonts/Roboto_Mono.css";

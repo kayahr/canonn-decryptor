@@ -7,6 +7,7 @@ decryptor
 englishness
 epitomises
 FGDFXG
+fontawesome
 joumed
 kayahr
 KEYWORDABCFGHIJLMNPQSTUVXZ
