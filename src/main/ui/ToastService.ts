@@ -29,11 +29,12 @@ export class ToastService {
     /**
      * Shows a new toast with the given text.
      *
-     * @param text  The text to display in a toast.
-     * @param duration  Optional toast display duration in milliseconds. If not specified then the duration is
-     *                  automatically calculated by counting the number of words.
+     * @param text      The text to display in a toast.
+     * @param options   Optional toast options: duration and type.
+     *                  - duration: Display time in ms. Defaults to word-count-based duration.
+     *                  - type: "info" (default) or "warning".
      */
-    public showToast(text: string, duration: number = Math.max(1000, text.split(/\s+/).length * 350)): void {
+    public showToast(text: string, options?: { duration?: number; type?: "info" | "warning" }): void {
         const viewContainer = this.viewContainer;
         const renderer = this.renderer;
         if (viewContainer == null || renderer == null) {
@@ -43,6 +44,9 @@ export class ToastService {
         const toast = toastComponentRef.instance;
         toast.text = text;
         const element = toastComponentRef.location.nativeElement as HTMLElement;
+        const type = options?.type ?? "info";
+        renderer.addClass(element, type);
+        const duration = options?.duration ?? Math.max(1000, text.split(/\s+/).length * 350);
         setTimeout(() => renderer.addClass(element, "open"), 0);
         setTimeout(() => {
             renderer.removeClass(element, "open");

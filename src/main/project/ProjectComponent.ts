@@ -154,7 +154,7 @@ export abstract class ProjectComponent<T extends Project> {
         const project = this.state.getProject();
         const name = project.getName().trim();
         if (name === "") {
-            this.toastService.showToast("Project needs a name to save");
+            this.toastService.showToast("Project needs a name to save", { type: "warning" });
             this.projectNameInput?.nativeElement.focus();
         } else {
             this.projectService.save(this.type, project);

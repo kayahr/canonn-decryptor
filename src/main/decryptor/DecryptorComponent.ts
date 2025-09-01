@@ -90,6 +90,7 @@ export class DecryptorComponent extends ProjectComponent<DecryptorProject> {
     public async clear(): Promise<void> {
         if (await this.dialogService.confirm("Are you sure you want to clear the project?")) {
             this.state.getProject().clear();
+            this.toastService.showToast("Project has been cleared");
         }
     }
 
