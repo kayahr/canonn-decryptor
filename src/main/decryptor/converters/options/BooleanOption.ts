@@ -14,9 +14,9 @@ export interface BooleanOptionArgs<T extends Converter> extends ConverterOptionA
 /**
  * Property decorator for a boolean option.
  *
- * @param id     The option ID.
- * @param title  The option title.
- * @param args   Optional option arguments.
+ * @param id    - The option ID.
+ * @param title - The option title.
+ * @param args  - Optional option arguments.
  */
 export function booleanOption<T extends Converter>(id: string, title: string, args: BooleanOptionArgs<T> = {}):
         (target: OptionTarget<T>, propertyKey: string) => void {

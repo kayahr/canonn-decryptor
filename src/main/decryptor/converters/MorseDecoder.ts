@@ -79,8 +79,8 @@ const alphabet: { [ key: string ]: string } = {
 /**
  * Function to decode morse into clear text.
  *
- * @param morse  The morse string. When not a morse string then it is returned as-is.
- * @return The clear text string.
+ * @param morse - The morse string. When not a morse string then it is returned as-is.
+ * @returns The clear text string.
  */
 function decodeMorse(morse: string): string {
     return alphabet[morse] ?? morse;
@@ -114,7 +114,7 @@ export class MorseDecoder extends Converter {
     /**
      * Returns the regular expression range to match morse tokens.
      *
-     * @return The morse tokens regular expression range.
+     * @returns The morse tokens regular expression range.
      */
     private getRange(): string {
         return "[" + escapeRegExp(this.dots + this.dashes) + "]";
@@ -123,7 +123,7 @@ export class MorseDecoder extends Converter {
     /**
      * Generates (and caches) the regular expression to replace dot characters.
      *
-     * @return The regular expression to replace dot characters.
+     * @returns The regular expression to replace dot characters.
      */
     private getDotsRegExp(): RegExp {
         return this.dotsRegExp ??= new RegExp(`[${escapeRegExp(this.dots)}]`, "g");
@@ -132,7 +132,7 @@ export class MorseDecoder extends Converter {
     /**
      * Generates (and caches) the regular expression to replace dash characters.
      *
-     * @return The regular expression to replace dash characters.
+     * @returns The regular expression to replace dash characters.
      */
     private getDashesRegExp(): RegExp {
         return this.dashesRegExp ??= new RegExp(`[${escapeRegExp(this.dashes)}]`, "g");
@@ -141,7 +141,7 @@ export class MorseDecoder extends Converter {
     /**
      * Generates (and caches) the regular expression to match a morse character.
      *
-     * @return The regular expression to match a morse character.
+     * @returns The regular expression to match a morse character.
      */
     private getMorseRegExp(): RegExp {
         if (this.morseRegExp == null) {
@@ -154,7 +154,7 @@ export class MorseDecoder extends Converter {
     /**
      * Generates (and caches) the regular expression to match a morse character group.
      *
-     * @return The regular expression to match a morse character group.
+     * @returns The regular expression to match a morse character group.
      */
     private getGroupRegExp(): RegExp {
         if (this.groupRegExp == null) {

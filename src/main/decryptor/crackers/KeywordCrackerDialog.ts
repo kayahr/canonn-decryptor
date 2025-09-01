@@ -50,7 +50,7 @@ export class KeywordCrackerDialog extends Dialog<string> {
     /**
      * Initializes the dialog with the given encoded text to crack. Cracking starts right away.
      *
-     * @param encoded  The encoded text to crack.
+     * @param encoded - The encoded text to crack.
      */
     public init(encoded: string): void {
         this.encoded = encoded;

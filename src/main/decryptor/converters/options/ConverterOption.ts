@@ -66,7 +66,7 @@ export abstract class ConverterOption<T = string | number | boolean, C extends C
     /**
      * Returns the option ID.
      *
-     * @return The option ID.
+     * @returns The option ID.
      */
     public getId(): string {
         return this.id;
@@ -75,7 +75,7 @@ export abstract class ConverterOption<T = string | number | boolean, C extends C
     /**
      * Returns the option type.
      *
-     * @return The option type.
+     * @returns The option type.
      */
     public getType(): string {
         return this.type;
@@ -84,7 +84,7 @@ export abstract class ConverterOption<T = string | number | boolean, C extends C
     /**
      * Returns the sort index.
      *
-     * @return the sort index.
+     * @returns the sort index.
      */
     public getSortIndex(): number {
         return this.sortIndex;
@@ -93,7 +93,7 @@ export abstract class ConverterOption<T = string | number | boolean, C extends C
     /**
      * Returns the option title.
      *
-     * @return The option title.
+     * @returns The option title.
      */
     public getTitle(): string {
         return this.title;
@@ -102,7 +102,7 @@ export abstract class ConverterOption<T = string | number | boolean, C extends C
     /**
      * Returns the default value of this option.
      *
-     * @return The default value.
+     * @returns The default value.
      */
     public getDefaultValue(): T {
         return this.defaultValue;
@@ -111,8 +111,8 @@ export abstract class ConverterOption<T = string | number | boolean, C extends C
     /**
      * Checks if this option is currently disabled.
      *
-     * @param converter  The converter the option is connected to.
-     * @return True if disabled, false if not.
+     * @param converter - The converter the option is connected to.
+     * @returns True if disabled, false if not.
      */
     public isDisabled(converter: C): boolean {
         return (this.disabled != null) ? this.disabled(converter) : false;
@@ -122,8 +122,8 @@ export abstract class ConverterOption<T = string | number | boolean, C extends C
      * Corrects the given value and returns the corrected value. Default implementation simply returns the value
      * unchanged but converter option implementations may implement a real value correction here.
      *
-     * @param value  The value to correct.
-     * @return The corrected value.
+     * @param value - The value to correct.
+     * @returns The corrected value.
      */
     protected correctValue(value: T): T {
         return value;
@@ -132,8 +132,8 @@ export abstract class ConverterOption<T = string | number | boolean, C extends C
     /**
      * Sets a new option value.
      *
-     * @param converter  The converter on which to set the option value.
-     * @param value   The option value to set.
+     * @param converter - The converter on which to set the option value.
+     * @param value     - The option value to set.
      */
     public setValue(converter: C, value: T): void {
         converter.setOptionValue(this, this.correctValue(value), this.onChange);
@@ -142,8 +142,8 @@ export abstract class ConverterOption<T = string | number | boolean, C extends C
     /**
      * Returns the option value.
      *
-     * @param converter  The converter from which to read the option value.
-     * @return the option value.
+     * @param converter - The converter from which to read the option value.
+     * @returns the option value.
      */
     public getValue(converter: C): T {
         const value = converter.getOptionValue(this);

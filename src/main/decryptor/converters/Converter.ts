@@ -19,7 +19,7 @@ const ctorMap = new WeakMap<new () => Converter, ConverterDescriptor>();
 /**
  * Returns the descriptors of all registered converters.
  *
- * @return The descriptors of all registered converters.
+ * @returns The descriptors of all registered converters.
  */
 export function getConverterDescriptors(): readonly ConverterDescriptor[] {
     return descriptors;
@@ -28,8 +28,8 @@ export function getConverterDescriptors(): readonly ConverterDescriptor[] {
 /**
  * Returns the converter descriptor with the given ID.
  *
- * @param id  The converter ID.
- * @return The converter descriptor.
+ * @param id - The converter ID.
+ * @returns The converter descriptor.
  * @throws IllegalArgumentError  When no matching converter descriptor was found.
  */
 export function getConverterDescriptor<T extends Converter>(id: string): ConverterDescriptor<T>;
@@ -37,8 +37,8 @@ export function getConverterDescriptor<T extends Converter>(id: string): Convert
 /**
  * Returns the converter descriptor for the given converter class.
  *
- * @param ctor  The converter class.
- * @return The converter descriptor.
+ * @param ctor - The converter class.
+ * @returns The converter descriptor.
  * @throws IllegalArgumentError  When no matching converter descriptor was found.
  */
 export function getConverterDescriptor<T extends Converter>(ctor: new () => T): ConverterDescriptor<T>;
@@ -54,8 +54,8 @@ export function getConverterDescriptor<T extends Converter>(arg: string | (new (
 /**
  * Creates and returns a new converter with the given ID.
  *
- * @param id  The converter ID.
- * @return The created converter.
+ * @param id - The converter ID.
+ * @returns The created converter.
  */
 export function createConverter(id: string): Converter {
     return getConverterDescriptor(id).create();
@@ -64,9 +64,9 @@ export function createConverter(id: string): Converter {
 /**
  * Class decorator for converter implementations.
  *
- * @param id           The converter ID.
- * @param title        The converter title.
- * @param description  The converter description.
+ * @param id    - The converter ID.
+ * @param title - The converter title.
+ * @param description - The converter description.
  */
 export function converter<T extends Converter>(id: string, groupId: string, title: string, description: string):
         <C extends new () => T>(ctor: C) => C {
@@ -101,7 +101,7 @@ export class ConverterDescriptor<T extends Converter = Converter> {
     /**
      * Returns the converter ID.
      *
-     * @return The converter ID.
+     * @returns The converter ID.
      */
     public getId(): string {
         return this.id;
@@ -110,7 +110,7 @@ export class ConverterDescriptor<T extends Converter = Converter> {
     /**
      * Returns the converter group ID.
      *
-     * @return The converter group ID.
+     * @returns The converter group ID.
      */
     public getGroupId(): string {
         return this.groupId;
@@ -119,7 +119,7 @@ export class ConverterDescriptor<T extends Converter = Converter> {
     /**
      * Returns the converter title.
      *
-     * @return The converter title.
+     * @returns The converter title.
      */
     public getTitle(): string {
         return this.title;
@@ -128,7 +128,7 @@ export class ConverterDescriptor<T extends Converter = Converter> {
     /**
      * Returns the converter description.
      *
-     * @return The converter description.
+     * @returns The converter description.
      */
     public getDescription(): string {
         return this.description;
@@ -137,7 +137,7 @@ export class ConverterDescriptor<T extends Converter = Converter> {
     /**
      * Creates a new instance of this converter.
      *
-     * @return The created converter.
+     * @returns The created converter.
      */
     public create(): T {
         return new this.ctor();
@@ -225,15 +225,15 @@ export abstract class Converter<T = unknown> {
     /**
      * Converts the given input.
      *
-     * @param input  The input to convert.
-     * @return The converted output.
+     * @param input - The input to convert.
+     * @returns The converted output.
      */
     public abstract convert(input: string): string;
 
     /**
      * Returns ths converter options.
      *
-     * @return The converter options.
+     * @returns The converter options.
      */
     public getOptions(): ReadonlyArray<ConverterOption<string | number | boolean, this>> {
         return this.options ?? [];
@@ -242,8 +242,8 @@ export abstract class Converter<T = unknown> {
     /**
      * Returns the converter option with the given ID:
      *
-     * @param id  The converter option ID.
-     * @return The converter option.
+     * @param id - The converter option ID.
+     * @returns The converter option.
      * @throws IllegalArgumentError  When no option with the given ID exists.
      */
     public getOption(id: string): ConverterOption<any, this> {
@@ -258,7 +258,7 @@ export abstract class Converter<T = unknown> {
     /**
      * Returns the converter type.
      *
-     * @return The converter type.
+     * @returns The converter type.
      */
     public getType(): string {
         return this.descriptor.getId();
@@ -267,7 +267,7 @@ export abstract class Converter<T = unknown> {
     /**
      * Returns the converter title.
      *
-     * @return The converter title.
+     * @returns The converter title.
      */
     public getTitle(): string {
         return this.descriptor.getTitle();
@@ -276,7 +276,7 @@ export abstract class Converter<T = unknown> {
     /**
      * Returns the converter description.
      *
-     * @return The converter description.
+     * @returns The converter description.
      */
     public getDescription(): string {
         return this.descriptor.getDescription();
@@ -285,8 +285,8 @@ export abstract class Converter<T = unknown> {
     /**
      * Returns the option value of the specified option.
      *
-     * @param option  The converter option.
-     * @return The option value or null if none.
+     * @param option - The converter option.
+     * @returns The option value or null if none.
      */
     public getOptionValue<T>(option: ConverterOption<T, this>): T | null {
         const value = this.optionValues.get(option);
@@ -296,9 +296,9 @@ export abstract class Converter<T = unknown> {
     /**
      * Sets (or removes) an option value.
      *
-     * @param option  The converter option.
-     * @param value   The option value to set. Null to remove the value.
-     * @return True if value was changed, false if not.
+     * @param option - The converter option.
+     * @param value  - The option value to set. Null to remove the value.
+     * @returns True if value was changed, false if not.
      */
     public setOptionValue<T>(option: ConverterOption<T, this>, value: T,
             onChange: ((converter: this) => void) | null = null): void {

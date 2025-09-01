@@ -29,8 +29,8 @@ export class ToastService {
     /**
      * Shows a new toast with the given text.
      *
-     * @param text      The text to display in a toast.
-     * @param options   Optional toast options: duration and type.
+     * @param text    - The text to display in a toast.
+     * @param options - Optional toast options: duration and type.
      *                  - duration: Display time in ms. Defaults to word-count-based duration.
      *                  - type: "info" (default) or "warning".
      */

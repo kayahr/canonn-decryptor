@@ -10,19 +10,19 @@ import { toError } from "./error.js";
 /**
  * Wraps the given standard promise and a cancellation handler into a cancelable promise.
  *
- * @param promise   The standard promise to wrap.
- * @param onCancel  Called when cancellation is requested. This callback must perform the actual cancellation of the
- *                  standard promise and then (if successfully canceled) throw the passed canceled object.
- * @return The created cancelable promise.
+ * @param promise  - The standard promise to wrap.
+ * @param onCancel - Called when cancellation is requested. This callback must perform the actual cancellation of the
+ *                   standard promise and then (if successfully canceled) throw the passed canceled object.
+ * @returns The created cancelable promise.
  */
 export function cancelable<T>(promise: Promise<T>, onCancel?: (canceled: Canceled) => void): Cancelable<T>;
 
 /**
  * Wraps the given async function and a cancellation handler into a cancelable promise.
  *
- * @param asyncFunc  The async function.
- * @param onCancel   Called when cancellation is requested. This callback must perform the actual cancellation of the
- *                   async function and then (if successfully canceled) throw the passed canceled object.
+ * @param asyncFunc - The async function.
+ * @param onCancel  - Called when cancellation is requested. This callback must perform the actual cancellation of the
+ *                    async function and then (if successfully canceled) throw the passed canceled object.
  * @return The created cancelable promise.
  */
 export function cancelable<T>(asyncFunc: () => Promise<T>, onCancel?: (canceled: Canceled) => void): Cancelable<T>;

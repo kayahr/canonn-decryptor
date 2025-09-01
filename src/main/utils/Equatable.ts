@@ -21,8 +21,8 @@ export interface Equatable {
      *   modified.
      * * For any non-null reference value x, x.equals(null) should return false.
      *
-     * @param other  The other object to compare this one with.
-     * @return True if objects are equal, false it not.
+     * @param other - The other object to compare this one with.
+     * @returns True if objects are equal, false it not.
      */
     equals(other: any): boolean;
 }
@@ -30,8 +30,8 @@ export interface Equatable {
 /**
  * Checks if given object implements the equatable interface.
  *
- * @param object  The object to check.
- * @return True if object is equatable, false if not.
+ * @param object - The object to check.
+ * @returns True if object is equatable, false if not.
  */
 export function isEquatable(object: unknown): object is Equatable {
     return object instanceof Object && typeof (object as Equatable).equals === "function";
@@ -42,11 +42,11 @@ export function isEquatable(object: unknown): object is Equatable {
  * checks and you only have to implement the actual property comparison in the the given `comparer` callback. This
  * callback is only called when the base checks passed.
  *
- * @param thisObj   The first object to compare.
- * @param otherObj  The second object to compare.
- * @param comparer  The callback which implements the actual comparison of properties. Must return true if objects
+ * @param thisObj  - The first object to compare.
+ * @param otherObj - The second object to compare.
+ * @param comparer - The callback which implements the actual comparison of properties. Must return true if objects
  *                  are equal or false it no.
- * @return True if objects are equal, false if not.
+ * @returns True if objects are equal, false if not.
  */
 export function isEqual<T extends Equatable>(thisObj: T, otherObj: unknown, comparer: (other: T) => boolean): boolean {
     if (otherObj === thisObj) {

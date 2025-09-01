@@ -17,9 +17,9 @@ export interface StringOptionArgs<T extends Converter> extends ConverterOptionAr
 /**
  * Property decorator for a string option.
  *
- * @param id     The option ID.
- * @param title  The option title.
- * @param args   Optional option arguments.
+ * @param id    - The option ID.
+ * @param title - The option title.
+ * @param args  - Optional option arguments.
  */
 export function stringOption<T extends Converter>(id: string, title: string, args: StringOptionArgs<T> = {}):
         (target: OptionTarget<T>, propertyKey: string) => void {
@@ -44,7 +44,7 @@ export class StringOption<T extends Converter = Converter> extends ConverterOpti
     /**
      * Checks if value is allowed to be empty.
      *
-     * @return True if value can be empty, false if not.
+     * @returns True if value can be empty, false if not.
      */
     public isAllowEmpty(): boolean {
         return this.allowEmpty;
@@ -53,7 +53,7 @@ export class StringOption<T extends Converter = Converter> extends ConverterOpti
     /**
      * Returns the maximum string length or null when unlimited.
      *
-     * @return The maximum string length or null when unlimited.
+     * @returns The maximum string length or null when unlimited.
      */
     public getMaxLength(): number | null {
         return this.maxLength;

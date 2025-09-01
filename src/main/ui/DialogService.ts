@@ -30,10 +30,10 @@ export class DialogService {
     /**
      * Creates and opens a dialog of the specified type and asynchronously returns the dialog result.
      *
-     * @param dialogComponent  The dialog component type to create and open.
-     * @param init             Optional initializer function which is called with the created dialog as argument.
-     *                         You can place dialog initialization code in here.
-     * @return The dialog result.
+     * @param dialogComponent - The dialog component type to create and open.
+     * @param init            - Optional initializer function which is called with the created dialog as argument.
+     *                          You can place dialog initialization code in here.
+     * @returns The dialog result.
      */
     public openDialog<V, T extends Dialog<V>>(
             dialogComponent: { new (...args: any[]): T & Dialog<V> },
@@ -60,9 +60,9 @@ export class DialogService {
     /**
      * Creates and opens a confirm dialog with the given body and title and returns the confirmation result.
      *
-     * @param body   The confirm dialog body text.
-     * @param title  Optional confirm dialog title. Defaults to "Confirm"
-     * @return True if dialog is confirmed, false if canceled or closed.
+     * @param body  - The confirm dialog body text.
+     * @param title - Optional confirm dialog title. Defaults to "Confirm"
+     * @returns True if dialog is confirmed, false if canceled or closed.
      */
     public async confirm(body: string, title = "Confirm"): Promise<boolean> {
         return await this.openDialog(ConfirmDialog, component => {

@@ -28,9 +28,9 @@ export class BoundFunction<T = unknown> implements Equatable {
     /**
      * Creates a new bound function bound to the specified call context and arguments.
      *
-     * @param func     The function to bind.
-     * @param context  Optional call context to bind to.
-     * @param args     Optional arguments to pass to the bound function.
+     * @param func    - The function to bind.
+     * @param context - Optional call context to bind to.
+     * @param args    - Optional arguments to pass to the bound function.
      */
     public constructor(func: (...args: unknown[]) => T, context: unknown = null, ...args: unknown[]) {
         this.func = func;
@@ -47,7 +47,7 @@ export class BoundFunction<T = unknown> implements Equatable {
     /**
      * Returns the bound function.
      *
-     * @return The bound function.
+     * @returns The bound function.
      */
     public getFunction(): (...args: unknown[]) => T {
         return this.func;
@@ -56,7 +56,7 @@ export class BoundFunction<T = unknown> implements Equatable {
     /**
      * Returns the call context.
      *
-     * @return The call context or null if none.
+     * @returns The call context or null if none.
      */
     public getContext(): unknown {
         return this.context;
@@ -65,7 +65,7 @@ export class BoundFunction<T = unknown> implements Equatable {
     /**
      * Returns a copy of the arguments passed to the bound function.
      *
-     * @return A copy of the arguments passed to the bound function.
+     * @returns A copy of the arguments passed to the bound function.
      */
     public getArguments(): unknown[] {
         return this.args.slice();
@@ -74,8 +74,8 @@ export class BoundFunction<T = unknown> implements Equatable {
     /**
      * Calls the bound function with the given arguments.
      *
-     * @param args  The arguments to pass to the bound function.
-     * @return The return value of the called bound function.
+     * @param args - The arguments to pass to the bound function.
+     * @returns The return value of the called bound function.
      */
     public call(...args: unknown[]): T {
         return this.func.call(this.context, ...this.args, ...args);
@@ -84,8 +84,8 @@ export class BoundFunction<T = unknown> implements Equatable {
     /**
      * Calls the bound function asynchronously with the given arguments.
      *
-     * @param args  The additional arguments to pass to the bound function.
-     * @return The cancelable asynchronous response of the function call.
+     * @param args - The additional arguments to pass to the bound function.
+     * @returns The cancelable asynchronous response of the function call.
      */
     public defer(...args: unknown[]): Cancelable<T> {
         return this.deferFor(0, ...args);
@@ -94,9 +94,9 @@ export class BoundFunction<T = unknown> implements Equatable {
     /**
      * Calls the bound function asynchronously in `timeout` milliseconds with the given arguments.
      *
-     * @param timeout  The time to wait before calling the function.
-     * @param args     The additional arguments to pass to the bound function.
-     * @return The cancelable asynchronous response of the function call.
+     * @param timeout - The time to wait before calling the function.
+     * @param args    - The additional arguments to pass to the bound function.
+     * @returns The cancelable asynchronous response of the function call.
      */
     public deferFor(timeout: number, ...args: unknown[]): Cancelable<T> {
         let handle: ReturnType<typeof setTimeout>;
@@ -117,8 +117,8 @@ export class BoundFunction<T = unknown> implements Equatable {
     /**
      * Calls the bound function asynchronously with the given arguments if not already queued.
      *
-     * @param args  The additional arguments to pass to the bound function.
-     * @return The cancelable asynchronous response of the function call. If call was already queued then the
+     * @param args - The additional arguments to pass to the bound function.
+     * @returns The cancelable asynchronous response of the function call. If call was already queued then the
      *         asynchronous response of the queued call is returned.
      */
     public queue(...args: unknown[]): Cancelable<T> {
@@ -129,9 +129,9 @@ export class BoundFunction<T = unknown> implements Equatable {
      * Calls the bound function asynchronously in `timeout` milliseconds with the given arguments if not already
      * queued.
      *
-     * @param timeout  The time to wait before calling the function.
-     * @param args     The additional arguments to pass to the bound function.
-     * @return The cancelable asynchronous response of the function call. If call was already queued then the
+     * @param timeout - The time to wait before calling the function.
+     * @param args    - The additional arguments to pass to the bound function.
+     * @returns The cancelable asynchronous response of the function call. If call was already queued then the
      *         asynchronous response of the queued call is returned.
      */
     public queueFor(timeout: number, ...args: unknown[]): Cancelable<T> {

@@ -33,7 +33,7 @@ export class NumberDecoder extends Converter {
     /**
      * Returns the regular expression range to match digits.
      *
-     * @return The regular expression range to match digits.
+     * @returns The regular expression range to match digits.
      */
     private getRange(): string {
         const base = this.base;
@@ -43,7 +43,7 @@ export class NumberDecoder extends Converter {
     /**
      * Generates (and caches) the regular expression to match a single numeric value.
      *
-     * @return The regular expression to match a single numeric value.
+     * @returns The regular expression to match a single numeric value.
      */
     private getNumberRegExp(): RegExp {
         if (this.numberRegExp == null) {
@@ -56,7 +56,7 @@ export class NumberDecoder extends Converter {
     /**
      * Generates (and caches) the regular expression to match a group of numeric values.
      *
-     * @return The regular expression to match a group of numeric values.
+     * @returns The regular expression to match a group of numeric values.
      */
     private getGroupRegExp(): RegExp {
         if (this.groupRegExp == null) {

@@ -31,7 +31,7 @@ export abstract class OneTimePadCipher extends Converter {
      * Returns the pad codes as an array with numbers 0-25. This is generated from the entered pad characters but
      * only valid characters are used from it. Case doesn't matter.
      *
-     * @return the list of valid pad codes.
+     * @returns the list of valid pad codes.
      */
     public getPadCodes(): number[] {
         return this.cachedPadCodes ??= this.pad.toUpperCase().replace(/[^A-Z]/g, "").split("").map(char => char.charCodeAt(0) - 65);

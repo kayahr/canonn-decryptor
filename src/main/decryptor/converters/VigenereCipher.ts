@@ -45,9 +45,9 @@ export abstract class VigenereCipher extends Converter {
     /**
      * Converts a single character.
      *
-     * @param char  The character to convert (A=0, Z=25).
-     * @param key   The corresponding character from the keyword (A=0, Z=25)
-     * @return The converted character (0-25).
+     * @param char - The character to convert (A=0, Z=25).
+     * @param key  - The corresponding character from the keyword (A=0, Z=25)
+     * @returns The converted character (0-25).
      */
     protected abstract convertChar(char: number, key: number): number;
 }

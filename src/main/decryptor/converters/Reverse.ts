@@ -8,8 +8,8 @@ import { Converter, converter } from "./Converter.js";
 /**
  * Reverses the given string.
  *
- * @param s  The string to reverse.
- * @return  The reversed string.
+ * @param s - The string to reverse.
+ * @returns  The reversed string.
  */
 function reverse(s: string): string {
     return s.split("").reverse().join("");

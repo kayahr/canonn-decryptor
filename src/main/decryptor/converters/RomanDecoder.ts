@@ -19,8 +19,8 @@ const groupRegExp = new RegExp(`(^|\\s+)(${range}(?:\\s+${range})*)($|\\s+)`, "g
 /**
  * Decodes a roman number into a numeric value.
  *
- * @param roman  The roman number to decode.
- * @return The numeric value.
+ * @param roman - The roman number to decode.
+ * @returns The numeric value.
  */
 function decodeRoman(roman: string): number {
     // eslint-disable-next-line regexp/prefer-character-class

@@ -32,7 +32,7 @@ export class AppComponent {
     /**
      * Returns the application version.
      *
-     * @return The application version.
+     * @returns The application version.
      */
     public get appVersion(): string {
         return appVersion;

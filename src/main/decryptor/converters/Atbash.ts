@@ -8,8 +8,8 @@ import { Converter, converter } from "./Converter.js";
 /**
  * Reverses a single character.
  *
- * @param char  The character to rotate
- * @return The rotated character.
+ * @param char - The character to rotate
+ * @returns The rotated character.
  */
 function reverse(char: string): string {
     const base = char < "a" ? 65 : 97;

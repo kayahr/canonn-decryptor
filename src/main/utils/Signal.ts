@@ -112,14 +112,14 @@ export class Signal<T = void, R = any> implements Observable<T> {
     /**
      * Creates a signal emitter which emits no value (void).
      *
-     * @return The created signal emitter.
+     * @returns The created signal emitter.
      */
     public static createEmitter(): VoidSignalEmitter;
 
     /**
      * Creates and returns a signal emitter emitting a value of the given type.
      *
-     * @return The created signal emitter.
+     * @returns The created signal emitter.
      */
     public static createEmitter<T>(): SignalEmitter<T>;
 
@@ -140,8 +140,8 @@ export class Signal<T = void, R = any> implements Observable<T> {
     /**
      * Connects the given listener function or method to the signal.
      *
-     * @param func      The listener function.
-     * @param context   Optional context to bind the listener function to, making it a method.
+     * @param func    - The listener function.
+     * @param context - Optional context to bind the listener function to, making it a method.
      */
     public connect(func: (data: T) => void, context: Object | null = null): void {
         if (this.slotCount === 0) {
@@ -156,8 +156,8 @@ export class Signal<T = void, R = any> implements Observable<T> {
      * times then only the first listener is disconnected. If listener is not connected at all then this method
      * does nothing.
      *
-     * @param func     The listener function to disconnect.
-     * @param context  Optional binding context in case listener function is a method.
+     * @param func    - The listener function to disconnect.
+     * @param context - Optional binding context in case listener function is a method.
      */
     public disconnect(callback: (data: T) => void, context: Object | null = null): void {
         const slots = this.slots;
@@ -177,7 +177,7 @@ export class Signal<T = void, R = any> implements Observable<T> {
     /**
      * Emits the signal with the given value.
      *
-     * @param value  The signal payload value to emit.
+     * @param value - The signal payload value to emit.
      */
     private emit(value: T): void {
         const slots = this.slots;
@@ -198,8 +198,8 @@ export class Signal<T = void, R = any> implements Observable<T> {
      * Subscribes the given observer to the signal. For compatibility to Angular the observer can also be
      * a function. Returns a subscription object which can be used to unsubscribe the observer from the signal.
      *
-     * @param observer  The observer (or function) to subscribe.
-     * @return The subscription which can be used to unsubscribe the observer from the signal.
+     * @param observer - The observer (or function) to subscribe.
+     * @returns The subscription which can be used to unsubscribe the observer from the signal.
      */
     public subscribe(observer: Observer<T> | ((value: T) => void)): Subscription {
         let func: (value: T) => void;
@@ -223,8 +223,8 @@ export class Signal<T = void, R = any> implements Observable<T> {
      * Returns a new signal connected to this one which emits the current value after the given time has passed without
      * the original signal emitting any new value.
      *
-     * @param throttle  Duration of the throttle period in milliseconds.
-     * @return The debounced signal.
+     * @param throttle - Duration of the throttle period in milliseconds.
+     * @returns The debounced signal.
      */
     public debounce(throttle: number): Signal<T> {
         let timer: ReturnType<typeof setTimeout>;

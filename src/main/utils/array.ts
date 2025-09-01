@@ -9,9 +9,9 @@ import { isEquatable } from "./Equatable.js";
  * Checks if given array contains the given object. This also checks for equality if object implements the
  * [[Equatable]] interface.
  *
- * @param array  The array to search
- * @param object  The object to look for.
- * @return True if object was found, false if not.
+ * @param array  - The array to search
+ * @param object - The object to look for.
+ * @returns True if object was found, false if not.
  */
 export function contains(array: any[], object: unknown): boolean {
     const checkEquality = isEquatable(object);

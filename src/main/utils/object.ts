@@ -8,10 +8,10 @@ import { isEquatable } from "./Equatable.js";
 /**
  * Internal implementation of equals which can recursively dive deep into arrays and objects to check for equality.
  *
- * @param obj1  An object.
- * @param obj2  An object to be compared with `obj1` for equality.
- * @param seen  Array of already checked objects.
- * @return True if the arguments are equal to each other and false otherwise.
+ * @param obj1 - An object.
+ * @param obj2 - An object to be compared with `obj1` for equality.
+ * @param seen - Array of already checked objects.
+ * @returns True if the arguments are equal to each other and false otherwise.
  */
 function deepEquals(obj1: object | null | undefined, obj2: object | null | undefined, seen: object[] = []): boolean {
     // Check if objects are exactly the same instance or same primitive value
@@ -92,9 +92,9 @@ function deepEquals(obj1: object | null | undefined, obj2: object | null | undef
  * If both arguments are objects (but not providing an equals function) then key/values are checked for equality
  * recursively.
  *
- * @param obj1  An object.
- * @param obj2  An object to be compared with `obj1` for equality.
- * @return True if the arguments are equal to each other and false otherwise.
+ * @param obj1 - An object.
+ * @param obj2 - An object to be compared with `obj1` for equality.
+ * @returns True if the arguments are equal to each other and false otherwise.
  */
 export function equals(obj1: Object | null | undefined, obj2: Object | null | undefined): boolean {
     return deepEquals(obj1, obj2);

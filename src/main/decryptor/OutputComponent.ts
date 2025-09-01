@@ -42,7 +42,7 @@ export class OutputComponent {
     /**
      * Returns the output title which is the title of the used converter.
      *
-     * @return The title.
+     * @returns The title.
      */
     public get title(): string {
         return this.output.getConverter().getTitle();
@@ -51,7 +51,7 @@ export class OutputComponent {
     /**
      * Returns the current output value.
      *
-     * @return The output value.
+     * @returns The output value.
      */
     public get value(): string {
         return this.output.getValue();
@@ -60,7 +60,7 @@ export class OutputComponent {
     /**
      * Returns the options of the converter used in this output.
      *
-     * @return The converter options.
+     * @returns The converter options.
      */
     public get options(): readonly ConverterOption[] {
         return this.output.getConverter().getOptions();
@@ -69,7 +69,7 @@ export class OutputComponent {
     /**
      * Returns the converter used by this output.
      *
-     * @return The used converter.
+     * @returns The used converter.
      */
     public get converter(): Converter {
         return this.output.getConverter();
@@ -78,7 +78,7 @@ export class OutputComponent {
     /**
      * Returns the child outputs of this output.
      *
-     * @return The child outputs.
+     * @returns The child outputs.
      */
     public get outputs(): DecryptorOutput[] {
         return this.output.getOutputs();
@@ -107,7 +107,7 @@ export class OutputComponent {
     /**
      * Checks if converter supports cracking.
      *
-     * @return True if crackable, false if not.
+     * @returns True if crackable, false if not.
      */
     public get crackable(): boolean {
         const converter = this.output.getConverter();

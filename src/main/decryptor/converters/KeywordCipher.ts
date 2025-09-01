@@ -24,7 +24,7 @@ export abstract class KeywordCipher extends Converter {
      * Returns the alphabet generated for the configured keyword. The alphabet is cached so it is only generated
      * once after a keyword change.
      *
-     * @return The generated alphabet.
+     * @returns The generated alphabet.
      */
     public getAlphabet(): string {
         this.alphabet ??= this.keyword
@@ -59,8 +59,8 @@ export abstract class KeywordCipher extends Converter {
     /**
      * Converts a single character.
      *
-     * @param char  The character to convert.
-     * @return The converted character.
+     * @param char - The character to convert.
+     * @returns The converted character.
      */
     protected abstract convertChar(char: string): string;
 }

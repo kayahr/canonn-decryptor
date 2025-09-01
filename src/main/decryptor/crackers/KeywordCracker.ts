@@ -29,9 +29,9 @@ export class KeywordCrackerResult implements Equatable {
     /**
      * Creates a new keyword cracker result.
      *
-     * @param score    The score of the decoded message. The higher the more likely this is a real english text.
-     * @param keyword  The keyword with which the text was encrypted.
-     * @param message  The decoded message.
+     * @param score   - The score of the decoded message. The higher the more likely this is a real english text.
+     * @param keyword - The keyword with which the text was encrypted.
+     * @param message - The decoded message.
      */
     public constructor(score: number, keyword: string, message: string) {
         this.score = score;
@@ -48,7 +48,7 @@ export class KeywordCrackerResult implements Equatable {
     /**
      * Returns the score of the decoded message. The higher the more likely this is a real english text.
      *
-     * @return The score of the decoded message.
+     * @returns The score of the decoded message.
      */
     public getScore(): number {
         return this.score;
@@ -57,7 +57,7 @@ export class KeywordCrackerResult implements Equatable {
     /**
      * Returns the keyword with which the text was encrypted.
      *
-     * @return The keyword.
+     * @returns The keyword.
      */
     public getKeyword(): string {
         return this.keyword;
@@ -66,7 +66,7 @@ export class KeywordCrackerResult implements Equatable {
     /**
      * Returns the decoded message.
      *
-     * @return The decoded message.
+     * @returns The decoded message.
      */
     public getMessage(): string {
         return this.message;
@@ -102,10 +102,10 @@ export class KeywordCracker {
      * Creates the shortest possible keyword from the given alphabet sufficient to decode the given encoded message
      * to the given decoded message.
      *
-     * @param alphabet  The alphabet used to decode the encoded string to the decoded string.
-     * @param encoded   The encoded string.
-     * @param decoded   The decoded string.
-     * @return The keyword.
+     * @param alphabet - The alphabet used to decode the encoded string to the decoded string.
+     * @param encoded  - The encoded string.
+     * @param decoded  - The decoded string.
+     * @returns The keyword.
      */
     private createKeyword(alphabet: Alphabet, encoded: FastString, decoded: FastString): string {
         const inverted = alphabet.clone().invert();
@@ -126,9 +126,9 @@ export class KeywordCracker {
     /**
      * Tries to crack the given encoded message.
      *
-     * @param encoded  The encoded message.
-     * @param onResult  Callback called with a cracker result every time a better score has been achieved.
-     * @return The best cracker result or null when none.
+     * @param encoded  - The encoded message.
+     * @param onResult - Callback called with a cracker result every time a better score has been achieved.
+     * @returns The best cracker result or null when none.
      */
     public crack(encoded: string, onResult?: (result: KeywordCrackerResult) => void,
             onProgress?: (current: number, max: number) => void): Cancelable<KeywordCrackerResult | null> {

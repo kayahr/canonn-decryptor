@@ -22,10 +22,10 @@ export type SelectItems = SelectItem[];
 /**
  * Property decorator for a selector option.
  *
- * @param id     The option ID.
- * @param title  The option title.
- * @param items  The selectable items.
- * @param args   Optional option arguments.
+ * @param id    - The option ID.
+ * @param title - The option title.
+ * @param items - The selectable items.
+ * @param args  - Optional option arguments.
  */
 export function selectOption<T extends Converter>(id: string, title: string, items: SelectItems,
         args: SelectOptionArgs<T> = {}): (target: OptionTarget<T>, propertyKey: string) => void {
@@ -52,7 +52,7 @@ export class SelectOption<T extends Converter = Converter> extends ConverterOpti
     /**
      * Returns the selectable items.
      *
-     * @return The selectable items.
+     * @returns The selectable items.
      */
     public getItems(): readonly SelectItem[] {
         return this.items;

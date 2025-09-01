@@ -18,9 +18,9 @@ export interface NumberOptionArgs<T extends Converter> extends ConverterOptionAr
 /**
  * Property decorator for a number option.
  *
- * @param id     The option ID.
- * @param title  The option title.
- * @param args   Optional option arguments.
+ * @param id    - The option ID.
+ * @param title - The option title.
+ * @param args  - Optional option arguments.
  */
 export function numberOption<T extends Converter>(id: string, title: string,
         args: NumberOptionArgs<T> = {}): (target: OptionTarget<T>, propertyKey: string) => void {
@@ -47,7 +47,7 @@ export class NumberOption<T extends Converter = Converter> extends ConverterOpti
     /**
      * Returns the maximum value.
      *
-     * @return The maximum value.
+     * @returns The maximum value.
      */
     public getMax(): number {
         return this.max;
@@ -56,7 +56,7 @@ export class NumberOption<T extends Converter = Converter> extends ConverterOpti
     /**
      * Returns the minimum value.
      *
-     * @return The minimum value.
+     * @returns The minimum value.
      */
     public getMin(): number {
         return this.min;
@@ -65,7 +65,7 @@ export class NumberOption<T extends Converter = Converter> extends ConverterOpti
     /**
      * Returns the step size.
      *
-     * @return The step size.
+     * @returns The step size.
      */
     public getStep(): number {
         return this.step;

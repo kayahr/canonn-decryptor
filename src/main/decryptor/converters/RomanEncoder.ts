@@ -31,8 +31,8 @@ const groupRegExp = new RegExp(`(^|\\s+)(${range}(?:\\s+${range})*)($|\\s+)`, "g
 /**
  * Encodes a decimal number into a roman numeral.
  *
- * @param decimal  The decimal number to encode.
- * @return The roman numeral.
+ * @param decimal - The decimal number to encode.
+ * @returns The roman numeral.
  */
 function encodeRoman(decimal: number): string {
     // Roman numbers can't be lower than 1 or larger than 3999

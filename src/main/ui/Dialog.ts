@@ -19,7 +19,7 @@ export abstract class Dialog<T> {
     /**
      * Closes the dialog with the given result.
      *
-     * @param value  The dialog result.
+     * @param value - The dialog result.
      */
     public close(value: T | null = null): void {
         this.onClosed.emit(value);
