@@ -15,8 +15,7 @@ export type WhitespaceHandling = "keep" | "discard" | "encode";
 /**
  * Number encoder.
  */
-@converter<NumberEncoder>("number-encoder", "number", "Number Encoder",
-    "Encodes ASCII characters into numbers. Supports base 2 to 36 and value shifting.")
+@converter<NumberEncoder>("number-encoder", "number", "Number Encoder", "Encodes ASCII characters into numbers.")
 export class NumberEncoder extends Converter<NumberEncoder> {
     /** The number base. */
     @numberOption<NumberEncoder>("base", "Base", {

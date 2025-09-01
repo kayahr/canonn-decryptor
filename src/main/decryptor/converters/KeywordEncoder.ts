@@ -9,8 +9,7 @@ import { KeywordCipher } from "./KeywordCipher.js";
 /**
  * Keyword encoder.
  */
-@converter<KeywordEncoder>("keyword-encoder", "keyword", "Keyword Encoder",
-    "Encodes text by encrypting it with keyword based alphabet substitution.")
+@converter<KeywordEncoder>("keyword-encoder", "keyword", "Keyword Encoder", "Encodes text with keyword based alphabet substitution.")
 export class KeywordEncoder extends KeywordCipher {
     /** @inheritDoc */
     protected convertChar(char: string): string {
