@@ -124,7 +124,7 @@ export class OutputComponent {
                 dialog.init(this.output.getParent().getValue());
             });
             if (keyword != null) {
-                converter.setKeyword(keyword);
+                converter.keyword = keyword;
             }
         }
     }

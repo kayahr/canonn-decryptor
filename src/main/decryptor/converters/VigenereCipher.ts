@@ -11,53 +11,28 @@ import { stringOption } from "./options/StringOption.js";
  */
 export abstract class VigenereCipher extends Converter {
     /** The keyword to encode/decode with. */
-    @stringOption<VigenereCipher>("keyword", "Keyword", { onChange: cipher => cipher.createKeys() })
-    protected keyword: string = "";
+    @stringOption<VigenereCipher>("keyword", "Keyword", { onChange: cipher => cipher.resetKeys() })
+    public keyword!: string;
 
-    /** Key characters created from the configured keyword. */
-    private keys: number[] = [];
+    private keys: number[] | null = null;
 
     /**
-     * Creates a new Vigenère cipher with the given keyword.
-     *
-     * @param keyword  Optional initial keyword. Defaults to no keyword when not specified.
+     * Reset the keys so they are recreated on next access via {@link getKeys}. Called when keyword changes.
      */
-    public constructor(keyword?: string) {
-        super();
-        if (keyword != null) {
-            this.keyword = keyword;
-        }
+    private resetKeys(): void {
+        this.keys = null;
     }
 
     /**
      * Creates the key characters from the configured keyword.
      */
-    private createKeys() {
-        this.keys = this.keyword.toUpperCase().split("").filter(c => c >= "A" && c <= "Z")
-            .map(c => c.charCodeAt(0) - 65);
-    }
-
-    /**
-     * Returns the keyword.
-     *
-     * @return The keyword.
-     */
-    public getKeyword(): string {
-        return this.keyword;
-    }
-
-    /**
-     * Sets the keyword.
-     *
-     * @param keyword  The keyword to set.
-     */
-    public setKeyword(keyword: string): void {
-        this.keyword = keyword;
+    private getKeys(): number[] {
+        return this.keys ??= this.keyword.toUpperCase().split("").filter(c => c >= "A" && c <= "Z").map(c => c.charCodeAt(0) - 65);
     }
 
     /** @inheritDoc */
     public convert(input: string): string {
-        const keys = this.keys;
+        const keys = this.getKeys();
         let index = 0;
         return input.replace(/[a-z]/gi, char => {
             const base = char < "a" ? 65 : 97;

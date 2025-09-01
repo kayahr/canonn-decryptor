@@ -6,31 +6,31 @@ import { KeywordEncoder } from "../../../main/decryptor/converters/KeywordEncode
 describe("KeywordEncoder", () => {
     describe("constructor", () => {
         it("initializes to empty keyword if none given", () => {
-            expect(new KeywordEncoder().getKeyword()).toBe("");
+            expect(new KeywordEncoder().keyword).toBe("");
         });
         it("initializes to given keyword", () => {
-            expect(new KeywordEncoder("Canonn").getKeyword()).toBe("Canonn");
+            expect(new KeywordEncoder({ keyword: "Canonn" }).keyword).toBe("Canonn");
         });
         it("initializes to standard alphabet when no keyword given", () => {
             expect(new KeywordEncoder().getAlphabet()).toBe("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         });
         it("creates correct alphabet when keyword is given", () => {
-            expect(new KeywordEncoder("Keyword").getAlphabet())
+            expect(new KeywordEncoder({ keyword: "Keyword" }).getAlphabet())
                 .toBe("KEYWORDABCFGHIJLMNPQSTUVXZ");
-            expect(new KeywordEncoder("The quick brown fox jumps over the lazy dog").getAlphabet())
+            expect(new KeywordEncoder({ keyword: "The quick brown fox jumps over the lazy dog" }).getAlphabet())
                 .toBe("THEQUICKBROWNFXJMPSVLAZYDG");
         });
     });
 
     describe("setKeyword", () => {
         it("updates the keyword", () => {
-            const encoder = new KeywordEncoder("Not this one");
-            encoder.setKeyword("Canonn");
-            expect(encoder.getKeyword()).toBe("Canonn");
+            const encoder = new KeywordEncoder({ keyword: "Not this one" });
+            encoder.keyword = "Canonn";
+            expect(encoder.keyword).toBe("Canonn");
         });
         it("updates the alphabet", () => {
-            const encoder = new KeywordEncoder("Not this one");
-            encoder.setKeyword("Canonn");
+            const encoder = new KeywordEncoder({ keyword: "Not this one" });
+            encoder.keyword = "Canonn";
             expect(encoder.getAlphabet()).toBe("CANOBDEFGHIJKLMPQRSTUVWXYZ");
         });
     });
@@ -46,22 +46,22 @@ describe("KeywordEncoder", () => {
             expect(new KeywordEncoder().convert("1ö_<")).toBe("1ö_<");
         });
         it("encodes normal lower-case characters", () => {
-            expect(new KeywordEncoder("Eagle Mk3").convert("foobar")).toBe("kooaer");
+            expect(new KeywordEncoder({ keyword: "Eagle Mk3" }).convert("foobar")).toBe("kooaer");
         });
         it("encodes normal upper-case characters", () => {
-            expect(new KeywordEncoder("Asp Explorer").convert("FOOBAR")).toBe("LIISAM");
+            expect(new KeywordEncoder({ keyword: "Asp Explorer" }).convert("FOOBAR")).toBe("LIISAM");
         });
         it("encodes normal mixed-case characters", () => {
-            expect(new KeywordEncoder("Anaconda").convert("FooBar")).toBe("BmmNar");
+            expect(new KeywordEncoder({ keyword: "Anaconda" }).convert("FooBar")).toBe("BmmNar");
         });
         it("encodes only normal characters in mixed string", () => {
-            expect(new KeywordEncoder("Cobra Mk3").convert("#12FooBar!")).toBe("#12MllOcq!");
+            expect(new KeywordEncoder({ keyword: "Cobra Mk3" }).convert("#12FooBar!")).toBe("#12MllOcq!");
         });
     });
 
     describe("toJSON", () => {
         it("serializes the converter", () => {
-            expect(new KeywordEncoder("Secret").toJSON()).toEqual({
+            expect(new KeywordEncoder({ keyword: "Secret" }).toJSON()).toEqual({
                 type: "keyword-encoder",
                 options: {
                     keyword: "Secret"
@@ -69,7 +69,7 @@ describe("KeywordEncoder", () => {
             });
         });
         it("does not serialize default option values", () => {
-            expect(new KeywordEncoder("").toJSON()).toEqual({
+            expect(new KeywordEncoder({ keyword: "" }).toJSON()).toEqual({
                 type: "keyword-encoder"
             });
         });
@@ -84,12 +84,12 @@ describe("KeywordEncoder", () => {
                 }
             });
             expect(converter).toBeInstanceOf(KeywordEncoder);
-            expect(converter.getKeyword()).toBe("Secret");
+            expect(converter.keyword).toBe("Secret");
         });
         it("deserializes a converter with default options", () => {
             const converter = Converter.fromJSON<KeywordEncoder>({ type: "keyword-encoder" });
             expect(converter).toBeInstanceOf(KeywordEncoder);
-            expect(converter.getKeyword()).toBe("");
+            expect(converter.keyword).toBe("");
         });
     });
 });

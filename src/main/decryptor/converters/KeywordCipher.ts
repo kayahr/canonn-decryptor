@@ -15,22 +15,10 @@ const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 export abstract class KeywordCipher extends Converter {
     /** The keyword to encode/decode with. */
     @stringOption<KeywordCipher>("keyword", "Keyword", { onChange: converter => converter.resetCaches() })
-    protected keyword: string = "";
+    public keyword!: string;
 
     /** The alphabet generated for the configured keyword. */
     protected alphabet: string | null = null;
-
-    /**
-     * Creates a new keyword cipher with the given keyword.
-     *
-     * @param keyword  Optional initial keyword. Defaults to no keyword when not specified.
-     */
-    public constructor(keyword?: string) {
-        super();
-        if (keyword != null) {
-            this.keyword = keyword;
-        }
-    }
 
     /**
      * Returns the alphabet generated for the configured keyword. The alphabet is cached so it is only generated
@@ -46,24 +34,6 @@ export abstract class KeywordCipher extends Converter {
             .filter((char, index, alphabet) => !(alphabet.indexOf(char) < index))
             .join("");
         return this.alphabet;
-    }
-
-    /**
-     * Returns the keyword.
-     *
-     * @return The keyword.
-     */
-    public getKeyword(): string {
-        return this.keyword;
-    }
-
-    /**
-     * Sets the keyword.
-     *
-     * @param keyword  The keyword to set.
-     */
-    public setKeyword(keyword: string): void {
-        this.keyword = keyword;
     }
 
     /**

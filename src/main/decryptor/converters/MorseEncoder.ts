@@ -82,63 +82,11 @@ const groupReplace = new RegExp("(" + range + "+)", "gi");
 export class MorseEncoder extends Converter {
     /** The character to be used for morse dot. */
     @stringOption<MorseEncoder>("dot", "Dot", { defaultValue: ".", allowEmpty: false, maxLength: 1 })
-    private dot: string = ".";
+    public dot!: string;
 
     /** The character to be used for morse dash. */
     @stringOption<MorseEncoder>("dash", "Dash", { defaultValue: "-", allowEmpty: false, maxLength: 1 })
-    private dash: string = "-";
-
-    /**
-     * Creates a new morse decoder.
-     *
-     * @param dot   Optional morse dot character. Defaults to ".".
-     * @param dash  Optional morse dash character. Defaults to "-".
-     */
-    public constructor(dot?: string, dash?: string) {
-        super();
-        if (dot != null) {
-            this.dot = dot;
-        }
-        if (dash != null) {
-            this.dash = dash;
-        }
-    }
-
-    /**
-     * Returns the character to be used for morse dots.
-     *
-     * @return The morse dot character.
-     */
-    public getDot(): string {
-        return this.dot;
-    }
-
-    /**
-     * Sets the character to be used for morse dots.
-     *
-     * @param dot  The morse dot character to set.
-     */
-    public setDot(dot: string): void {
-        this.dot = dot;
-    }
-
-    /**
-     * Returns the character to be used for morse dashes.
-     *
-     * @return The morse dash character.
-     */
-    public getDash(): string {
-        return this.dash;
-    }
-
-    /**
-     * Sets the character to be used for morse dashes.
-     *
-     * @param dash  The morse dash character.
-     */
-    public setDash(dash: string): void {
-        this.dash = dash;
-    }
+    public dash!: string;
 
     /** @inheritDoc */
     public convert(input: string): string {

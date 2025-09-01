@@ -6,28 +6,28 @@ import { OneTimePadEncoder } from "../../../main/decryptor/converters/OneTimePad
 describe("OneTimePadEncoder", () => {
     describe("constructor", () => {
         it("initializes to empty pad if none given", () => {
-            expect(new OneTimePadEncoder().getPad()).toBe("");
+            expect(new OneTimePadEncoder().pad).toBe("");
         });
         it("initializes to given pad", () => {
-            expect(new OneTimePadEncoder("Canonn").getPad()).toBe("Canonn");
+            expect(new OneTimePadEncoder({ pad: "Canonn" }).pad).toBe("Canonn");
         });
         it("initializes to empty list of pad codes when no pad given", () => {
             expect(new OneTimePadEncoder().getPadCodes()).toEqual([]);
         });
         it("creates correct pad codes list when pad is given", () => {
-            expect(new OneTimePadEncoder("a 14,.- ez ").getPadCodes()).toEqual([ 0, 4, 25 ]);
+            expect(new OneTimePadEncoder({ pad: "a 14,.- ez " }).getPadCodes()).toEqual([ 0, 4, 25 ]);
         });
     });
 
     describe("setPad", () => {
         it("updates the pad", () => {
-            const encoder = new OneTimePadEncoder("Not this one");
-            encoder.setPad("Canonn");
-            expect(encoder.getPad()).toBe("Canonn");
+            const encoder = new OneTimePadEncoder({ pad: "Not this one" });
+            encoder.pad = "Canonn";
+            expect(encoder.pad).toBe("Canonn");
         });
         it("updates the pad codes", () => {
-            const encoder = new OneTimePadEncoder("Not this one");
-            encoder.setPad("Canonn");
+            const encoder = new OneTimePadEncoder({ pad: "Not this one" });
+            encoder.pad = "Canonn";
             expect(encoder.getPadCodes()).toEqual([ 2, 0, 13, 14, 13, 13 ]);
         });
     });
@@ -43,22 +43,22 @@ describe("OneTimePadEncoder", () => {
             expect(new OneTimePadEncoder().convert("1ö_<")).toBe("1ö_<");
         });
         it("encodes normal lower-case characters", () => {
-            expect(new OneTimePadEncoder("Eagle Mk3").convert("foobar")).toBe("joumed");
+            expect(new OneTimePadEncoder({ pad: "Eagle Mk3" }).convert("foobar")).toBe("joumed");
         });
         it("encodes normal upper-case characters", () => {
-            expect(new OneTimePadEncoder("Asp Explorer").convert("FOOBAR")).toBe("FGDFXG");
+            expect(new OneTimePadEncoder({ pad: "Asp Explorer" }).convert("FOOBAR")).toBe("FGDFXG");
         });
         it("encodes normal mixed-case characters", () => {
-            expect(new OneTimePadEncoder("Anaconda").convert("FooBar")).toBe("FboDoe");
+            expect(new OneTimePadEncoder({ pad: "Anaconda" }).convert("FooBar")).toBe("FboDoe");
         });
         it("encodes only normal characters in mixed string", () => {
-            expect(new OneTimePadEncoder("Cobra Mk3").convert("#12FooBar!")).toBe("#12HcpSad!");
+            expect(new OneTimePadEncoder({ pad: "Cobra Mk3" }).convert("#12FooBar!")).toBe("#12HcpSad!");
         });
     });
 
     describe("toJSON", () => {
         it("serializes the converter", () => {
-            expect(new OneTimePadEncoder("Secret").toJSON()).toEqual({
+            expect(new OneTimePadEncoder({ pad: "Secret" }).toJSON()).toEqual({
                 type: "one-time-pad-encoder",
                 options: {
                     pad: "Secret"
@@ -66,7 +66,7 @@ describe("OneTimePadEncoder", () => {
             });
         });
         it("does not serialize default option values", () => {
-            expect(new OneTimePadEncoder("").toJSON()).toEqual({
+            expect(new OneTimePadEncoder({ pad: "" }).toJSON()).toEqual({
                 type: "one-time-pad-encoder"
             });
         });
@@ -81,12 +81,12 @@ describe("OneTimePadEncoder", () => {
                 }
             });
             expect(converter).toBeInstanceOf(OneTimePadEncoder);
-            expect(converter.getPad()).toBe("Secret");
+            expect(converter.pad).toBe("Secret");
         });
         it("deserializes a converter with default options", () => {
             const converter = Converter.fromJSON<OneTimePadEncoder>({ type: "one-time-pad-encoder" });
             expect(converter).toBeInstanceOf(OneTimePadEncoder);
-            expect(converter.getPad()).toBe("");
+            expect(converter.pad).toBe("");
         });
     });
 });

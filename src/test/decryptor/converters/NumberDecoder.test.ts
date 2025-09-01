@@ -17,19 +17,19 @@ describe("NumberDecoder", () => {
             expect(new NumberDecoder().convert("1")).toEqual("A");
         });
         it("keeps out-of-scope number", () => {
-            expect(new NumberDecoder(9).convert("9")).toEqual("9");
+            expect(new NumberDecoder({ base: 9 }).convert("9")).toEqual("9");
         });
         it("decodes binary number", () => {
-            expect(new NumberDecoder(2, 0).convert("11001010")).toEqual(String.fromCharCode(0b11001010));
+            expect(new NumberDecoder({ base: 2, shift: 0 }).convert("11001010")).toEqual(String.fromCharCode(0b11001010));
         });
         it("decodes hex number", () => {
-            expect(new NumberDecoder(16, 0).convert("1ABc")).toEqual(String.fromCharCode(0x1abc));
+            expect(new NumberDecoder({ base: 16, shift: 0 }).convert("1ABc")).toEqual(String.fromCharCode(0x1abc));
         });
         it("decodes octal number", () => {
-            expect(new NumberDecoder(8, 0).convert("7654")).toEqual(String.fromCharCode(0o7654));
+            expect(new NumberDecoder({ base: 8, shift: 0 }).convert("7654")).toEqual(String.fromCharCode(0o7654));
         });
         it("decodes base-36 number", () => {
-            expect(new NumberDecoder(36, 0).convert("a0Z")).toEqual(String.fromCharCode(12995));
+            expect(new NumberDecoder({ base: 36, shift: 0 }).convert("a0Z")).toEqual(String.fromCharCode(12995));
         });
         it("decodes sequence of numbers", () => {
             expect(new NumberDecoder().convert("1 5 10")).toEqual("AEJ");
@@ -58,18 +58,18 @@ describe("NumberDecoder", () => {
                 "before it AE between it JE after it");
         });
         it("correctly converts to space characters", () => {
-            expect(new NumberDecoder(16, 0).convert("41 42 43 20 44 45 46 20 47 48 49")).toEqual(
+            expect(new NumberDecoder({ base: 16, shift: 0 }).convert("41 42 43 20 44 45 46 20 47 48 49")).toEqual(
                 "ABC DEF GHI");
         });
         it("correctly converts to new-line character", () => {
-            expect(new NumberDecoder(16, 0).convert("41 42 43 0a 44 45 46")).toEqual(
+            expect(new NumberDecoder({ base: 16, shift: 0 }).convert("41 42 43 0a 44 45 46")).toEqual(
                 "ABC\nDEF");
         });
     });
 
     describe("toJSON", () => {
         it("serializes the converter", () => {
-            expect(new NumberDecoder(8, 32).toJSON()).toEqual({
+            expect(new NumberDecoder({ base: 8, shift: 32 }).toJSON()).toEqual({
                 type: "number-decoder",
                 options: {
                     base: 8,
@@ -79,7 +79,7 @@ describe("NumberDecoder", () => {
         });
         it("does not serialize default option values", () => {
             expect(new NumberDecoder().toJSON()).toEqual({ type: "number-decoder" });
-            expect(new NumberDecoder(4).toJSON()).toEqual({ type: "number-decoder", options: { base: 4 } });
+            expect(new NumberDecoder({ base: 4 }).toJSON()).toEqual({ type: "number-decoder", options: { base: 4 } });
         });
     });
 
@@ -93,14 +93,14 @@ describe("NumberDecoder", () => {
                 }
             });
             expect(converter).toBeInstanceOf(NumberDecoder);
-            expect(converter.getBase()).toBe(5);
-            expect(converter.getShift()).toBe(31);
+            expect(converter.base).toBe(5);
+            expect(converter.shift).toBe(31);
         });
         it("deserializes a converter with default options", () => {
             const converter = Converter.fromJSON<NumberDecoder>({ type: "number-decoder" });
             expect(converter).toBeInstanceOf(NumberDecoder);
-            expect(converter.getBase()).toBe(10);
-            expect(converter.getShift()).toBe(64);
+            expect(converter.base).toBe(10);
+            expect(converter.shift).toBe(64);
         });
     });
 });

@@ -104,64 +104,12 @@ export class MorseDecoder extends Converter {
     private dotsRegExp: RegExp | null = null;
 
     /** The characters to be used for morse dots. */
-    @stringOption<MorseDecoder>("dots", "Dots", { defaultValue: ".·*", onChange: decoder => decoder.resetCaches })
-    private dots: string = ".·*";
+    @stringOption<MorseDecoder>("dots", "Dots", { defaultValue: ".·*", onChange: decoder => decoder.resetCaches() })
+    public dots!: string;
 
     /** The characters to be used for morse dashes. */
-    @stringOption<MorseDecoder>("dashes", "Dashes", { defaultValue: "_-−", onChange: decoder => decoder.resetCaches })
-    private dashes: string = "_-−";
-
-    /**
-     * Creates a new morse decoder.
-     *
-     * @param dots    Optional initial characters to be used for morse dots. A good default is used if not specified.
-     * @param dashes  Optional initial characters to be used for morse dashes. A good default is used if not specified.
-     */
-    public constructor(dots?: string, dashes?: string) {
-        super();
-        if (dots != null) {
-            this.dots = dots;
-        }
-        if (dashes != null) {
-            this.dashes = dashes;
-        }
-    }
-
-    /**
-     * Returns the characters to be used for morse dots.
-     *
-     * @return The morse dot characters.
-     */
-    public getDots(): string {
-        return this.dots;
-    }
-
-    /**
-     * Sets the characters to be used for morse dots.
-     *
-     * @param dots  The morse dot characters.
-     */
-    public setDots(dots: string): void {
-        this.dots = dots;
-    }
-
-    /**
-     * Returns the characters to be used for morse dashes.
-     *
-     * @return The morse dash characters.
-     */
-    public getDashes(): string {
-        return this.dashes;
-    }
-
-    /**
-     * Sets the characters to be used for morse dashes.
-     *
-     * @param dashes  The morse dash characters.
-     */
-    public setDashes(dashes: string): void {
-        this.dashes = dashes;
-    }
+    @stringOption<MorseDecoder>("dashes", "Dashes", { defaultValue: "_-−", onChange: decoder => decoder.resetCaches() })
+    public dashes!: string;
 
     /**
      * Returns the regular expression range to match morse tokens.

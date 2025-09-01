@@ -6,18 +6,18 @@ import { VigenereEncoder } from "../../../main/decryptor/converters/VigenereEnco
 describe("VigenereEncoder", () => {
     describe("constructor", () => {
         it("initializes to empty keyword if none given", () => {
-            expect(new VigenereEncoder().getKeyword()).toBe("");
+            expect(new VigenereEncoder().keyword).toBe("");
         });
         it("initializes to given keyword", () => {
-            expect(new VigenereEncoder("Canonn").getKeyword()).toBe("Canonn");
+            expect(new VigenereEncoder({ keyword: "Canonn" }).keyword).toBe("Canonn");
         });
     });
 
     describe("setKeyword", () => {
         it("updates the keyword", () => {
-            const encoder = new VigenereEncoder("Not this one");
-            encoder.setKeyword("Canonn");
-            expect(encoder.getKeyword()).toBe("Canonn");
+            const encoder = new VigenereEncoder({ keyword: "Not this one" });
+            encoder.keyword = "Canonn";
+            expect(encoder.keyword).toBe("Canonn");
         });
     });
 
@@ -32,22 +32,22 @@ describe("VigenereEncoder", () => {
             expect(new VigenereEncoder().convert("1ö_<")).toBe("1ö_<");
         });
         it("encodes normal lower-case characters", () => {
-            expect(new VigenereEncoder("Eagle Mk3").convert("foobar")).toBe("joumed");
+            expect(new VigenereEncoder({ keyword: "Eagle Mk3" }).convert("foobar")).toBe("joumed");
         });
         it("encodes normal upper-case characters", () => {
-            expect(new VigenereEncoder("Asp Explorer").convert("FOOBAR")).toBe("FGDFXG");
+            expect(new VigenereEncoder({ keyword: "Asp Explorer" }).convert("FOOBAR")).toBe("FGDFXG");
         });
         it("encodes normal mixed-case characters", () => {
-            expect(new VigenereEncoder("Anaconda").convert("FooBar")).toBe("FboDoe");
+            expect(new VigenereEncoder({ keyword: "Anaconda" }).convert("FooBar")).toBe("FboDoe");
         });
         it("encodes only normal characters in mixed string", () => {
-            expect(new VigenereEncoder("Cobra Mk3").convert("#12FooBar!")).toBe("#12HcpSad!");
+            expect(new VigenereEncoder({ keyword: "Cobra Mk3" }).convert("#12FooBar!")).toBe("#12HcpSad!");
         });
     });
 
     describe("toJSON", () => {
         it("serializes the converter", () => {
-            expect(new VigenereEncoder("Secret").toJSON()).toEqual({
+            expect(new VigenereEncoder({ keyword: "Secret" }).toJSON()).toEqual({
                 type: "vigenere-encoder",
                 options: {
                     keyword: "Secret"
@@ -55,7 +55,7 @@ describe("VigenereEncoder", () => {
             });
         });
         it("does not serialize default option values", () => {
-            expect(new VigenereEncoder("").toJSON()).toEqual({
+            expect(new VigenereEncoder({ keyword: "" }).toJSON()).toEqual({
                 type: "vigenere-encoder"
             });
         });
@@ -70,12 +70,12 @@ describe("VigenereEncoder", () => {
                 }
             });
             expect(converter).toBeInstanceOf(VigenereEncoder);
-            expect(converter.getKeyword()).toBe("Secret");
+            expect(converter.keyword).toBe("Secret");
         });
         it("deserializes a converter with default options", () => {
             const converter = Converter.fromJSON<VigenereEncoder>({ type: "vigenere-encoder" });
             expect(converter).toBeInstanceOf(VigenereEncoder);
-            expect(converter.getKeyword()).toBe("");
+            expect(converter.keyword).toBe("");
         });
     });
 });

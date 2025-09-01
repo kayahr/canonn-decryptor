@@ -6,48 +6,48 @@ import { VigenereDecoder } from "../../../main/decryptor/converters/VigenereDeco
 describe("VigenereDecoder", () => {
     describe("constructor", () => {
         it("initializes to empty keyword if none given", () => {
-            expect(new VigenereDecoder().getKeyword()).toBe("");
+            expect(new VigenereDecoder().keyword).toBe("");
         });
         it("initializes to given keyword", () => {
-            expect(new VigenereDecoder("Canonn").getKeyword()).toBe("Canonn");
+            expect(new VigenereDecoder({ keyword: "Canonn" }).keyword).toBe("Canonn");
         });
     });
 
     describe("setKeyword", () => {
         it("updates the keyword", () => {
-            const decoder = new VigenereDecoder("Not this one");
-            decoder.setKeyword("Canonn");
-            expect(decoder.getKeyword()).toBe("Canonn");
+            const decoder = new VigenereDecoder({ keyword: "Not this one" });
+            decoder.keyword = "Canonn";
+            expect(decoder.keyword).toBe("Canonn");
         });
     });
 
     describe("convert", () => {
         it("converts empty string to empty string", () => {
-            expect(new VigenereDecoder("Imperial Clipper").convert("")).toBe("");
+            expect(new VigenereDecoder({ keyword: "Imperial Clipper" }).convert("")).toBe("");
         });
         it("keeps white-space only string", () => {
-            expect(new VigenereDecoder("Imperial Cutter").convert(" \n\r\t")).toBe(" \n\r\t");
+            expect(new VigenereDecoder({ keyword: "Imperial Cutter" }).convert(" \n\r\t")).toBe(" \n\r\t");
         });
         it("keeps unencoded characters", () => {
-            expect(new VigenereDecoder("Sidewinder").convert("1ö_<")).toBe("1ö_<");
+            expect(new VigenereDecoder({ keyword: "Sidewinder" }).convert("1ö_<")).toBe("1ö_<");
         });
         it("decodes normal lower-case characters", () => {
-            expect(new VigenereDecoder("Eagle Mk3").convert("joumed")).toBe("foobar");
+            expect(new VigenereDecoder({ keyword: "Eagle Mk3" }).convert("joumed")).toBe("foobar");
         });
         it("decodes normal upper-case characters", () => {
-            expect(new VigenereDecoder("Asp Explorer").convert("FGDFXG")).toBe("FOOBAR");
+            expect(new VigenereDecoder({ keyword: "Asp Explorer" }).convert("FGDFXG")).toBe("FOOBAR");
         });
         it("decodes normal mixed-case characters", () => {
-            expect(new VigenereDecoder("Anaconda").convert("FboDoe")).toBe("FooBar");
+            expect(new VigenereDecoder({ keyword: "Anaconda" }).convert("FboDoe")).toBe("FooBar");
         });
         it("decodes only normal characters in mixed string", () => {
-            expect(new VigenereDecoder("Cobra Mk3").convert("#12HcpSad!")).toBe("#12FooBar!");
+            expect(new VigenereDecoder({ keyword: "Cobra Mk3" }).convert("#12HcpSad!")).toBe("#12FooBar!");
         });
     });
 
     describe("toJSON", () => {
         it("serializes the converter", () => {
-            expect(new VigenereDecoder("Secret").toJSON()).toEqual({
+            expect(new VigenereDecoder({ keyword: "Secret" }).toJSON()).toEqual({
                 type: "vigenere-decoder",
                 options: {
                     keyword: "Secret"
@@ -55,7 +55,7 @@ describe("VigenereDecoder", () => {
             });
         });
         it("does not serialize default option values", () => {
-            expect(new VigenereDecoder("").toJSON()).toEqual({
+            expect(new VigenereDecoder({ keyword: "" }).toJSON()).toEqual({
                 type: "vigenere-decoder"
             });
         });
@@ -70,12 +70,12 @@ describe("VigenereDecoder", () => {
                 }
             });
             expect(converter).toBeInstanceOf(VigenereDecoder);
-            expect(converter.getKeyword()).toBe("Secret");
+            expect(converter.keyword).toBe("Secret");
         });
         it("deserializes a converter with default options", () => {
             const converter = Converter.fromJSON<VigenereDecoder>({ type: "vigenere-decoder" });
             expect(converter).toBeInstanceOf(VigenereDecoder);
-            expect(converter.getKeyword()).toBe("");
+            expect(converter.keyword).toBe("");
         });
     });
 });

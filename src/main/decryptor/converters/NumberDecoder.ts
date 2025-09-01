@@ -25,63 +25,11 @@ export class NumberDecoder extends Converter {
         defaultValue: 10,
         onChange: decoder => decoder.resetCaches()
     })
-    private base: number = 10;
+    public base!: number;
 
     /** The number shift.. */
     @numberOption<NumberDecoder>("shift", "Shift", { defaultValue: 64 })
-    private shift: number = 64;
-
-    /**
-     * Creates a new number decoder.
-     *
-     * @param base  Optional number base. Defaults to 10.
-     * @param shift  Optional number shift. Defaults to 64.
-     */
-    public constructor(base?: number, shift?: number) {
-        super();
-        if (base != null) {
-            this.base = base;
-        }
-        if (shift != null) {
-            this.shift = shift;
-        }
-    }
-
-    /**
-     * Returns the number base.
-     *
-     * @return The number base.
-     */
-    public getBase(): number {
-        return this.base;
-    }
-
-    /**
-     * Sets the number base.
-     *
-     * @param base  The number base to set.
-     */
-    public setBase(base: number): void {
-        this.base = base;
-    }
-
-    /**
-     * Returns the number shift.
-     *
-     * @return The number shift.
-     */
-    public getShift(): number {
-        return this.shift;
-    }
-
-    /**
-     * Sets the number shift.
-     *
-     * @param shift  The number shift to set.
-     */
-    public setShift(shift: number): void {
-        this.shift = shift;
-    }
+    public shift!: number;
 
     /**
      * Returns the regular expression range to match digits.

@@ -162,7 +162,7 @@ export class KeywordCracker {
                     if (newScore >= bestScore) {
                         bestScore = newScore;
                         const keyword = this.createKeyword(newAlphabet, fastEncoded, decoded);
-                        decoder.setKeyword(keyword);
+                        decoder.keyword = keyword;
                         bestResult = new KeywordCrackerResult(newScore, keyword, decoder.convert(encoded));
                         if (onResult != null) {
                             onResult(bestResult);

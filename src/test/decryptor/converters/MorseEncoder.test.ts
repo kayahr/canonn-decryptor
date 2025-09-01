@@ -54,7 +54,7 @@ describe("MorseEncoder", () => {
 
     describe("toJSON", () => {
         it("serializes the converter", () => {
-            expect(new MorseEncoder("*", "#").toJSON()).toEqual({
+            expect(new MorseEncoder({ dot: "*", dash: "#" }).toJSON()).toEqual({
                 type: "morse-encoder",
                 options: {
                     dot: "*",
@@ -64,7 +64,7 @@ describe("MorseEncoder", () => {
         });
         it("does not serialize default option values", () => {
             expect(new MorseEncoder().toJSON()).toEqual({ type: "morse-encoder" });
-            expect(new MorseEncoder("*").toJSON()).toEqual({
+            expect(new MorseEncoder({ dot: "*" }).toJSON()).toEqual({
                 type: "morse-encoder",
                 options: { dot: "*" }
             });
@@ -81,14 +81,14 @@ describe("MorseEncoder", () => {
                 }
             });
             expect(converter).toBeInstanceOf(MorseEncoder);
-            expect(converter.getDot()).toBe("*");
-            expect(converter.getDash()).toBe("#");
+            expect(converter.dot).toBe("*");
+            expect(converter.dash).toBe("#");
         });
         it("deserializes a converter with default options", () => {
             const converter = Converter.fromJSON<MorseEncoder>({ type: "morse-encoder" });
             expect(converter).toBeInstanceOf(MorseEncoder);
-            expect(converter.getDot()).toBe(".");
-            expect(converter.getDash()).toBe("-");
+            expect(converter.dot).toBe(".");
+            expect(converter.dash).toBe("-");
         });
     });
 });

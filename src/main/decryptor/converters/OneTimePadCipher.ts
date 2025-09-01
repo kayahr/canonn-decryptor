@@ -12,27 +12,13 @@ import { stringOption } from "./options/StringOption.js";
 export abstract class OneTimePadCipher extends Converter {
     /** The pad characters to encode/decode with. */
     @stringOption<OneTimePadCipher>("pad", "Pad", { onChange: converter => converter.resetCaches() })
-    private pad: string = "";
+    public pad!: string;
 
     /** The cipher direction. 1 for encoding, -1 for decoding */
-    private readonly direction: 1 | -1;
+    protected abstract readonly direction: 1 | -1;
 
     /** The cached array of valid pad characters converted to numbers (0-25). */
     private cachedPadCodes: number[] | null = null;
-
-    /**
-     * Creates a new one-time pad cipher with the given pad characters.
-     *
-     * @param direction  The cipher direction. 1 for encoding, -1 for decoding.
-     * @param pad        Optional initial pad characters to encode/decode with. Defaults to no pad when not specified.
-     */
-    public constructor(direction: 1 | -1, pad?: string) {
-        super();
-        this.direction = direction;
-        if (pad != null) {
-            this.pad = pad;
-        }
-    }
 
     /**
      * Reset the cached pad codes. Internally called when the pad code characters are changed.
@@ -49,24 +35,6 @@ export abstract class OneTimePadCipher extends Converter {
      */
     public getPadCodes(): number[] {
         return this.cachedPadCodes ??= this.pad.toUpperCase().replace(/[^A-Z]/g, "").split("").map(char => char.charCodeAt(0) - 65);
-    }
-
-    /**
-     * Returns the pad characters to encode/decode with.
-     *
-     * @return The pad characters.
-     */
-    public getPad(): string {
-        return this.pad;
-    }
-
-    /**
-     * Sets the pad characters to encode/decode with.
-     *
-     * @param pad  The pad characters to set.
-     */
-    public setPad(pad: string): void {
-        this.pad = pad;
     }
 
     /** @inheritDoc */
