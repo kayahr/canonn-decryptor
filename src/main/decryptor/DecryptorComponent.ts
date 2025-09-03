@@ -3,6 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
+import "./converters/AffineDecoder.js";
+import "./converters/AffineEncoder.js";
 import "./converters/Atbash.js";
 import "./converters/Base64Decoder.js";
 import "./converters/Base64Encoder.js";

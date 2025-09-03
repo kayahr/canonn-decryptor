@@ -9,9 +9,11 @@ import template from "../../../assets/decryptor/output.html?raw";
 import { ButtonDirective } from "../ui/ButtonDirective.js";
 import { DialogService } from "../ui/DialogService.js";
 import { BooleanOptionComponent } from "./BooleanOptionComponent.js";
+import { AffineDecoder } from "./converters/AffineDecoder.js";
 import { Converter, createConverter } from "./converters/Converter.js";
 import { KeywordDecoder } from "./converters/KeywordDecoder.js";
 import { ConverterOption } from "./converters/options/ConverterOption.js";
+import { AffineCrackerDialog } from "./crackers/AffineCrackerDialog.js";
 import { KeywordCrackerDialog } from "./crackers/KeywordCrackerDialog.js";
 import { NumberOptionComponent } from "./NumberOptionComponent.js";
 import { DecryptorOutput } from "./project/DecryptorOutput.js";
@@ -111,7 +113,7 @@ export class OutputComponent {
      */
     public get crackable(): boolean {
         const converter = this.output.getConverter();
-        return converter instanceof KeywordDecoder;
+        return converter instanceof KeywordDecoder || converter instanceof AffineDecoder;
     }
 
     /**
@@ -125,6 +127,14 @@ export class OutputComponent {
             });
             if (keyword != null) {
                 converter.keyword = keyword;
+            }
+        } else if (converter instanceof AffineDecoder) {
+            const result = await this.dialogService.openDialog(AffineCrackerDialog, dialog => {
+                dialog.init(this.output.getParent().getValue());
+            });
+            if (result != null) {
+                converter.a = String(result.a);
+                converter.b = String(result.b);
             }
         }
     }
