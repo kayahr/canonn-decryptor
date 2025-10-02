@@ -3,6 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
+import "./converters/AffineDecoder.js";
+import "./converters/AffineEncoder.js";
 import "./converters/Atbash.js";
 import "./converters/Base64Decoder.js";
 import "./converters/Base64Encoder.js";
@@ -16,6 +18,8 @@ import "./converters/NumberDecoder.js";
 import "./converters/NumberEncoder.js";
 import "./converters/OneTimePadDecoder.js";
 import "./converters/OneTimePadEncoder.js";
+import "./converters/PolybiusDecoder.js";
+import "./converters/PolybiusEncoder.js";
 import "./converters/Reverse.js";
 import "./converters/RomanDecoder.js";
 import "./converters/RomanEncoder.js";

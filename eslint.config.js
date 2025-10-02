@@ -6,7 +6,8 @@ export default [
         ignores: [
             "doc",
             "lib",
-            "dist"
+            "dist",
+            "src/sandbox"
         ]
     },
     {

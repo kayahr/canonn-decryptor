@@ -9,8 +9,7 @@ import { VigenereCipher } from "./VigenereCipher.js";
 /**
  * Vigenère encoder.
  */
-@converter<VigenereEncoder>("vigenere-encoder", "vigenere", "Vigenère Encoder",
-    "Encodes text encrypted with the Vigenère square.")
+@converter<VigenereEncoder>("vigenere-encoder", "vigenere", "Vigenère Encoder", "Encrypts text with the Vigenère cipher</a>")
 export class VigenereEncoder extends VigenereCipher {
     /** @inheritDoc */
     protected convertChar(char: number, key: number): number {
