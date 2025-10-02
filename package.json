@@ -54,7 +54,7 @@
     "source-map-loader": "5.0.0",
     "typedoc": "0.28.12",
     "typescript": "5.9.2",
-    "vite": "7.1.4",
+    "vite": "7.1.8",
     "vite-plugin-static-copy": "3.1.2",
     "vitest": "3.2.4"
   },
