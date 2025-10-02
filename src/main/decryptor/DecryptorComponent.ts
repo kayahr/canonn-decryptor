@@ -18,6 +18,8 @@ import "./converters/NumberDecoder.js";
 import "./converters/NumberEncoder.js";
 import "./converters/OneTimePadDecoder.js";
 import "./converters/OneTimePadEncoder.js";
+import "./converters/PolybiusDecoder.js";
+import "./converters/PolybiusEncoder.js";
 import "./converters/Reverse.js";
 import "./converters/RomanDecoder.js";
 import "./converters/RomanEncoder.js";
