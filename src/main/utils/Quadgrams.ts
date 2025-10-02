@@ -48,6 +48,212 @@ export class Quadgrams {
         }
         return score;
     }
+
+    /**
+     * Returns the word split with the best score.
+     *
+     * @param text  - The text to split
+     * @param words - Into how many words the text must be splitted
+     * @returns The best split as a string together with the achieved score.
+     */
+    public getBestSplit(text: FastString, words: number): { bestSplit: string, score: number } {
+        // Count letters and abort if string is empty
+        const totalLetters = text.length;
+        if (totalLetters === 0) {
+            return { score: 0, bestSplit: "" };
+        }
+
+        // Sanitize number of words
+        words = Math.min(text.length, Math.max(1, Math.trunc(words)));
+
+        const current = new Array<number>(words);
+        const root = this.quadgrams;
+        let bestScore = Number.NEGATIVE_INFINITY;
+        let bestPattern: number[] | null = null;
+
+        const evaluateCurrent = (): number => {
+            let score = 0;
+            let letterIndex = 0;
+            let count = 0;
+            let w0 = 0;
+            let w1 = 0;
+            let w2 = 0;
+            let w3 = 0;
+
+            const addQuad = (a: number, b: number, c: number, d: number): void => {
+                const aNode = root[a];
+                if (aNode == null) return;
+                const bNode = aNode[b];
+                if (bNode == null) return;
+                const cNode = bNode[c];
+                if (cNode == null) return;
+                const dNode = cNode[d];
+                if (dNode != null) {
+                    score += dNode;
+                }
+            };
+
+            const push = (value: number): void => {
+                switch (count) {
+                    case 0:
+                        w0 = value;
+                        count = 1;
+                        return;
+                    case 1:
+                        w1 = value;
+                        count = 2;
+                        return;
+                    case 2:
+                        w2 = value;
+                        count = 3;
+                        return;
+                    case 3:
+                        w3 = value;
+                        count = 4;
+                        addQuad(w0, w1, w2, w3);
+                        return;
+                    default:
+                        w0 = w1;
+                        w1 = w2;
+                        w2 = w3;
+                        w3 = value;
+                        addQuad(w0, w1, w2, w3);
+                }
+            };
+
+            for (let segmentIndex = 0; segmentIndex < words; segmentIndex++) {
+                push(0);
+                const segmentLength = current[segmentIndex];
+                for (let i = 0; i < segmentLength; i++) {
+                    push(text[letterIndex++]);
+                }
+            }
+
+            push(0);
+
+            return score;
+        };
+
+        const explore = (depth: number, lettersRemaining: number, wordsRemaining: number): void => {
+            if (wordsRemaining === 1) {
+                current[depth] = lettersRemaining;
+                const score = evaluateCurrent();
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestPattern = current.slice();
+                }
+                return;
+            }
+
+            const maxLength = lettersRemaining - (wordsRemaining - 1);
+            for (let length = 1; length <= maxLength; length++) {
+                current[depth] = length;
+                explore(depth + 1, lettersRemaining - length, wordsRemaining - 1);
+            }
+        };
+
+        explore(0, totalLetters, words);
+
+        const toWordString = (pattern: readonly number[]): string => {
+            if (pattern.length === 0) {
+                return "";
+            }
+            const parts: string[] = [];
+            let offset = 0;
+            for (const length of pattern) {
+                let word = "";
+                for (let i = 0; i < length; i++) {
+                    const code = text[offset + i];
+                    if (code !== 0) {
+                        word += String.fromCharCode(code + 64);
+                    }
+                }
+                offset += length;
+                parts.push(word);
+            }
+            return parts.join(" ");
+        };
+
+        return {
+            score: bestScore,
+            bestSplit: bestPattern != null ? toWordString(bestPattern) : text.toString()
+        };
+    }
+
+    public getScore3(text: FastString, words: number): number {
+        if (text.length === 0) {
+            return 0;
+        }
+        words = Math.min(text.length, Math.max(1, Math.trunc(words)));
+
+        // Create initial boundaries
+        const boundaries: number[] = [];
+        for (let i = 0; i < words - 1; i++) {
+            boundaries.push(1 + i * 2);
+        }
+        const numBoundaries = boundaries.length;
+
+        // Calculate virtual text length (with whitespaces between words)
+        const textLen = text.length + numBoundaries;
+
+        function nextBoundary(): boolean {
+            let level = numBoundaries - 1;
+            while (level >= 0) {
+                const max = textLen - ((numBoundaries - level) * 2);
+                if (boundaries[level] < max) {
+                    boundaries[level]++;
+                    for (let i = level + 1; i < numBoundaries; i++) {
+                        boundaries[i] = boundaries[i - 1] + 2;
+                    }
+                    return true;
+                } else {
+                    level--;
+                }
+            }
+            return false;
+        }
+
+        function atBoundary(j: number): boolean {
+            for (const boundary of boundaries) {
+                if (j === boundary) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function countBoundaries(j: number): number {
+            let i = 0;
+            for (const boundary of boundaries) {
+                if (j < boundary) {
+                    break;
+                }
+                i++;
+            }
+            return i;
+        }
+
+        const root = this.quadgrams;
+        let bestScore = -Infinity;
+        do {
+            let score = 0;
+            for (let i = 0, max = textLen - 3; i < max; i++) {
+                let j = i;
+                const a = atBoundary(j) ? root[0] : root[text[j - countBoundaries(j)]];
+                if (a == null) continue;
+                const b = atBoundary(++j) ? a[0] : a[text[j - countBoundaries(j)]];
+                if (b == null) continue;
+                const c = atBoundary(++j) ? b[0] : b[text[j - countBoundaries(j)]];
+                if (c == null) continue;
+                const d = atBoundary(++j) ? c[0] : c[text[j - countBoundaries(j)]];
+                if (d != null) score += d;
+            }
+            if (score > bestScore) {
+                bestScore = score;
+            }
+        } while (nextBoundary());
+        return bestScore;
+    }
 }
 
 export const quadgrams = new Quadgrams(quadgramsJSON);
