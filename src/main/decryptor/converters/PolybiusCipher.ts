@@ -23,11 +23,11 @@ export abstract class PolybiusCipher<T extends PolybiusCipher<T>> extends Conver
     public alphabet!: string;
 
     /** The number of rows. */
-    @numberOption<T>("rows", "Rows", { min: 1, defaultValue: 5, onChange: converter => converter.resetCache() })
+    @numberOption<T>("rows", "Rows", { min: 1, max: 9, defaultValue: 5, onChange: converter => converter.resetCache() })
     public rows!: number;
 
     /** The number of columns. */
-    @numberOption<T>("columns", "Columns", { min: 1, defaultValue: 5, onChange: converter => converter.resetCache() })
+    @numberOption<T>("columns", "Columns", { min: 1, max: 9, defaultValue: 5, onChange: converter => converter.resetCache() })
     public columns!: number;
 
     /** @inheritDoc */
