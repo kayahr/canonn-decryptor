@@ -1,9 +1,8 @@
-import * as fs from "fs";
+import { readFile } from "node:fs/promises";
 
 import { diacriticsToAscii } from "../main/utils/string.js";
 
-// eslint-disable-next-line regexp/no-unused-capturing-group
-const WORD_REGEXP = /\b([A-Z]+)\b/g;
+const WORD_REGEXP = /\b[A-Z]+\b/g;
 
 class Quadgram {
     public readonly quadgram: string;
@@ -30,8 +29,8 @@ class Quadgrams {
     }
 
     public processText(text: string): void {
-        for (let i = 0, max = Math.max(1, text.length - 3); i !== max; ++i) {
-            this.addQuadgram(text.substring(i, 4));
+        for (let i = 0, max = text.length - 4; i <= max; ++i) {
+            this.addQuadgram(text.substring(i, i + 4));
         }
     }
 
@@ -45,22 +44,37 @@ class Quadgrams {
     }
 }
 
-function processText(file: string, quadgrams: Quadgrams): void {
-    const text = fs.readFileSync(file).toString().toUpperCase();
-    const matches = text.match(WORD_REGEXP);
-    if (matches != null) {
-        quadgrams.processText(" " + diacriticsToAscii(matches.join(" ")) + " ");
+async function processText(file: string, quadgrams: Quadgrams): Promise<void> {
+    // Read text file and replace diacritics with plain ASCII
+    let text = diacriticsToAscii(await readFile(file, "utf8"));
+
+    // Remove [...] stuff used in Canonn articles for encrypted text. Makes no sense to decrypt data against ngrams created from encrypted data.
+    text = text.replace(/\[.*?\]\s*/gs, "");
+
+    // Split to lines
+    const lines = text.split("\n");
+
+    // Extract words from lines
+    const words: string[] = [];
+    for (const line of lines) {
+        const matches = line.toUpperCase().match(WORD_REGEXP);
+        if (matches != null) {
+            words.push(...matches);
+        }
     }
+
+    // Build quadgrams
+    quadgrams.processText(" " + words.join(" ") + " ");
 }
 
-function main(args: string[]): number {
+async function main(args: string[]): Promise<number> {
     const quadgrams = new Quadgrams();
 
     for (const file of process.argv.slice(2)) {
-        processText(file, quadgrams);
+        await processText(file, quadgrams);
     }
     console.log(JSON.stringify(quadgrams.toJSON(), null, 4));
     return 0;
 }
 
-process.exitCode = main(process.argv);
+process.exitCode = await main(process.argv);
