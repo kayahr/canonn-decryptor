@@ -32,6 +32,12 @@ export class Quadgrams {
         }
     }
 
+    /**
+     * Calculate the englishness score for the given string.
+     *
+     * @param text - The string (as a {@link FastString} to check.
+     * @returns The calculated englishness score.
+     */
     public getScore(text: FastString): number {
         let score = 0;
         const root = this.quadgrams;
