@@ -1,4 +1,7 @@
+import { createReadStream } from "node:fs";
 import { readFile } from "node:fs/promises";
+import { createInterface } from "node:readline/promises";
+import { parseArgs } from "node:util";
 
 import { diacriticsToAscii } from "../main/utils/string.js";
 
@@ -44,6 +47,18 @@ class Quadgrams {
     }
 }
 
+const numberWords = [ " ZERO ", " ONE ", " TWO ", " THREE ", " FOUR ", " FIVE ", " SIX ", " SEVEN ", " EIGHT ", " NINE " ];
+
+/**
+ * Converts numbers in the given line to words.
+ *
+ * @param line - The line to scan for numbers to replace.
+ * @returns The line with numbers replaced with words.
+ */
+function numbersToText(line: string): string {
+    return line.replace(/\d/g, match => numberWords[Number(match)]);
+}
+
 async function processText(file: string, quadgrams: Quadgrams): Promise<void> {
     // Read text file and replace diacritics with plain ASCII
     let text = diacriticsToAscii(await readFile(file, "utf8"));
@@ -57,7 +72,7 @@ async function processText(file: string, quadgrams: Quadgrams): Promise<void> {
     // Extract words from lines
     const words: string[] = [];
     for (const line of lines) {
-        const matches = line.toUpperCase().match(WORD_REGEXP);
+        const matches = numbersToText(line).toUpperCase().match(WORD_REGEXP);
         if (matches != null) {
             words.push(...matches);
         }
@@ -67,14 +82,54 @@ async function processText(file: string, quadgrams: Quadgrams): Promise<void> {
     quadgrams.processText(" " + words.join(" ") + " ");
 }
 
+async function processLines(file: string, quadgrams: Quadgrams): Promise<void> {
+    const input = createReadStream(file, { highWaterMark: 1024 * 1024, encoding: "utf8" });
+    const rl = createInterface({ input, crlfDelay: Infinity });
+    try {
+        let lines = 0;
+        for await (let line of rl) {
+            // Replace diacritics with plain ASCII
+            line = diacriticsToAscii(line);
+
+            // Extract words from lines
+            const words = numbersToText(line).toUpperCase().match(WORD_REGEXP);
+            if (words != null) {
+                quadgrams.processText(" " + words.join(" ") + " ");
+            }
+
+            lines++;
+            if (lines % 100_000 === 0) {
+                console.error(`Processed ${lines} lines`);
+            }
+        }
+    } finally {
+        rl.close();
+        input.close();
+    }
+}
+
 async function main(args: string[]): Promise<number> {
+    const { values, positionals } = parseArgs({
+        args,
+        allowPositionals: true,
+        allowNegative: true,
+        strict: true,
+        options: {
+            lines: { type: "boolean", default: false, short: "l" }
+        }
+    });
+
     const quadgrams = new Quadgrams();
 
-    for (const file of process.argv.slice(2)) {
-        await processText(file, quadgrams);
+    for (const file of positionals) {
+        if (values.lines) {
+            await processLines(file, quadgrams);
+        } else {
+            await processText(file, quadgrams);
+        }
     }
     console.log(JSON.stringify(quadgrams.toJSON(), null, 4));
     return 0;
 }
 
-process.exitCode = await main(process.argv);
+process.exitCode = await main(process.argv.slice(2));
