@@ -12,3 +12,6 @@ trim_trailing_whitespace = true
 
 [*.{html,xml}]
 indent_size = 2
+
+[Makefile]
+indent_style = tab
