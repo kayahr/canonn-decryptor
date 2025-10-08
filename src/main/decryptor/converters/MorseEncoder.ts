@@ -80,18 +80,22 @@ const groupReplace = new RegExp("(" + range + "+)", "gi");
  */
 @converter<MorseEncoder>("morse-encoder", "morse", "Morse Encoder", "Encodes ASCII characters to morse code.")
 export class MorseEncoder extends Converter {
-    /** The character to be used for morse dot. */
-    @stringOption<MorseEncoder>("dot", "Dot", { defaultValue: ".", allowEmpty: false, maxLength: 1 })
+    /** The sequence to be used for morse dot. */
+    @stringOption<MorseEncoder>("dot", "Dot", { defaultValue: ".", allowEmpty: false })
     public dot!: string;
 
-    /** The character to be used for morse dash. */
-    @stringOption<MorseEncoder>("dash", "Dash", { defaultValue: "-", allowEmpty: false, maxLength: 1 })
+    /** The sequence to be used for morse dash. */
+    @stringOption<MorseEncoder>("dash", "Dash", { defaultValue: "-", allowEmpty: false })
     public dash!: string;
+
+    /** The sequence to be used for spacing. */
+    @stringOption<MorseEncoder>("space", "Space", { defaultValue: " ", allowEmpty: false })
+    public space!: string;
 
     /** @inheritDoc */
     public convert(input: string): string {
         const lines = input.split(/\n/);
-        return lines.map(line => {
+        let morse = lines.map(line => {
             // Split line into parts divided by character groups which can be translate to morse
             const parts = line.split(groupReplace);
 
@@ -103,12 +107,17 @@ export class MorseEncoder extends Converter {
 
             return parts.map((text, index) => {
                 if ((index & 1) !== 0) {
-                    return text.toUpperCase().replace(characterReplace, c => alphabet[c] + " ").trim()
+                    return text.toUpperCase().replace(characterReplace, c => alphabet[c] + " ")
                         .replace(/[.-]/g, char => char === "." ? this.dot : this.dash);
                 } else {
                     return text;
                 }
             }).filter(text => text.length > 0).map(text => text.replace(/^(\s*)\s$/, "$1")).join(" ");
         }).join("\n");
+        if (morse.endsWith(" ")) {
+            // Remove obsolete separator at the end of the message
+            morse = morse.substring(0, morse.length - 1);
+        }
+        return morse.replaceAll(" ", this.space);
     }
 }
