@@ -95,7 +95,7 @@ export class MorseEncoder extends Converter {
     /** @inheritDoc */
     public convert(input: string): string {
         const lines = input.split(/\n/);
-        let morse = lines.map(line => {
+        return lines.map(line => {
             // Split line into parts divided by character groups which can be translate to morse
             const parts = line.split(groupReplace);
 
@@ -107,17 +107,13 @@ export class MorseEncoder extends Converter {
 
             return parts.map((text, index) => {
                 if ((index & 1) !== 0) {
-                    return text.toUpperCase().replace(characterReplace, c => alphabet[c] + " ")
+                    let index = 0;
+                    return text.toUpperCase().replace(characterReplace, c => (index++ > 0 ? " " : "") + alphabet[c])
                         .replace(/[.-]/g, char => char === "." ? this.dot : this.dash);
                 } else {
                     return text;
                 }
             }).filter(text => text.length > 0).map(text => text.replace(/^(\s*)\s$/, "$1")).join(" ");
-        }).join("\n");
-        if (morse.endsWith(" ")) {
-            // Remove obsolete separator at the end of the message
-            morse = morse.substring(0, morse.length - 1);
-        }
-        return morse.replaceAll(" ", this.space);
+        }).join("\n").replaceAll(" ", this.space);
     }
 }

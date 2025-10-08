@@ -43,7 +43,7 @@ describe("MorseDecoder", () => {
             expect(new MorseDecoder().convert(".- -.   -. .-")).toEqual("AN  NA");
             expect(new MorseDecoder().convert(".- -.\n-. .-")).toEqual("AN\nNA");
             expect(new MorseDecoder().convert(".- -.\n\t\n-. .-")).toEqual("AN\n\t\nNA");
-            expect(new MorseDecoder().convert(".- -. \n -. .-")).toEqual("AN\n NA");
+            expect(new MorseDecoder().convert(".- -. \n -. .-")).toEqual("AN \n NA");
         });
         it("keeps strings between morse codes", () => {
             expect(new MorseDecoder().convert("before it .- -. between it -. .- after it")).toEqual(
