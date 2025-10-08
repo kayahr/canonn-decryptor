@@ -4,6 +4,7 @@ Canonn Decryptor
 The [Canonn Decryptor] is a tool for decrypting the mysteries of the [Elite: Dangerous] universe. Currently the
 following converters are supported:
 
+* [Affine cipher] (With automatic cracking)
 * [Atbash cipher]
 * [Base64]
 * [Caesar cipher] (With automatic rotation cracking)
@@ -11,6 +12,7 @@ following converters are supported:
 * [Morse code]
 * [Number-to-ASCII]
 * [One-time pad]
+* [Polybius square]
 * Reverse text
 * [Roman numerals]
 * [Vigenère cipher]
@@ -51,12 +53,14 @@ Links
 
 [Canonn Decryptor]: https://kayahr.github.io/canonn-decryptor/
 [Elite: Dangerous]: https://www.elitedangerous.com/
+[Affine cipher]: https://en.wikipedia.org/wiki/Affine_cipher
 [Atbash cipher]: https://en.wikipedia.org/wiki/Atbash
 [Caesar cipher]: https://en.wikipedia.org/wiki/Caesar_cipher
 [Keyword cipher]: https://en.wikipedia.org/wiki/Keyword_cipher
 [Morse code]: https://en.wikipedia.org/wiki/Morse_code
 [Number-to-ASCII]: https://en.wikipedia.org/wiki/ASCII
 [One-time pad]: https://en.wikipedia.org/wiki/One-time_pad
+[Polybius square]: https://en.wikipedia.org/wiki/Polybius_square
 [Roman numerals]: https://en.wikipedia.org/wiki/Roman_numerals
 [Vigenère cipher]: https://en.wikipedia.org/wiki/Vigenère_cipher
 [Base64]: https://en.wikipedia.org/wiki/Base64
