@@ -103,6 +103,9 @@ export class MorseDecoder extends Converter {
     /** Cached regular expression for replacing dot characters. */
     private dotsRegExp: RegExp | null = null;
 
+    /** Cached regular expression for replacing space characters. */
+    private spacesRegExp: RegExp | null = null;
+
     /** The characters to be used for morse dots. */
     @stringOption<MorseDecoder>("dots", "Dots", { defaultValue: ".·*", onChange: decoder => decoder.resetCaches() })
     public dots!: string;
@@ -110,6 +113,10 @@ export class MorseDecoder extends Converter {
     /** The characters to be used for morse dashes. */
     @stringOption<MorseDecoder>("dashes", "Dashes", { defaultValue: "_-−", onChange: decoder => decoder.resetCaches() })
     public dashes!: string;
+
+    /** The characters to be used for spaces. */
+    @stringOption<MorseDecoder>("spaces", "Spaces", { defaultValue: "", onChange: decoder => decoder.resetCaches() })
+    public spaces!: string;
 
     /**
      * Returns the regular expression range to match morse tokens.
@@ -136,6 +143,15 @@ export class MorseDecoder extends Converter {
      */
     private getDashesRegExp(): RegExp {
         return this.dashesRegExp ??= new RegExp(`[${escapeRegExp(this.dashes)}]`, "g");
+    }
+
+    /**
+     * Generates (and caches) the regular expression to replace space characters.
+     *
+     * @returns The regular expression to replace space characters.
+     */
+    private getSpacesRegExp(): RegExp {
+        return this.spacesRegExp ??= new RegExp(`[\\s${escapeRegExp(this.spaces)}]`, "g");
     }
 
     /**
@@ -170,6 +186,7 @@ export class MorseDecoder extends Converter {
     private resetCaches(): void {
         this.dashesRegExp = null;
         this.dotsRegExp = null;
+        this.spacesRegExp = null;
         this.groupRegExp = null;
         this.morseRegExp = null;
     }
@@ -178,8 +195,8 @@ export class MorseDecoder extends Converter {
     public convert(input: string): string {
         const dots = this.getDotsRegExp();
         const dashes = this.getDashesRegExp();
-        return input.replace(this.getGroupRegExp(), (all, prefix: string, match: string, suffix: string) =>
-            prefix + match.replace(dots, ".").replace(dashes, "-").replace(this.getMorseRegExp(), decodeMorse)
+        return input.replace(this.getSpacesRegExp(), " ").replace(this.getGroupRegExp(), (all, prefix: string, match: string, suffix: string) =>
+            prefix + match.replaceAll(dots, ".").replaceAll(dashes, "-").replace(this.getMorseRegExp(), decodeMorse)
                 .replace(whiteSpaceCorrection, "$1") + suffix
         );
     }
