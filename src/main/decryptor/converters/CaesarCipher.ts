@@ -12,6 +12,7 @@ import { numberOption } from "./options/NumberOption.js";
 export abstract class CaesarCipher<T> extends Converter<T> {
     /** The alphabet rotation. */
     @numberOption<CaesarCipher<T>>("rotation", "Rotation", {
+        min: -25,
         max: 25,
         defaultValue: 13,
         disabled: converter => converter.isAutomatic()

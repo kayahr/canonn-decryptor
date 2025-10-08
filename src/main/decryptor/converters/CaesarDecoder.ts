@@ -23,6 +23,11 @@ export class CaesarDecoder extends CaesarCipher<CaesarDecoder> {
     protected readonly direction = -1;
 
     /** @inheritDoc */
+    protected override isAutomatic(): boolean {
+        return this.auto;
+    }
+
+    /** @inheritDoc */
     public override convert(input: string): string {
         if (this.auto) {
             const scores: Array<{ score: number, rotation: number }> = [];
