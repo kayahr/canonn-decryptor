@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { escapeRegExp } from "../../utils/string.js";
+import { escapeRegExp, unescape } from "../../utils/string.js";
 import { converter } from "./Converter.js";
 import { Converter } from "./Converter.js";
 import { stringOption } from "./options/StringOption.js";
@@ -112,7 +112,7 @@ export class MorseDecoder extends Converter {
     public dashes!: string;
 
     /** The characters to be used for spaces. */
-    @stringOption<MorseDecoder>("spaces", "Spaces", { defaultValue: " \t", onChange: decoder => decoder.resetCaches() })
+    @stringOption<MorseDecoder>("spaces", "Spaces", { defaultValue: " \\t", onChange: decoder => decoder.resetCaches() })
     public spaces!: string;
 
     /**
@@ -148,7 +148,7 @@ export class MorseDecoder extends Converter {
      * @returns The regular expression to replace space characters.
      */
     private getSpacesRegExp(): RegExp {
-        return this.spacesRegExp ??= new RegExp(`[${escapeRegExp(this.spaces)}]`, "g");
+        return this.spacesRegExp ??= new RegExp(`[${escapeRegExp(unescape(this.spaces))}]`, "g");
     }
 
     /**
@@ -159,7 +159,7 @@ export class MorseDecoder extends Converter {
     private getMorseRegExp(): RegExp {
         if (this.morseRegExp == null) {
             const range = this.getRange();
-            const spaces = `[${escapeRegExp(this.spaces)}]`;
+            const spaces = `[${escapeRegExp(unescape(this.spaces))}]`;
             this.morseRegExp = new RegExp(`(${spaces}?)(${range}+)`, "g");
         }
         return this.morseRegExp;
@@ -173,7 +173,7 @@ export class MorseDecoder extends Converter {
     private getGroupRegExp(): RegExp {
         if (this.groupRegExp == null) {
             const range = this.getRange();
-            const spaces = `[${escapeRegExp(this.spaces)}]+`;
+            const spaces = `[${escapeRegExp(unescape(this.spaces))}]+`;
             this.groupRegExp = new RegExp(`(^|${spaces})(${range}+(?:${spaces}${range}+)*)($|${spaces})`, "gim");
         }
         return this.groupRegExp;
@@ -196,9 +196,7 @@ export class MorseDecoder extends Converter {
         const dashes = this.getDashesRegExp();
         return input
             .replace(this.getGroupRegExp(), (all, prefix: string, match: string, suffix: string) => {
-                console.log("match", match);
                 return prefix + match.replace(this.getMorseRegExp(), (all, space: string, morse: string) => {
-                    console.log("morse", morse);
                     return decodeMorse(morse.replace(dots, ".").replace(dashes, "-"));
                 }) + suffix;
             }
