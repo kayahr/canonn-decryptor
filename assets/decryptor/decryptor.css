@@ -76,7 +76,8 @@ decryptor .outputs {
 }
 
 decryptor .outputs .box::before {
-    background: url(green-arrow.svg) no-repeat;
+    background-image: url("green-arrow.svg");
+    background-repeat: no-repeat;
     background-size: 100% 100%;
     content: "";
     height: 22px;
@@ -98,7 +99,7 @@ decryptor .panel {
     box-sizing: border-box;
     display: table-cell;
     height: 100%;
-    padding: 20px 10px 0 10px;
+    padding: 20px 10px 0;
     vertical-align: top;
     width: 1%;
 }
@@ -148,6 +149,7 @@ decryptor .box p {
     min-height: 50px;
     padding: 10px;
     white-space: pre-wrap;
+    overflow-wrap: anywhere;
 }
 
 
@@ -178,9 +180,9 @@ decryptor .params label:first-child {
     width: 1%;
 }
 
-decryptor .params input[type=text],
-decryptor .params input[type=number],
-decryptor .params input[type=checkbox] + label {
+decryptor .params input[type="text"],
+decryptor .params input[type="number"],
+decryptor .params input[type="checkbox"] + label {
     background: #003859;
     border: 0;
     box-sizing: border-box;
@@ -198,7 +200,7 @@ decryptor .params select {
     box-sizing: border-box;
     color: #ddd;
     display: table-cell;
-    font-family: "Roboto", sans-serif;
+    font-family: Roboto, sans-serif;
     font-size: 15px;
     padding: 5px 6px;
     width: 100%;
@@ -218,27 +220,27 @@ decryptor .params input:focus {
     outline: none;
 }
 
-decryptor .params input[type=checkbox] {
+decryptor .params input[type="checkbox"] {
     display: none;
 }
 
-decryptor .params input[type=checkbox] + label:before {
+decryptor .params input[type="checkbox"] + label::before {
     content: "\f096";
-    font-family: "FontAwesome";
+    font-family: FontAwesome;
     position: absolute;
 }
 
-decryptor .params input[type=checkbox]:checked + label:before {
+decryptor .params input[type="checkbox"]:checked + label::before {
     content: "\f046";
 }
 
-decryptor .params input[type=checkbox] + label:after {
+decryptor .params input[type="checkbox"] + label::after {
     content: "Off";
     font-family: Roboto, sans-serif;
     margin-left: 1.25em;
 }
 
-decryptor .params input[type=checkbox]:checked + label:after {
+decryptor .params input[type="checkbox"]:checked + label::after {
     content: "On";
 }
 
@@ -316,9 +318,6 @@ decryptor .instructions button {
 
 .select-converter-dialog .converter p {
     text-align: left;
-}
-
-.select-converter-dialog .converter p {
     margin: 0;
 }
 

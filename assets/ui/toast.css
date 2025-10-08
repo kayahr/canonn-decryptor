@@ -22,7 +22,7 @@
 }
 
 .toast p {
-    background: rgba(10, 139, 214, 0.95);
+    background: rgb(10 139 214 / 95%);
     border: 2px solid #5ecbff;
     border-radius: 10px;
     box-shadow: 0 0 25px #5ecbff;
@@ -32,7 +32,7 @@
 }
 
 .toast.warning p {
-    background: rgba(220, 150, 0, 0.95);
+    background: rgb(220 150 0 / 95%);
     border-color: #ffea00;
     box-shadow: 0 0 25px #ffea00;
 }

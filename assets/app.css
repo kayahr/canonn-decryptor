@@ -1,17 +1,17 @@
 /* Remove all styles */
-@import "reset.css";
+@import url("reset.css");
 
 /* Webfonts */
-@import "fonts/fontawesome/css/all.css";
-@import "fonts/Euro_Caps.css";
-@import "fonts/Roboto.css";
-@import "fonts/Roboto_Mono.css";
+@import url("fonts/fontawesome/css/all.css");
+@import url("fonts/Euro_Caps.css");
+@import url("fonts/Roboto.css");
+@import url("fonts/Roboto_Mono.css");
 
 /* Sub module styles */
-@import "ui/dialog.css";
-@import "ui/toast.css";
-@import "project/project.css";
-@import "decryptor/decryptor.css";
+@import url("ui/dialog.css");
+@import url("ui/toast.css");
+@import url("project/project.css");
+@import url("decryptor/decryptor.css");
 
 
 /* --- Splash screen ----------------------------------------------------------------------------------------------- */
@@ -78,13 +78,13 @@ em {
     font-style: italic;
 }
 
-input[type=number] {
+input[type="number"] {
     appearance: auto;
     -moz-appearance: textfield;
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
     appearance: none;
     -moz-appearance: none;
     -webkit-appearance: none;
@@ -92,7 +92,10 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 body > header {
-    background: #333 url(canonn.png) no-repeat 10px center;
+    background-image: url("canonn.png");
+    background-color: #333;
+    background-repeat: no-repeat;
+    background-position: 10px center;
     background-size: 40px 40px;
     height: 50px;
     position: relative;
@@ -167,13 +170,10 @@ body > footer .copyright {
 /* --- General content styles -------------------------------------------------------------------------------------- */
 
 main {
-    bottom: 34px;
-    left: 0;
+    inset: 52px 0 34px;
     overflow: auto;
     padding: 10px 20px;
     position: absolute;
-    right: 0;
-    top: 52px;
 }
 
 main > * > header {
@@ -182,7 +182,7 @@ main > * > header {
     width: 100%;
 }
 
-main > * > header:after {
+main > * > header::after {
     clear: both;
     content: "";
     display: block;
@@ -239,9 +239,6 @@ main > * > header nav {
     float: none;
     text-align: right;
     width: 25%;
-}
-
-main > * > header nav {
     white-space: nowrap;
 }
 
@@ -286,11 +283,6 @@ button:disabled {
 
 button:disabled:hover {
     text-shadow: none;
-}
-
-button::before {
-    font-family: FontAwesome;
-    margin-right: 0.25em;
 }
 
 button.clear::before {
