@@ -58,8 +58,12 @@ decryptor .box .title > nav button.add-input::before {
     content: "\f055";
 }
 
+decryptor .box .title > nav button.replace::before {
+    content: "\f304";
+}
+
 decryptor .box .title > nav button.remove::before {
-    content: "\f057";
+    content: "\f1f8";
 }
 
 decryptor .box .title > nav button.crack::before {
@@ -74,6 +78,20 @@ decryptor .outputs {
     position: relative;
     width: 100%;
 }
+
+decryptor .outputs .box .insert {
+    position: absolute;
+    top: -22px;
+    left: calc(50% - 25px);
+    width: 50px;
+    color: #000;
+}
+
+decryptor .outputs .box .insert:hover,
+decryptor .outputs .box .insert:focus {
+    color: #fff;
+}
+
 
 decryptor .outputs .box::before {
     background-image: url("green-arrow.svg");

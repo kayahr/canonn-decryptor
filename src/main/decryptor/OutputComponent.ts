@@ -107,6 +107,29 @@ export class OutputComponent {
     }
 
     /**
+     * Replaces this output. User has to select a converter for the new output first.
+     */
+    public async replace(): Promise<void> {
+        const converterId = await this.dialogService.openDialog(SelectConverterDialog);
+        if (converterId != null) {
+            const newOutput = new DecryptorOutput(createConverter(converterId));
+            this.output.replace(newOutput);
+            this.output = newOutput;
+        }
+    }
+
+    /**
+     * Inserts an output as parent of this one.
+     */
+    public async insertOutput(): Promise<void> {
+        const converterId = await this.dialogService.openDialog(SelectConverterDialog);
+        if (converterId != null) {
+            const newOutput = new DecryptorOutput(createConverter(converterId));
+            this.output.insertParent(newOutput);
+        }
+    }
+
+    /**
      * Checks if converter supports cracking.
      *
      * @returns True if crackable, false if not.

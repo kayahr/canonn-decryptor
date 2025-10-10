@@ -61,6 +61,31 @@ export class DecryptorOutput extends DecryptorNode implements Serializable<Decry
     }
 
     /**
+     * Replaces this output with the given output. Child outputs are moved to the new output.
+     *
+     * @param output - The output to replace this one with.
+     */
+    public replace(output: DecryptorOutput): void {
+        if (this.parent != null) {
+            this.parent.insertOutput(output, this);
+            output.addOutputs(this.getOutputs());
+            this.remove();
+        }
+    }
+
+    /**
+     * Inserts a new parent output.
+     *
+     * @param output - The output to insert as parent.
+     */
+    public insertParent(output: DecryptorOutput): void {
+        if (this.parent != null) {
+            this.parent.insertOutput(output, this);
+            output.addOutput(this);
+        }
+    }
+
+    /**
      * @inheritDoc
      */
     public convert(value: string): string {

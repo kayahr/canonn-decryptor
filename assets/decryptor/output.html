@@ -1,9 +1,11 @@
 <div class="box">
+  <button class="insert" (click)="insertOutput()" title="Insert conversion">+</button>
   <div class="title">
     <h1>{{ title }}</h1>
     <nav>
       @if (crackable) {<button class="crack" (click)="crack()">Crack</button>}
       <button class="decrypt" (click)="addOutput()">Convert</button>
+      <button class="replace" (click)="replace()">Replace</button>
       <button class="remove" (click)="remove()">Remove</button>
     </nav>
   </div>
