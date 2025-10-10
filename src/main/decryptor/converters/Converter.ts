@@ -194,6 +194,15 @@ export abstract class Converter<T = unknown> {
     }
 
     public static fromJSON<T extends Converter>(json: ConverterJSON): T {
+        // Workaround to load old project with one-time pad cipher which is the same as Vigenere
+        if (json.type.startsWith("one-time-pad-")) {
+            json.type = "vigenere-" + json.type.substring(13);
+            if (json.options?.pad != null) {
+                json.options.keyword = json.options.pad;
+                delete json.options.pad;
+            }
+        }
+
         const converter = getConverterDescriptor(json.type).create();
         if (json.options != null) {
             for (const optionName of Object.keys(json.options)) {

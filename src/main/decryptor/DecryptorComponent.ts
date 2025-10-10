@@ -16,8 +16,6 @@ import "./converters/MorseDecoder.js";
 import "./converters/MorseEncoder.js";
 import "./converters/NumberDecoder.js";
 import "./converters/NumberEncoder.js";
-import "./converters/OneTimePadDecoder.js";
-import "./converters/OneTimePadEncoder.js";
 import "./converters/PolybiusDecoder.js";
 import "./converters/PolybiusEncoder.js";
 import "./converters/Reverse.js";
