@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component } from "@angular/core";
+import { Component, HostListener } from "@angular/core";
 
 import template from "../../../assets/ui/confirm-dialog.html?raw";
 import { ButtonDirective } from "./ButtonDirective.js";
@@ -23,4 +23,14 @@ import { DialogComponent } from "./DialogComponent.js";
 export class ConfirmDialog extends Dialog<string> {
     public title = "Confirm";
     public body = "";
+
+    /**
+     * Confirms the dialog when pressing Enter.
+     */
+    @HostListener("window:keydown", [ "$event" ])
+    public handleEnter(event: KeyboardEvent): void {
+        if (!event.defaultPrevented && event.key === "Enter") {
+            this.close("ok");
+        }
+    }
 }

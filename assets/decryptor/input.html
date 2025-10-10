@@ -3,7 +3,7 @@
     <h1>Input</h1>
     <nav>
       <button class="decrypt" (click)="addOutput()">Convert</button>
-      @if (removable) {<button class="remove" (click)="remove()">Remove</button>}
+      @if (removable) {<button #removeButton class="remove" (click)="remove()">Remove</button>}
     </nav>
   </div>
   <textarea [(ngModel)]="value" focus></textarea>

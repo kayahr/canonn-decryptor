@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { EventEmitter } from "@angular/core";
+import { EventEmitter, HostListener } from "@angular/core";
 
 /**
  * Base class for dialogs.
@@ -23,5 +23,15 @@ export abstract class Dialog<T> {
      */
     public close(value: T | null = null): void {
         this.onClosed.emit(value);
+    }
+
+    /**
+     * Closes the dialog when pressing Escape.
+     */
+    @HostListener("window:keydown", [ "$event" ])
+    public handleEscape(event: KeyboardEvent): void {
+        if (!event.defaultPrevented && event.key === "Escape") {
+            this.close();
+        }
     }
 }

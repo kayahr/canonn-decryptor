@@ -6,7 +6,7 @@
       @if (crackable) {<button class="crack" (click)="crack()">Crack</button>}
       <button class="decrypt" (click)="addOutput()">Convert</button>
       <button class="replace" (click)="replace()">Replace</button>
-      <button class="remove" (click)="remove()">Remove</button>
+      <button #removeButton class="remove" (click)="remove()">Remove</button>
     </nav>
   </div>
   <div class="params">

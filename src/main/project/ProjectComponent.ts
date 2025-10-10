@@ -138,8 +138,10 @@ export abstract class ProjectComponent<T extends Project> {
      * Loads a previously saved project.
      */
     public async load(): Promise<void> {
-        const name = await this.dialogService.openDialog(LoadProjectDialog, component => {
-            component.projectType = this.type;
+        const name = await this.dialogService.openDialog(LoadProjectDialog, {
+            init: component => {
+                component.projectType = this.type;
+            }
         });
         if (name != null) {
             this.state.setProject(this.projectService.load(this.type, name));

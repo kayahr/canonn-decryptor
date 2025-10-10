@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, inject, Input } from "@angular/core";
+import { Component, type ElementRef, inject, Input, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
 import template from "../../../assets/decryptor/input.html?raw";
@@ -37,6 +37,9 @@ export class InputComponent {
     /** The decryptor input.  */
     @Input()
     public input: DecryptorInput | null = null;
+
+    @ViewChild("removeButton")
+    protected removeButton!: ElementRef<HTMLButtonElement>;
 
     /**
      * Returns the input data.
@@ -78,7 +81,7 @@ export class InputComponent {
      * Removes this input after the user has confirmed it.
      */
     public async remove(): Promise<void> {
-        if (this.input != null && await this.dialogService.confirm("Are you sure you want to delete this input?")) {
+        if (this.input != null && await this.dialogService.confirm("Are you sure you want to delete this input?", { owner: this.removeButton.nativeElement })) {
             this.state.getProject().removeInput(this.input);
         }
     }

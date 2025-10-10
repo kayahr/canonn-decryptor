@@ -27,7 +27,7 @@ import "./converters/Rot13.js";
 import "./converters/VigenereDecoder.js";
 import "./converters/VigenereEncoder.js";
 
-import { Component, inject } from "@angular/core";
+import { Component, type ElementRef, inject, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 
@@ -57,6 +57,9 @@ import { DecryptorProject } from "./project/DecryptorProject.js";
     template
 })
 export class DecryptorComponent extends ProjectComponent<DecryptorProject> {
+    @ViewChild("clearButton")
+    protected clearButton!: ElementRef<HTMLButtonElement>;
+
     /**
      * Creates a new decryptor component showing the specified state and using the specified service for loading
      * and saving.
@@ -93,7 +96,7 @@ export class DecryptorComponent extends ProjectComponent<DecryptorProject> {
      * Clears the current project after user confirmation.
      */
     public async clear(): Promise<void> {
-        if (await this.dialogService.confirm("Are you sure you want to clear the project?")) {
+        if (await this.dialogService.confirm("Are you sure you want to clear the project?", { owner: this.clearButton.nativeElement })) {
             this.state.getProject().clear();
             this.toastService.showToast("Project has been cleared");
         }

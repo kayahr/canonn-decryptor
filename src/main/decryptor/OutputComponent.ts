@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, inject, Input } from "@angular/core";
+import { Component, type ElementRef, inject, Input, ViewChild } from "@angular/core";
 
 import template from "../../../assets/decryptor/output.html?raw";
 import { ButtonDirective } from "../ui/ButtonDirective.js";
@@ -40,6 +40,9 @@ export class OutputComponent {
     protected output!: DecryptorOutput;
 
     private readonly dialogService = inject(DialogService);
+
+    @ViewChild("removeButton")
+    protected removeButton!: ElementRef<HTMLButtonElement>;
 
     /**
      * Returns the output title which is the title of the used converter.
@@ -90,7 +93,7 @@ export class OutputComponent {
      * Removes this decryptor output. User has to confirm it first.
      */
     public async remove(): Promise<void> {
-        if (await this.dialogService.confirm("Are you sure you want to delete this output?")) {
+        if (await this.dialogService.confirm("Are you sure you want to delete this output?", { owner: this.removeButton.nativeElement })) {
             this.output.getParent().addOutputs(this.output.getOutputs());
             this.output.remove();
         }
@@ -145,15 +148,19 @@ export class OutputComponent {
     public async crack(): Promise<void> {
         const converter = this.output.getConverter();
         if (converter instanceof KeywordDecoder) {
-            const keyword = await this.dialogService.openDialog(KeywordCrackerDialog, dialog => {
-                dialog.init(this.output.getParent().getValue());
+            const keyword = await this.dialogService.openDialog(KeywordCrackerDialog, {
+                init: dialog => {
+                    dialog.init(this.output.getParent().getValue());
+                }
             });
             if (keyword != null) {
                 converter.keyword = keyword;
             }
         } else if (converter instanceof AffineDecoder) {
-            const result = await this.dialogService.openDialog(AffineCrackerDialog, dialog => {
-                dialog.init(this.output.getParent().getValue());
+            const result = await this.dialogService.openDialog(AffineCrackerDialog, {
+                init: dialog => {
+                    dialog.init(this.output.getParent().getValue());
+                }
             });
             if (result != null) {
                 converter.a = String(result.a);
