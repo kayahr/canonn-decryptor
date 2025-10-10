@@ -29,10 +29,10 @@ input/galaxy.json.gz:
 	wget -O input/galaxy.json.gz https://downloads.spansh.co.uk/galaxy.json.gz
 
 input/systems.txt: input/galaxy.json.gz
-	node ../../lib/tools/extract-galaxy.js input/galaxy.json.gz input/systems.txt input/bodies.txt input/stations.txt
+	node ../../lib/tools/extract-galaxy.js input/galaxy.json.gz input/systems.txt input/bodies.txt input/stations.txt input/positions.txt
 
 input/stations_populated.txt: input/galaxy_populated.json.gz
-	node ../../lib/tools/extract-galaxy.js input/galaxy_populated.json.gz input/systems_populated.txt input/bodies_populated.txt input/stations_populated.txt
+	node ../../lib/tools/extract-galaxy.js input/galaxy_populated.json.gz input/systems_populated.txt input/bodies_populated.txt input/stations_populated.txt input/positions_populated.txt
 
 input/systems-without-proc-gen.txt: input/systems.txt
 	echo "Generating systems-without-proc-gen.txt"
