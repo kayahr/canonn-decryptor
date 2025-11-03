@@ -10,7 +10,7 @@ export class Canceled extends Error {
     /**
      * @param reason - Optional cancellation reason.
      */
-    public constructor(reason: string = "") {
+    public constructor(reason = "") {
         super(reason);
     }
 }

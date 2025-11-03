@@ -4,14 +4,14 @@
  */
 
 import quadgramsJSON from "../../../assets/fitness/ngrams.json" with { type: "json" };
-import { FastString } from "../utils/FastString.js";
+import type { FastString } from "../utils/FastString.ts";
 
 export class Quadgrams {
     private readonly scores: Map<string, number>;
 
     private readonly quadgrams: number[][][][] = [];
 
-    public constructor(raw: { [ngram: string]: number }) {
+    public constructor(raw: Record<string, number>) {
         this.scores = new Map();
         const ngrams = Object.keys(raw);
         const total = ngrams.reduce((total, ngram) => total + raw[ngram], 0);
@@ -44,13 +44,21 @@ export class Quadgrams {
         for (let i = 0, max = text.length - 3; i < max; ++i) {
             let j = i;
             const a = root[text[j]];
-            if (a == null) continue;
+            if (a == null) {
+                continue;
+            }
             const b = a[text[++j]];
-            if (b == null) continue;
+            if (b == null) {
+                continue;
+            }
             const c = b[text[++j]];
-            if (c == null) continue;
+            if (c == null) {
+                continue;
+            }
             const d = c[text[++j]];
-            if (d != null) score += d;
+            if (d != null) {
+                score += d;
+            }
         }
         return score;
     }
@@ -72,7 +80,7 @@ export class Quadgrams {
         // Sanitize number of words
         words = Math.min(text.length, Math.max(1, Math.trunc(words)));
 
-        const current = new Array<number>(words);
+        const current = Array.from<number>({ length: words });
         const root = this.quadgrams;
         let bestScore = Number.NEGATIVE_INFINITY;
         let bestPattern: number[] | null = null;
@@ -88,11 +96,17 @@ export class Quadgrams {
 
             const addQuad = (a: number, b: number, c: number, d: number): void => {
                 const aNode = root[a];
-                if (aNode == null) return;
+                if (aNode == null) {
+                    return;
+                }
                 const bNode = aNode[b];
-                if (bNode == null) return;
+                if (bNode == null) {
+                    return;
+                }
                 const cNode = bNode[c];
-                if (cNode == null) return;
+                if (cNode == null) {
+                    return;
+                }
                 const dNode = cNode[d];
                 if (dNode != null) {
                     score += dNode;

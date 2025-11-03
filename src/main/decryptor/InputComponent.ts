@@ -3,19 +3,19 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, type ElementRef, inject, Input, ViewChild } from "@angular/core";
+import { Component, type ElementRef, Input, ViewChild, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
-import template from "../../../assets/decryptor/input.html?raw";
-import { ButtonDirective } from "../ui/ButtonDirective.js";
-import { DialogService } from "../ui/DialogService.js";
-import { FocusDirective } from "../ui/FocusDirective.js";
-import { createConverter } from "./converters/Converter.js";
-import { DecryptorState } from "./DecryptorState.js";
-import { OutputComponent } from "./OutputComponent.js";
-import { DecryptorInput } from "./project/DecryptorInput.js";
-import { DecryptorOutput } from "./project/DecryptorOutput.js";
-import { SelectConverterDialog } from "./SelectConverterDialog.js";
+import template from "../../../assets/decryptor/input.html";
+import { ButtonDirective } from "../ui/ButtonDirective.ts";
+import { DialogService } from "../ui/DialogService.ts";
+import { FocusDirective } from "../ui/FocusDirective.ts";
+import { createConverter } from "./converters/Converter.ts";
+import { DecryptorState } from "./DecryptorState.ts";
+import { OutputComponent } from "./OutputComponent.ts";
+import type { DecryptorInput } from "./project/DecryptorInput.ts";
+import { DecryptorOutput } from "./project/DecryptorOutput.ts";
+import { SelectConverterDialog } from "./SelectConverterDialog.ts";
 
 /**
  * Decryptor input panel.
@@ -44,7 +44,7 @@ export class InputComponent {
     /**
      * Returns the input data.
      *
-     * @return The input data.
+     * @returns The input data.
      */
     public get value(): string {
         return this.input?.getInput() ?? "";
@@ -62,7 +62,7 @@ export class InputComponent {
     /**
      * Returns the outputs connected to this input.
      *
-     * @return The connected outputs.
+     * @returns The connected outputs.
      */
     public get outputs(): DecryptorOutput[] {
         return this.input?.getOutputs() ?? [];
@@ -71,7 +71,7 @@ export class InputComponent {
     /**
      * Checks if this input is removable. When there is only one input then it can't be removed.
      *
-     * @return True if input is removable, false if not.
+     * @returns True if input is removable, false if not.
      */
     public get removable(): boolean {
         return this.state.getProject().getInputs().length > 1;

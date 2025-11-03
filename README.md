@@ -1,8 +1,7 @@
 Canonn Decryptor
 ================
 
-The [Canonn Decryptor] is a tool for decrypting the mysteries of the [Elite: Dangerous] universe. Currently the
-following converters are supported:
+The [Canonn Decryptor] is a tool for decrypting the mysteries of the [Elite: Dangerous] universe. Currently the following converters are supported:
 
 * [Affine cipher] (With automatic cracking)
 * [Atbash cipher]
@@ -21,8 +20,7 @@ following converters are supported:
 Build
 -----
 
-After cloning the repository run `npm install` to download the dependencies and compile the project.
-Obviously [Node.js] is required for this.
+After cloning the repository run `npm install` to download the dependencies, compile the project and package the application. Obviously [Node.js] is required for this.
 
 
 Development
@@ -34,15 +32,13 @@ Run `npm start` to start a development web server on localhost and open the prov
 Testing
 -------
 
-Run `npm test` to check the TypeScript and CSS files and to run the unit tests.
+Use `npm test` to run the tests.
 
 
 Deployment
 ----------
 
-For deployment run `npm run package` to bundle all JavaScript files into a single file and copy all files
-necessary for the deployment into the `dist` directory. Deploy the content of this directory to your web
-server.
+For deployment copy the content of the `lib/package` directory to your web server, after running `npm install` to package the application.
 
 
 Links

@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter } from "../Converter.js";
-import { ConverterOption, converterOption, type ConverterOptionArgs, type OptionTarget } from "./ConverterOption.js";
+import type { Converter } from "../Converter.ts";
+import { ConverterOption, type ConverterOptionArgs, type OptionTarget, converterOption } from "./ConverterOption.ts";
 
 /**
  * The string option arguments.
@@ -59,7 +59,7 @@ export class StringOption<T extends Converter = Converter> extends ConverterOpti
         return this.maxLength;
     }
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     protected override correctValue(value: string): string {
         const { allowEmpty, maxLength, defaultValue } = this;
         if (!allowEmpty && value === "") {

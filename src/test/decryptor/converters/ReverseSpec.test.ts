@@ -1,39 +1,40 @@
-import { describe, expect, it } from "vitest";
+import { describe, it } from "node:test";
 
-import { Converter } from "../../../main/decryptor/converters/Converter.js";
-import { Reverse } from "../../../main/decryptor/converters/Reverse.js";
+import { Converter } from "../../../main/decryptor/converters/Converter.ts";
+import { Reverse } from "../../../main/decryptor/converters/Reverse.ts";
+import { assertEquals, assertInstanceOf, assertSame } from "@kayahr/assert";
 
 describe("Reverse", () => {
     describe("convert", () => {
         it("converts empty string to empty string", () => {
-            expect(new Reverse().convert("")).toBe("");
+            assertSame(new Reverse().convert(""), "");
         });
         it("reverses normal lower-case characters", () => {
-            expect(new Reverse().convert("foobar")).toBe("raboof");
+            assertSame(new Reverse().convert("foobar"), "raboof");
         });
         it("reverses normal upper-case characters", () => {
-            expect(new Reverse().convert("FOOBAR")).toBe("RABOOF");
+            assertSame(new Reverse().convert("FOOBAR"), "RABOOF");
         });
         it("reverses mixed-case characters", () => {
-            expect(new Reverse().convert("FooBar")).toBe("raBooF");
+            assertSame(new Reverse().convert("FooBar"), "raBooF");
         });
         it("reverses non-alphabet characters", () => {
-            expect(new Reverse().convert("1ö_<")).toBe("<_ö1");
+            assertSame(new Reverse().convert("1ö_<"), "<_ö1");
         });
         it("reverses mixed strings", () => {
-            expect(new Reverse().convert("#12FooBar!")).toBe("!raBooF21#");
+            assertSame(new Reverse().convert("#12FooBar!"), "!raBooF21#");
         });
         it("reverses multiple lines", () => {
-            expect(new Reverse().convert("Line 1\nLine 2\nLine 3")).toBe("3 eniL\n2 eniL\n1 eniL");
+            assertSame(new Reverse().convert("Line 1\nLine 2\nLine 3"), "3 eniL\n2 eniL\n1 eniL");
         });
         it("reverses multiple lines but does not reverse CRLF or LFCR sequences", () => {
-            expect(new Reverse().convert("Line 1\r\nLine 2\n\rLine 3")).toBe("3 eniL\n\r2 eniL\r\n1 eniL");
+            assertSame(new Reverse().convert("Line 1\r\nLine 2\n\rLine 3"), "3 eniL\n\r2 eniL\r\n1 eniL");
         });
     });
 
     describe("toJSON", () => {
         it("serializes the converter", () => {
-            expect(new Reverse().toJSON()).toEqual({
+            assertEquals(new Reverse().toJSON(), {
                 type: "reverse"
             });
         });
@@ -42,7 +43,7 @@ describe("Reverse", () => {
     describe("fromJSON", () => {
         it("deserializes a converter", () => {
             const converter = Converter.fromJSON<Reverse>({ type: "reverse" });
-            expect(converter).toBeInstanceOf(Reverse);
+            assertInstanceOf(converter, Reverse);
         });
     });
 });

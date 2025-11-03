@@ -5,8 +5,8 @@
 
 import { Input } from "@angular/core";
 
-import { Converter } from "./converters/Converter.js";
-import { ConverterOption } from "./converters/options/ConverterOption.js";
+import type { Converter } from "./converters/Converter.ts";
+import type { ConverterOption } from "./converters/options/ConverterOption.ts";
 
 /**
  * Abstract base class for option components.
@@ -23,7 +23,7 @@ export abstract class OptionComponent<T extends ConverterOption> {
     /**
      * Returns the option type.
      *
-     * @return The option type.
+     * @returns The option type.
      */
     public get type(): string {
         return this.option.getType();
@@ -32,7 +32,7 @@ export abstract class OptionComponent<T extends ConverterOption> {
     /**
      * Returns the option title.
      *
-     * @return The option title.
+     * @returns The option title.
      */
     public get title(): string {
         return this.option.getTitle();
@@ -41,7 +41,7 @@ export abstract class OptionComponent<T extends ConverterOption> {
     /**
      * Checks if option is disabled.
      *
-     * @return True if disabled, false if not.
+     * @returns True if disabled, false if not.
      */
     public get disabled(): string | null {
         return this.option.isDisabled(this.converter) ? "disabled" : null;

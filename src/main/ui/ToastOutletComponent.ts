@@ -3,9 +3,9 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, inject, Renderer2, ViewContainerRef } from "@angular/core";
+import { Component, Renderer2, ViewContainerRef, inject } from "@angular/core";
 
-import { ToastService } from "./ToastService.js";
+import { ToastService } from "./ToastService.ts";
 
 /**
  * The toast outlet component used in the main HTML file to define the area in which toast components are

@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { type Serializable, type SerializableStatic } from "../utils/Serializable.js";
-import { Signal } from "../utils/Signal.js";
+import type { Serializable, SerializableStatic } from "../utils/Serializable.ts";
+import { Signal } from "../utils/Signal.ts";
 
 /**
  * Base JSON structure for a project.
@@ -32,9 +32,9 @@ export interface ProjectStatic<T extends Project> extends SerializableStatic<T> 
      * Deserializes the object by using the specified JSON data.
      *
      * @param json  The serialized JSON data.
-     * @return The deserialized object.
+     * @returns The deserialized object.
      */
-    isProjectJSON(json: any): json is ProjectJSON;
+    isProjectJSON(json: unknown): json is ProjectJSON;
 }
 
 /**
@@ -48,13 +48,13 @@ export abstract class Project implements Serializable<ProjectJSON> {
     /** The project name. */
     private name: string;
 
-    private saved: boolean = false;
+    private saved = false;
 
     public constructor(name: string) {
         this.name = name;
     }
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public toJSON(): ProjectJSON {
         return {
             name: this.name
@@ -64,7 +64,7 @@ export abstract class Project implements Serializable<ProjectJSON> {
     /**
      * Returns the project name.
      *
-     * @return The project name.
+     * @returns The project name.
      */
     public getName(): string {
         return this.name;
@@ -78,7 +78,7 @@ export abstract class Project implements Serializable<ProjectJSON> {
     /**
      * Checks if project is saved.
      *
-     * @return True if project is saved, false if not.
+     * @returns True if project is saved, false if not.
      */
     public isSaved(): boolean {
         return this.saved;

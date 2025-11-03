@@ -1,40 +1,41 @@
-import { describe, expect, it } from "vitest";
+import { describe, it } from "node:test";
 
-import { Converter } from "../../../main/decryptor/converters/Converter.js";
-import { Rot13 } from "../../../main/decryptor/converters/Rot13.js";
+import { Converter } from "../../../main/decryptor/converters/Converter.ts";
+import { Rot13 } from "../../../main/decryptor/converters/Rot13.ts";
+import { assertEquals, assertInstanceOf, assertSame } from "@kayahr/assert";
 
 describe("Rot13", () => {
     describe("convert", () => {
         it("converts empty string to empty string", () => {
-            expect(new Rot13().convert("")).toBe("");
+            assertSame(new Rot13().convert(""), "");
         });
         it("keeps white-space only string", () => {
-            expect(new Rot13().convert(" \n\r\t")).toBe(" \n\r\t");
+            assertSame(new Rot13().convert(" \n\r\t"), " \n\r\t");
         });
         it("keeps unrotated characters", () => {
-            expect(new Rot13().convert("1ö_<")).toBe("1ö_<");
+            assertSame(new Rot13().convert("1ö_<"), "1ö_<");
         });
         it("rotates normal lower-case characters", () => {
-            expect(new Rot13().convert("foobar")).toBe("sbbone");
-            expect(new Rot13().convert("az")).toBe("nm");
-            expect(new Rot13().convert("nm")).toBe("az");
+            assertSame(new Rot13().convert("foobar"), "sbbone");
+            assertSame(new Rot13().convert("az"), "nm");
+            assertSame(new Rot13().convert("nm"), "az");
         });
         it("rotates normal upper-case characters", () => {
-            expect(new Rot13().convert("FOOBAR")).toBe("SBBONE");
-            expect(new Rot13().convert("AZ")).toBe("NM");
-            expect(new Rot13().convert("NM")).toBe("AZ");
+            assertSame(new Rot13().convert("FOOBAR"), "SBBONE");
+            assertSame(new Rot13().convert("AZ"), "NM");
+            assertSame(new Rot13().convert("NM"), "AZ");
         });
         it("rotates normal mixed-case characters", () => {
-            expect(new Rot13().convert("FooBar")).toBe("SbbOne");
+            assertSame(new Rot13().convert("FooBar"), "SbbOne");
         });
         it("rotates only normal characters in mixed string", () => {
-            expect(new Rot13().convert("#12FooBar!")).toBe("#12SbbOne!");
+            assertSame(new Rot13().convert("#12FooBar!"), "#12SbbOne!");
         });
     });
 
     describe("toJSON", () => {
         it("serializes the converter", () => {
-            expect(new Rot13().toJSON()).toEqual({
+            assertEquals(new Rot13().toJSON(), {
                 type: "rot13"
             });
         });
@@ -43,7 +44,7 @@ describe("Rot13", () => {
     describe("fromJSON", () => {
         it("deserializes a converter", () => {
             const converter = Converter.fromJSON<Rot13>({ type: "rot13" });
-            expect(converter).toBeInstanceOf(Rot13);
+            assertInstanceOf(converter, Rot13);
         });
     });
 });

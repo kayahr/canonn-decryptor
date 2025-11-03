@@ -3,15 +3,15 @@
  * See LICENSE.md for licensing information.
  */
 
-import { converter } from "./Converter.js";
-import { PolybiusCipher } from "./PolybiusCipher.js";
+import { converter } from "./Converter.ts";
+import { PolybiusCipher } from "./PolybiusCipher.ts";
 
 /**
  * Polybius square decoder.
  */
 @converter<PolybiusDecoder>("polybius-decoder", "polybius", "Polybius Square Decoder", "Decodes polybius square numbers to text.")
 export class PolybiusDecoder extends PolybiusCipher<PolybiusDecoder> {
-    /** @inheritDoc */
+    /** @inheritdoc */
     public override convert(input: string): string {
         const square = this.getSquare();
         return input.replace(/(?<!\\w)\d\d(?: +\d\d)*(?!\\w)/gi, match =>

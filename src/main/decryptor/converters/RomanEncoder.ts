@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter, converter } from "./Converter.js";
+import { Converter, converter } from "./Converter.ts";
 
 /** Table with decimal values and their roman numeral counter-part. */
 const conversions = [
@@ -37,7 +37,7 @@ const groupRegExp = new RegExp(`(^|\\s+)(${range}(?:\\s+${range})*)($|\\s+)`, "g
 function encodeRoman(decimal: number): string {
     // Roman numbers can't be lower than 1 or larger than 3999
     if (decimal < 1 || decimal > 3999) {
-        return "" + decimal;
+        return String(decimal);
     }
 
     let roman = "";
@@ -58,7 +58,7 @@ function encodeRoman(decimal: number): string {
  */
 @converter<RomanEncoder>("roman-encoder", "roman", "Roman Encoder", "Encodes decimal numbers into roman numerals.")
 export class RomanEncoder extends Converter {
-    /** @inheritDoc */
+    /** @inheritdoc */
     public convert(input: string): string {
         return input.replace(groupRegExp, (all, prefix: string, match: string, suffix: string) =>
             prefix + match.replace(decimalRegExp, decimal => encodeRoman(+decimal)) + suffix

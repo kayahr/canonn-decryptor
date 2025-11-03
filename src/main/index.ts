@@ -3,22 +3,29 @@
  * See LICENSE.md for licensing information.
  */
 
-import "core-js";
 import "zone.js";
 import "@angular/compiler";
 
 import { enableProdMode } from "@angular/core";
 import { bootstrapApplication } from "@angular/platform-browser";
-import { provideRouter, type Routes, withHashLocation } from "@angular/router";
+import { type Routes, provideRouter, withHashLocation } from "@angular/router";
 
-import { AppComponent } from "./AppComponent.js";
-import { DecryptorComponent } from "./decryptor/DecryptorComponent.js";
+import { AppComponent } from "./AppComponent.ts";
+import { DecryptorComponent } from "./decryptor/DecryptorComponent.ts";
 
 const routes: Routes = [
     { path: "", component: DecryptorComponent }
 ];
 
-enableProdMode();
+// ESBuild live reload. See https://esbuild.github.io/api/#live-reload
+if (process.env.ESBUILD_MODE === "serve") {
+    new EventSource("/esbuild").addEventListener("change", () => {
+        location.reload();
+    });
+} else {
+    enableProdMode();
+}
+
 bootstrapApplication(AppComponent, {
     providers: [
         provideRouter(routes, withHashLocation())

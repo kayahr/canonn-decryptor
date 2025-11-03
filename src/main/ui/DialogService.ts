@@ -3,11 +3,11 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Injectable, Renderer2, ViewContainerRef } from "@angular/core";
+import { Injectable, type Renderer2, type ViewContainerRef } from "@angular/core";
 
-import { IllegalStateError } from "../utils/error.js";
-import { ConfirmDialog } from "./ConfirmDialog.js";
-import { Dialog } from "./Dialog.js";
+import { IllegalStateError } from "../utils/error.ts";
+import { ConfirmDialog } from "./ConfirmDialog.ts";
+import type { Dialog } from "./Dialog.ts";
 
 /**
  * Options for opening a dialog.
@@ -45,7 +45,7 @@ export class DialogService {
      * @param options         - Optional dialog options.
      * @returns The dialog result.
      */
-    public openDialog<V, T extends Dialog<V>>(dialogComponent: { new (...args: any[]): T & Dialog<V> }, { init, owner }: DialogOptions<T> = {}):
+    public openDialog<V, T extends Dialog<V>>(dialogComponent: new (...args: any[]) => T & Dialog<V>, { init, owner }: DialogOptions<T> = {}):
             Promise<V | null> {
         const viewContainer = this.viewContainer;
         const renderer = this.renderer;

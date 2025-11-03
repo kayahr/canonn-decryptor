@@ -3,10 +3,10 @@
  * See LICENSE.md for licensing information.
  */
 
-import { IllegalArgumentError, IllegalStateError } from "../../utils/error.js";
-import { type Serializable } from "../../utils/Serializable.js";
-import { Signal } from "../../utils/Signal.js";
-import { DecryptorOutput, type DecryptorOutputJSON } from "./DecryptorOutput.js";
+import { IllegalArgumentError, IllegalStateError } from "../../utils/error.ts";
+import type { Serializable } from "../../utils/Serializable.ts";
+import { Signal } from "../../utils/Signal.ts";
+import type { DecryptorOutput, DecryptorOutputJSON } from "./DecryptorOutput.ts";
 
 /**
  * JSON structure of a serialized decryptor node.
@@ -35,7 +35,7 @@ export abstract class DecryptorNode implements Serializable<DecryptorNodeJSON> {
     protected outputs: DecryptorOutput[];
 
     /** The current decryptor node value. */
-    private value: string = "";
+    private value = "";
 
     public constructor() {
         this.outputs = [];
@@ -48,7 +48,7 @@ export abstract class DecryptorNode implements Serializable<DecryptorNodeJSON> {
         this.emitOnChanged(this);
     }
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public toJSON(): DecryptorNodeJSON {
         const json: DecryptorNodeJSON = {};
         if (this.outputs.length > 0) {
@@ -61,7 +61,7 @@ export abstract class DecryptorNode implements Serializable<DecryptorNodeJSON> {
      * Abstract method decryptor nodes must implement to convert the given input value to an output value.
      *
      * @param value  The input value.
-     * @return The output value.
+     * @returns The output value.
      */
     public abstract convert(value: string): string;
 
@@ -83,7 +83,7 @@ export abstract class DecryptorNode implements Serializable<DecryptorNodeJSON> {
     /**
      * Returns the value of this input/output.
      *
-     * @return The current value.
+     * @returns The current value.
      */
     public getValue(): string {
         return this.value;
@@ -92,7 +92,7 @@ export abstract class DecryptorNode implements Serializable<DecryptorNodeJSON> {
     /**
      * Returns the parent node of this node.
      *
-     * @return The parent node.
+     * @returns The parent node.
      * @throws IllegalStateError  When node has no parent node.
      */
     public getParent(): DecryptorNode {
@@ -177,7 +177,7 @@ export abstract class DecryptorNode implements Serializable<DecryptorNodeJSON> {
     /**
      * Returns the outputs connected to this node.
      *
-     * @return The outputs.
+     * @returns The outputs.
      */
     public getOutputs(): DecryptorOutput[] {
         return this.outputs.slice();

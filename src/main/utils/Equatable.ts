@@ -24,7 +24,7 @@ export interface Equatable {
      * @param other - The other object to compare this one with.
      * @returns True if objects are equal, false it not.
      */
-    equals(other: any): boolean;
+    equals(other: unknown): boolean;
 }
 
 /**

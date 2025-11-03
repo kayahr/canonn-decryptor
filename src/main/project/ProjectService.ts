@@ -6,9 +6,9 @@
 import { Injectable } from "@angular/core";
 import lz from "lz-string";
 
-import { IllegalArgumentError } from "../utils/error.js";
-import { Signal } from "../utils/Signal.js";
-import { Project, type ProjectJSON, type ProjectStatic } from "./Project.js";
+import { IllegalArgumentError } from "../utils/error.ts";
+import { Signal } from "../utils/Signal.ts";
+import type { Project, ProjectJSON, ProjectStatic } from "./Project.ts";
 
 /**
  * Forgot to rename the key after renaming the project. Existing projects under this key are migrated to the new
@@ -39,7 +39,7 @@ export class ProjectService {
     /**
      * Loads all projects and returns them.
      *
-     * @return The loaded projects.
+     * @returns The loaded projects.
      */
     public loadProjects<T extends Project>(type: ProjectStatic<T>): T[] {
         const key = itemKey(type);
@@ -73,7 +73,7 @@ export class ProjectService {
      * Loads the project with the given name.
      *
      * @param name  The name of the project to load.
-     * @return The loaded project.
+     * @returns The loaded project.
      */
     public load<T extends Project>(type: ProjectStatic<T>, name: string): T {
         const projects = this.loadProjects(type);
@@ -83,7 +83,7 @@ export class ProjectService {
                 return project;
             }
         }
-        throw new IllegalArgumentError("Project not found: " + name);
+        throw new IllegalArgumentError(`Project not found: ${name}`);
     }
 
     /**
@@ -123,7 +123,7 @@ export class ProjectService {
      * Exports the given project into a string.
      *
      * @param project  The project to export.
-     * @return The export string.
+     * @returns The export string.
      */
     public export<T extends Project>(project: T): string {
         return lz.compressToBase64(JSON.stringify(project.toJSON()));
@@ -133,7 +133,7 @@ export class ProjectService {
      * Imports a project and returns it.
      *
      * @param type  The type of project to import.
-     * @return The imported project or null if none.
+     * @returns The imported project or null if none.
      */
     public import<T extends Project>(type: ProjectStatic<T>, data: string): T {
         const json = JSON.parse(lz.decompressFromBase64(data)) as unknown;

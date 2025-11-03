@@ -24,7 +24,7 @@ export class Alphabet extends Array<number> {
      * Creates a new alphabet initialized by the given keyword.
      *
      * @param keyword  The keyword to initialize the alphabet with.
-     * @return The created alphabet.
+     * @returns The created alphabet.
      */
     public static fromKeyword(keyword: string): Alphabet {
         const alphabet = new Alphabet();
@@ -46,7 +46,7 @@ export class Alphabet extends Array<number> {
     /**
      * Creates a new randomized alphabet.
      *
-     * @return The randomized alphabet.
+     * @returns The randomized alphabet.
      */
     public static createRandom(): Alphabet {
         return new Alphabet().shuffle();
@@ -57,9 +57,9 @@ export class Alphabet extends Array<number> {
      *
      * @param a  The first letter index (1-26).
      * @param b  The second letter index (1-26).
-     * @return This alphabet for method chaining.
+     * @returns This alphabet for method chaining.
      */
-    public swap(a: number, b: number): Alphabet {
+    public swap(a: number, b: number): this {
         const tmp = this[a];
         this[a] = this[b];
         this[b] = tmp;
@@ -71,7 +71,7 @@ export class Alphabet extends Array<number> {
      *
      * @param dest  Optional destination alphabet. If specified then alphabet is cloned into the specified alphabet.
      *              If not specified then a new alphabet is created and returned.
-     * @return The cloned alphabet.
+     * @returns The cloned alphabet.
      */
     public clone(dest: Alphabet = new Alphabet()): Alphabet {
         for (let i = 1; i < 27; ++i) {
@@ -83,7 +83,7 @@ export class Alphabet extends Array<number> {
     /**
      * Shuffles this alphabet.
      *
-     * @return This alphabet for method chaining.
+     * @returns This alphabet for method chaining.
      */
     public shuffle(): this {
         for (let i = 1; i !== 27; ++i) {
@@ -95,7 +95,7 @@ export class Alphabet extends Array<number> {
     /**
      * Inverts this alphabet.
      *
-     * @return This alphabet for method chaining.
+     * @returns This alphabet for method chaining.
      */
     public invert(): this {
         const old = this.slice();
@@ -109,12 +109,12 @@ export class Alphabet extends Array<number> {
      * Trims the alphabet to the given length. The rest of the alphabet is filled with the remaining letters.
      *
      * @param len  The length to trim the alphabet to.
-     * @return This alphabet for method chaining.
+     * @returns This alphabet for method chaining.
      */
     public trim(len: number): this {
         this.splice(len + 1, 28 - len);
         for (let i = 1; i < 27; ++i) {
-            if (this.indexOf(i) === -1) {
+            if (!this.includes(i)) {
                 this.push(i);
             }
         }
@@ -124,7 +124,7 @@ export class Alphabet extends Array<number> {
     /**
      * Converts the alphabet into a string and returns it.
      *
-     * @return The string representation of the alphabet.
+     * @returns The string representation of the alphabet.
      */
     public override toString(): string {
         return this.map(c => String.fromCharCode(c + 64)).join("").substring(1);

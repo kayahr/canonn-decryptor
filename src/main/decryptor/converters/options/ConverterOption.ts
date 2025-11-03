@@ -3,11 +3,11 @@
  * See LICENSE.md for licensing information.
  */
 
+import type { Converter } from "../Converter.ts";
+
 /**
  * Interface for target object which holds the converter options.
  */
-import { Converter } from "../Converter.js";
-
 export interface OptionTarget<C extends Converter> {
     options?: Array<ConverterOption<unknown, C>> | null;
 }

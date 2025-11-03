@@ -3,11 +3,11 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Directive, ElementRef, EventEmitter, type ExistingProvider, forwardRef, Renderer2 } from "@angular/core";
+import { Directive, ElementRef, EventEmitter, type ExistingProvider, Renderer2, forwardRef, inject } from "@angular/core";
 import { type ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import type { Subscription } from "rxjs";
 
-import { type StringValue } from "./StringValue.js";
+import type { StringValue } from "./StringValue.ts";
 
 const NO_UPDATE_ON_EDIT_ACCESSOR: ExistingProvider = {
     provide: NG_VALUE_ACCESSOR,
@@ -44,15 +44,10 @@ const NO_UPDATE_ON_EDIT_ACCESSOR: ExistingProvider = {
 export class NoUpdateOnEditDirective implements ControlValueAccessor {
     private readonly onTouchedCallback = new EventEmitter<void>();
     private readonly onChangeCallback = new EventEmitter<StringValue>();
-    private readonly renderer: Renderer2;
-    private readonly elementRef: ElementRef;
+    private readonly renderer = inject(Renderer2);
+    private readonly elementRef = inject(ElementRef);
     private value = "";
     private editing = false;
-
-    public constructor(renderer: Renderer2, elementRef: ElementRef) {
-        this.renderer = renderer;
-        this.elementRef = elementRef;
-    }
 
     public input(value: string): void {
         // We emit an object containing the value so Angular thinks the value is different to the one received back

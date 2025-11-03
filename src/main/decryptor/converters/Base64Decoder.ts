@@ -5,15 +5,15 @@
 
 import base64 from "base64-js";
 
-import { getErrorMessage } from "../../utils/error.js";
-import { fromByteArray } from "../../utils/string.js";
-import { Converter, converter } from "./Converter.js";
-import { selectOption } from "./options/SelectOption.js";
+import { getErrorMessage } from "../../utils/error.ts";
+import { fromByteArray } from "../../utils/string.ts";
+import { Converter, converter } from "./Converter.ts";
+import { selectOption } from "./options/SelectOption.ts";
 
 export type Base64OutputType = "txt" | "dec" | "hex" | "bin";
 
 function toBin(byte: number): string {
-    const s = "00000000" + byte.toString(2);
+    const s = `00000000${byte.toString(2)}`;
     return s.substring(s.length - 8);
 }
 
@@ -39,13 +39,13 @@ export class Base64Decoder extends Converter<Base64Decoder> {
     ], { defaultValue: "txt" })
     public output!: Base64OutputType;
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public convert(input: string): string {
         let decoded: number[];
         try {
             decoded = Array.from(base64.toByteArray(input.replace(/\s+/g, "")));
-        } catch (e) {
-            return "DECODING ERROR: " + getErrorMessage(e);
+        } catch (error) {
+            return `DECODING ERROR: ${getErrorMessage(error)}`;
         }
 
         switch (this.output) {

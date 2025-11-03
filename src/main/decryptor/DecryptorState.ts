@@ -5,13 +5,13 @@
 
 import { Injectable } from "@angular/core";
 
-import { ProjectState } from "../project/ProjectState.js";
-import { DecryptorProject } from "./project/DecryptorProject.js";
+import { ProjectState } from "../project/ProjectState.ts";
+import { DecryptorProject } from "./project/DecryptorProject.ts";
 
 /**
  * Creates an initial empty project to be displayed on app start.
  *
- * @return An initial empty project.
+ * @returns An initial empty project.
  */
 function createInitialProject(): DecryptorProject {
     const project = new DecryptorProject();

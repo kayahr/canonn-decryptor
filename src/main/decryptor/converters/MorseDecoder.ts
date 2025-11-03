@@ -3,13 +3,12 @@
  * See LICENSE.md for licensing information.
  */
 
-import { escapeRegExp, unescape } from "../../utils/string.js";
-import { converter } from "./Converter.js";
-import { Converter } from "./Converter.js";
-import { stringOption } from "./options/StringOption.js";
+import { escapeRegExp, unescape } from "../../utils/string.ts";
+import { Converter, converter } from "./Converter.ts";
+import { stringOption } from "./options/StringOption.ts";
 
 /** Mapping table from morse to cleartext. */
-const alphabet: { [ key: string ]: string } = {
+const alphabet: Record<string, string> = {
     ".-": "A",
     "-...": "B",
     "-.-.": "C",
@@ -121,7 +120,7 @@ export class MorseDecoder extends Converter {
      * @returns The morse tokens regular expression range.
      */
     private getRange(): string {
-        return "[" + escapeRegExp(this.dots + this.dashes) + "]";
+        return `[${escapeRegExp(this.dots + this.dashes)}]`;
     }
 
     /**
@@ -190,16 +189,15 @@ export class MorseDecoder extends Converter {
         this.morseRegExp = null;
     }
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public convert(input: string): string {
         const dots = this.getDotsRegExp();
         const dashes = this.getDashesRegExp();
         return input
-            .replace(this.getGroupRegExp(), (all, prefix: string, match: string, suffix: string) => {
-                return prefix + match.replace(this.getMorseRegExp(), (all, space: string, morse: string) => {
-                    return decodeMorse(morse.replace(dots, ".").replace(dashes, "-"));
-                }) + suffix;
-            }
+            .replace(this.getGroupRegExp(), (all, prefix: string, match: string, suffix: string) =>
+                prefix + match.replace(this.getMorseRegExp(), (all, space: string, morse: string) =>
+                    decodeMorse(morse.replace(dots, ".").replace(dashes, "-"))
+                ) + suffix
         ).replaceAll(this.getSpacesRegExp(), s => /\s/.test(s) ? s : " ");
     }
 }

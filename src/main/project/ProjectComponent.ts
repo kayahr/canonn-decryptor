@@ -3,17 +3,17 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ElementRef, ViewChild } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Subscription } from "rxjs";
+import { type ElementRef, ViewChild } from "@angular/core";
+import type { ActivatedRoute, Router } from "@angular/router";
+import type { Subscription } from "rxjs";
 
-import { ProjectService } from "../project/ProjectService.js";
-import { DialogService } from "../ui/DialogService.js";
-import { type StringValue } from "../ui/StringValue.js";
-import { ToastService } from "../ui/ToastService.js";
-import { LoadProjectDialog } from "./LoadProjectDialog.js";
-import { Project, type ProjectStatic } from "./Project.js";
-import { ProjectState } from "./ProjectState.js";
+import type { ProjectService } from "../project/ProjectService.ts";
+import type { DialogService } from "../ui/DialogService.ts";
+import type { StringValue } from "../ui/StringValue.ts";
+import type { ToastService } from "../ui/ToastService.ts";
+import { LoadProjectDialog } from "./LoadProjectDialog.ts";
+import type { Project, ProjectStatic } from "./Project.ts";
+import type { ProjectState } from "./ProjectState.ts";
 
 /**
  * Abstract base class for a main application component which works on project.
@@ -101,7 +101,7 @@ export abstract class ProjectComponent<T extends Project> {
     /**
      * Returns the current project.
      *
-     * @return The current project.
+     * @returns The current project.
      */
     protected getProject(): T {
         return this.state.getProject();
@@ -119,7 +119,7 @@ export abstract class ProjectComponent<T extends Project> {
     /**
      * Returns the project name.
      *
-     * @return The project name.
+     * @returns The project name.
      */
     public get projectName(): StringValue {
         return this.getProject().getName();
@@ -128,7 +128,7 @@ export abstract class ProjectComponent<T extends Project> {
     /**
      * Checks if project is saved.
      *
-     * @return True if project is saved, false if not.
+     * @returns True if project is saved, false if not.
      */
     public get saved(): boolean {
         return this.getProject().isSaved();

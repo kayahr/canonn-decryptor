@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22.x
+          node-version: 24.x
       - name: Build project
         run: npm ci
       - name: Run tests
@@ -26,4 +26,4 @@ jobs:
       - name: Deploy project
         uses: kayahr/deploy-github-pages-action@d17ae8bb6c807ba4612792ceefa558be2e061e4c
         with:
-          path: dist
+          path: lib/package

@@ -1,24 +1,23 @@
-import { describe, expect, it } from "vitest";
+import { describe, it } from "node:test";
 
-import { Converter } from "../../../main/decryptor/converters/Converter.js";
-import { KeywordDecoder } from "../../../main/decryptor/converters/KeywordDecoder.js";
+import { Converter } from "../../../main/decryptor/converters/Converter.ts";
+import { KeywordDecoder } from "../../../main/decryptor/converters/KeywordDecoder.ts";
+import { assertEquals, assertInstanceOf, assertSame } from "@kayahr/assert";
 
 describe("KeywordDecoder", () => {
     describe("constructor", () => {
         it("initializes to empty keyword if none given", () => {
-            expect(new KeywordDecoder().keyword).toBe("");
+            assertSame(new KeywordDecoder().keyword, "");
         });
         it("initializes to given keyword", () => {
-            expect(new KeywordDecoder({ keyword: "Canonn" }).keyword).toBe("Canonn");
+            assertSame(new KeywordDecoder({ keyword: "Canonn" }).keyword, "Canonn");
         });
         it("initializes to standard alphabet when no keyword given", () => {
-            expect(new KeywordDecoder().getAlphabet()).toBe("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+            assertSame(new KeywordDecoder().getAlphabet(), "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         });
         it("creates correct alphabet when keyword is given", () => {
-            expect(new KeywordDecoder({ keyword: "Keyword" }).getAlphabet())
-                .toBe("KEYWORDABCFGHIJLMNPQSTUVXZ");
-            expect(new KeywordDecoder({ keyword: "The quick brown fox jumps over the lazy dog" }).getAlphabet())
-                .toBe("THEQUICKBROWNFXJMPSVLAZYDG");
+            assertSame(new KeywordDecoder({ keyword: "Keyword" }).getAlphabet(), "KEYWORDABCFGHIJLMNPQSTUVXZ");
+            assertSame(new KeywordDecoder({ keyword: "The quick brown fox jumps over the lazy dog" }).getAlphabet(), "THEQUICKBROWNFXJMPSVLAZYDG");
         });
     });
 
@@ -26,42 +25,42 @@ describe("KeywordDecoder", () => {
         it("updates the keyword", () => {
             const decoder = new KeywordDecoder({ keyword: "Not this one" });
             decoder.keyword = "Canonn";
-            expect(decoder.keyword).toBe("Canonn");
+            assertSame(decoder.keyword, "Canonn");
         });
         it("updates the alphabet", () => {
             const decoder = new KeywordDecoder({ keyword: "Not this one" });
             decoder.keyword = "Canonn";
-            expect(decoder.getAlphabet()).toBe("CANOBDEFGHIJKLMPQRSTUVWXYZ");
+            assertSame(decoder.getAlphabet(), "CANOBDEFGHIJKLMPQRSTUVWXYZ");
         });
     });
 
     describe("convert", () => {
         it("converts empty string to empty string", () => {
-            expect(new KeywordDecoder({ keyword: "Imperial Clipper" }).convert("")).toBe("");
+            assertSame(new KeywordDecoder({ keyword: "Imperial Clipper" }).convert(""), "");
         });
         it("keeps white-space only string", () => {
-            expect(new KeywordDecoder({ keyword: "Imperial Cutter" }).convert(" \n\r\t")).toBe(" \n\r\t");
+            assertSame(new KeywordDecoder({ keyword: "Imperial Cutter" }).convert(" \n\r\t"), " \n\r\t");
         });
         it("keeps unencoded characters", () => {
-            expect(new KeywordDecoder({ keyword: "Sidewinder" }).convert("1ö_<")).toBe("1ö_<");
+            assertSame(new KeywordDecoder({ keyword: "Sidewinder" }).convert("1ö_<"), "1ö_<");
         });
         it("decodes normal lower-case characters", () => {
-            expect(new KeywordDecoder({ keyword: "Eagle Mk3" }).convert("kooaer")).toBe("foobar");
+            assertSame(new KeywordDecoder({ keyword: "Eagle Mk3" }).convert("kooaer"), "foobar");
         });
         it("decodes normal upper-case characters", () => {
-            expect(new KeywordDecoder({ keyword: "Asp Explorer" }).convert("LIISAM")).toBe("FOOBAR");
+            assertSame(new KeywordDecoder({ keyword: "Asp Explorer" }).convert("LIISAM"), "FOOBAR");
         });
         it("decodes normal mixed-case characters", () => {
-            expect(new KeywordDecoder({ keyword: "Anaconda" }).convert("BmmNar")).toBe("FooBar");
+            assertSame(new KeywordDecoder({ keyword: "Anaconda" }).convert("BmmNar"), "FooBar");
         });
         it("decodes only normal characters in mixed string", () => {
-            expect(new KeywordDecoder({ keyword: "Cobra Mk3" }).convert("#12MllOcq!")).toBe("#12FooBar!");
+            assertSame(new KeywordDecoder({ keyword: "Cobra Mk3" }).convert("#12MllOcq!"), "#12FooBar!");
         });
     });
 
     describe("toJSON", () => {
         it("serializes the converter", () => {
-            expect(new KeywordDecoder({ keyword: "Secret" }).toJSON()).toEqual({
+            assertEquals(new KeywordDecoder({ keyword: "Secret" }).toJSON(), {
                 type: "keyword-decoder",
                 options: {
                     keyword: "Secret"
@@ -69,7 +68,7 @@ describe("KeywordDecoder", () => {
             });
         });
         it("does not serialize default option values", () => {
-            expect(new KeywordDecoder({ keyword: "" }).toJSON()).toEqual({
+            assertEquals(new KeywordDecoder({ keyword: "" }).toJSON(), {
                 type: "keyword-decoder"
             });
         });
@@ -83,13 +82,13 @@ describe("KeywordDecoder", () => {
                     keyword: "Secret"
                 }
             });
-            expect(converter).toBeInstanceOf(KeywordDecoder);
-            expect(converter.keyword).toBe("Secret");
+            assertInstanceOf(converter, KeywordDecoder);
+            assertSame(converter.keyword, "Secret");
         });
         it("deserializes a converter with default options", () => {
             const converter = Converter.fromJSON<KeywordDecoder>({ type: "keyword-decoder" });
-            expect(converter).toBeInstanceOf(KeywordDecoder);
-            expect(converter.keyword).toBe("");
+            assertInstanceOf(converter, KeywordDecoder);
+            assertSame(converter.keyword, "");
         });
     });
 });

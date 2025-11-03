@@ -3,9 +3,9 @@
  * See LICENSE.md for licensing information.
  */
 
-import { type Cancelable } from "./Cancelable.js";
-import { Canceled } from "./Canceled.js";
-import { toError } from "./error.js";
+import type { Cancelable } from "./Cancelable.ts";
+import { Canceled } from "./Canceled.ts";
+import { toError } from "./error.ts";
 
 /**
  * Wraps the given standard promise and a cancellation handler into a cancelable promise.
@@ -23,7 +23,7 @@ export function cancelable<T>(promise: Promise<T>, onCancel?: (canceled: Cancele
  * @param asyncFunc - The async function.
  * @param onCancel  - Called when cancellation is requested. This callback must perform the actual cancellation of the
  *                    async function and then (if successfully canceled) throw the passed canceled object.
- * @return The created cancelable promise.
+ * @returns The created cancelable promise.
  */
 export function cancelable<T>(asyncFunc: () => Promise<T>, onCancel?: (canceled: Canceled) => void): Cancelable<T>;
 
@@ -31,17 +31,17 @@ export function cancelable<T>(promiseOrAsync: (() => Promise<T>) | Promise<T>, o
     const promise = promiseOrAsync instanceof Promise ? promiseOrAsync : (promiseOrAsync as () => Promise<T>)();
     let cancel: ((reason: string) => Promise<void>) | null = null;
     const cancelable: Cancelable<T> = new Promise((resolve, reject) => {
-        cancel = (reason: string = "") => {
+        cancel = (reason = "") => {
             try {
                 if (onCancel != null) {
                     onCancel(new Canceled(reason));
                 }
-            } catch (e) {
-                reject(toError(e));
+            } catch (error) {
+                reject(toError(error));
             }
-            return cancelable.then(() => {}, () => {});
+            return cancelable.then(() => void {}, () => {});
         };
-        promise.then(resolve, reject);
+        promise.then(resolve).catch(reject);
     }) as Cancelable<T>;
     if (cancel != null) {
         cancelable.cancel = cancel;

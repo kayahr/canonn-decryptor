@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { AffineCipher, type aTable, k } from "./AffineCipher.js";
-import { converter } from "./Converter.js";
+import { AffineCipher, type aTable, k } from "./AffineCipher.ts";
+import { converter } from "./Converter.ts";
 
 /**
  * Affine cipher encoder.
@@ -13,7 +13,7 @@ import { converter } from "./Converter.js";
  */
 @converter<AffineEncoder>("affine-encoder", "affine", "Affine Encoder", "Encodes text with the Affine Cipher.")
 export class AffineEncoder extends AffineCipher<AffineEncoder> {
-    /** @inheritDoc */
+    /** @inheritdoc */
     public override convert(input: string): string {
         const a = Number(this.a) as typeof aTable[number];
         const b = Number(this.b);

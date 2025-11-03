@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter } from "../Converter.js";
-import { ConverterOption, converterOption, type ConverterOptionArgs, type OptionTarget } from "./ConverterOption.js";
+import type { Converter } from "../Converter.ts";
+import { ConverterOption, type ConverterOptionArgs, type OptionTarget, converterOption } from "./ConverterOption.ts";
 
 /**
  * The arguments of a boolean option.

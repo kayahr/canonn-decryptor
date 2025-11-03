@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { isEquatable } from "./Equatable.js";
+import { isEquatable } from "./Equatable.ts";
 
 /**
  * Checks if given array contains the given object. This also checks for equality if object implements the

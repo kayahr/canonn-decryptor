@@ -1,0 +1,11 @@
+{
+    "$schema": "node_modules/@kayahr/ntest/ntest.schema.json",
+    "files": "lib/test/**/*.test.js",
+    "reporter": [
+        { "name": "spec" },
+        { "name": "lcov", "destination": "lib/test/lcov.info" }
+    ],
+    "coverage": {
+        "enabled": true
+    }
+}

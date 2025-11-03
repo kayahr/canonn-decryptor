@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { converter } from "./Converter.js";
-import { KeywordCipher } from "./KeywordCipher.js";
+import { converter } from "./Converter.ts";
+import { KeywordCipher } from "./KeywordCipher.ts";
 
 /**
  * Keyword decoder.
@@ -12,7 +12,7 @@ import { KeywordCipher } from "./KeywordCipher.js";
 @converter<KeywordDecoder>("keyword-decoder", "keyword", "Keyword Decoder",
     "Decodes text encrypted with keyword based alphabet substitution.")
 export class KeywordDecoder extends KeywordCipher {
-    /** @inheritDoc */
+    /** @inheritdoc */
     protected convertChar(char: string): string {
         return String.fromCharCode(65 + this.getAlphabet().indexOf(char));
     }

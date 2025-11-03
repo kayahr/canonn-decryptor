@@ -3,9 +3,9 @@
  * See LICENSE.md for licensing information.
  */
 
-import { type Serializable } from "../../utils/Serializable.js";
-import { Converter, type ConverterJSON } from "../converters/Converter.js";
-import { DecryptorNode, type DecryptorNodeJSON } from "./DecryptorNode.js";
+import type { Serializable } from "../../utils/Serializable.ts";
+import { Converter, type ConverterJSON } from "../converters/Converter.ts";
+import { DecryptorNode, type DecryptorNodeJSON } from "./DecryptorNode.ts";
 
 /**
  * JSON structure of a serialized decryptor output.
@@ -35,7 +35,7 @@ export class DecryptorOutput extends DecryptorNode implements Serializable<Decry
         return node;
     }
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public override toJSON(): DecryptorOutputJSON {
         return Object.assign(super.toJSON(), {
             converter: this.converter.toJSON()
@@ -45,7 +45,7 @@ export class DecryptorOutput extends DecryptorNode implements Serializable<Decry
     /**
      * Returns the converter used to convert the input of the parent.
      *
-     * @return The converter.
+     * @returns The converter.
      */
     public getConverter(): Converter {
         return this.converter;
@@ -86,7 +86,7 @@ export class DecryptorOutput extends DecryptorNode implements Serializable<Decry
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public convert(value: string): string {
         return this.converter.convert(value);

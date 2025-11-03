@@ -5,13 +5,13 @@
 
 import { Component, signal } from "@angular/core";
 
-import template from "../../../../assets/decryptor/crackers/keyword-cracker-dialog.html?raw";
-import { ButtonDirective } from "../../ui/ButtonDirective.js";
-import { Dialog } from "../../ui/Dialog.js";
-import { DialogComponent } from "../../ui/DialogComponent.js";
-import { contains } from "../../utils/array.js";
-import { type Cancelable } from "../../utils/Cancelable.js";
-import { KeywordCracker, KeywordCrackerResult } from "./KeywordCracker.js";
+import template from "../../../../assets/decryptor/crackers/keyword-cracker-dialog.html";
+import { ButtonDirective } from "../../ui/ButtonDirective.ts";
+import { Dialog } from "../../ui/Dialog.ts";
+import { DialogComponent } from "../../ui/DialogComponent.ts";
+import { contains } from "../../utils/array.ts";
+import type { Cancelable } from "../../utils/Cancelable.ts";
+import { KeywordCracker, type KeywordCrackerResult } from "./KeywordCracker.ts";
 
 /**
  * Dialog for cracking the keyword of a keyword cipher.
@@ -28,7 +28,7 @@ export class KeywordCrackerDialog extends Dialog<string> {
     private readonly cracker: KeywordCracker;
 
     /** The encoded text. */
-    public encoded: string = "";
+    public encoded = "";
 
     /** The current running cracking process. Null if none. */
     private running: Cancelable<KeywordCrackerResult | null> | null = null;
@@ -87,12 +87,15 @@ export class KeywordCrackerDialog extends Dialog<string> {
             }, (current, max) => {
                 this.progress.set(Math.round(100 * current / max));
             });
-            this.running.then(() => {
-                this.running = null;
-                this.start();
-            }, () => {
-                this.running = null;
-            });
+            void (async () => {
+                try {
+                    await this.running;
+                    this.running = null;
+                    this.start();
+                } catch {
+                    this.running = null;
+                }
+            })();
         }
     }
 
@@ -119,13 +122,13 @@ export class KeywordCrackerDialog extends Dialog<string> {
     /**
      * Checks if results are empty.
      *
-     * @return True if results are empty, false if not.
+     * @returns True if results are empty, false if not.
      */
     public get emptyResult(): boolean {
         return this.results.length === 0;
     }
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public override close(value: string | null = null): void {
         void this.stop();
         super.close(value);

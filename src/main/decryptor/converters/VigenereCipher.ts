@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter } from "./Converter.js";
-import { stringOption } from "./options/StringOption.js";
+import { Converter } from "./Converter.ts";
+import { stringOption } from "./options/StringOption.ts";
 
 /**
  * Abstract base class for the Vigenère encoder and decoder.
@@ -30,7 +30,7 @@ export abstract class VigenereCipher extends Converter {
         return this.keys ??= this.keyword.toUpperCase().split("").filter(c => c >= "A" && c <= "Z").map(c => c.charCodeAt(0) - 65);
     }
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public convert(input: string): string {
         const keys = this.getKeys();
         let index = 0;

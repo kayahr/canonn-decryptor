@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Signal } from "../utils/Signal.js";
-import { Project } from "./Project.js";
+import { Signal } from "../utils/Signal.ts";
+import type { Project } from "./Project.ts";
 
 /**
  * Abstract base class for an injectable state object which holds a project.
@@ -35,7 +35,7 @@ export abstract class ProjectState<T extends Project> {
     /**
      * Returns the current project.
      *
-     * @return The current project.
+     * @returns The current project.
      */
     public getProject(): T {
         return this.project;

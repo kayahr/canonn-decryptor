@@ -3,15 +3,15 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Alphabet } from "../../utils/Alphabet.js";
-import { sleep } from "../../utils/async.js";
-import { type Cancelable } from "../../utils/Cancelable.js";
-import { Canceled } from "../../utils/Canceled.js";
-import { type Equatable, isEqual } from "../../utils/Equatable.js";
-import { FastString } from "../../utils/FastString.js";
-import { cancelable } from "../../utils/promise.js";
-import { quadgrams } from "../../utils/Quadgrams.js";
-import { KeywordDecoder } from "../converters/KeywordDecoder.js";
+import { Alphabet } from "../../utils/Alphabet.ts";
+import { sleep } from "../../utils/async.ts";
+import type { Cancelable } from "../../utils/Cancelable.ts";
+import type { Canceled } from "../../utils/Canceled.ts";
+import { type Equatable, isEqual } from "../../utils/Equatable.ts";
+import { FastString } from "../../utils/FastString.ts";
+import { cancelable } from "../../utils/promise.ts";
+import { quadgrams } from "../../utils/Quadgrams.ts";
+import { KeywordDecoder } from "../converters/KeywordDecoder.ts";
 
 /**
  * A single keyword cracker result.
@@ -39,7 +39,7 @@ export class KeywordCrackerResult implements Equatable {
         this.message = message;
     }
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public equals(obj: unknown): boolean {
         return isEqual(this, obj, other => other.score === this.score && other.keyword === this.keyword
             && other.message === this.message);

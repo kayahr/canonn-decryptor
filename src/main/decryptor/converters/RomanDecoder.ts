@@ -3,10 +3,10 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter, converter } from "./Converter.js";
+import { Converter, converter } from "./Converter.ts";
 
 /** Mapping table from roman numbers to numeric values. */
-const romanNumerals: { [roman: string]: number } = {
+const romanNumerals: Record<string, number> = {
     M: 1000, CM: 900, D: 500, CD: 400, C: 100, XC: 90, L: 50, XL: 40, X: 10, IX: 9, V: 5, IV: 4, I: 1
 };
 
@@ -33,7 +33,7 @@ function decodeRoman(roman: string): number {
  */
 @converter<RomanDecoder>("roman-decoder", "roman", "Roman Decoder", "Decodes roman numerals into decimal numbers.")
 export class RomanDecoder extends Converter {
-    /** @inheritDoc */
+    /** @inheritdoc */
     public convert(input: string): string {
         return input.replace(groupRegExp, (all, prefix: string, match: string, suffix: string) =>
             prefix + match.replace(romanRegExp, roman => (roman === "" ? "" : "" + decodeRoman(roman))) + suffix

@@ -21,13 +21,16 @@ LIISAM
 MMMCMXCIX
 ngram
 ngrams
+ntest
 öäüß
+oxlint
 Quadgram
 quadgrams
 RAANMD
 RABOOF
 Reimer
 SBBONE
+servedir
 THEQUICKBROWNFXJMPSVLAZYDG
 ullyzi
 unencodable

@@ -6,12 +6,12 @@
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
-import template from "../../../assets/decryptor/number-option.html?raw";
-import { LabelDirective } from "../ui/LabelDirective.js";
-import { NoUpdateOnEditDirective } from "../ui/NoUpdateOnEditDirective.js";
-import { type StringValue } from "../ui/StringValue.js";
-import { NumberOption } from "./converters/options/NumberOption.js";
-import { OptionComponent } from "./OptionComponent.js";
+import template from "../../../assets/decryptor/number-option.html";
+import { LabelDirective } from "../ui/LabelDirective.ts";
+import { NoUpdateOnEditDirective } from "../ui/NoUpdateOnEditDirective.ts";
+import type { StringValue } from "../ui/StringValue.ts";
+import type { NumberOption } from "./converters/options/NumberOption.ts";
+import { OptionComponent } from "./OptionComponent.ts";
 
 /**
  * Displays a decryptor string option.
@@ -29,7 +29,7 @@ export class NumberOptionComponent extends OptionComponent<NumberOption> {
     /**
      * Returns the option value.
      *
-     * @return The current option value.
+     * @returns The current option value.
      */
     public get value(): StringValue {
         return this.option.getValue(this.converter).toString();
@@ -47,7 +47,7 @@ export class NumberOptionComponent extends OptionComponent<NumberOption> {
     /**
      * Returns the minimum numeric value of this option.
      *
-     * @return The minimum number.
+     * @returns The minimum number.
      */
     public get min(): number {
         return this.option.getMin();
@@ -56,7 +56,7 @@ export class NumberOptionComponent extends OptionComponent<NumberOption> {
     /**
      * Returns the maximum numeric value of this option.
      *
-     * @return The maximum number.
+     * @returns The maximum number.
      */
     public get max(): number {
         return this.option.getMax();
@@ -65,7 +65,7 @@ export class NumberOptionComponent extends OptionComponent<NumberOption> {
     /**
      * Returns the step size.
      *
-     * @return The step size.
+     * @returns The step size.
      */
     public get step(): number {
         return this.option.getStep();

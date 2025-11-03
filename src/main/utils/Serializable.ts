@@ -12,7 +12,7 @@ export interface Serializable<T extends Object> {
     /**
      * Serializes the object and returns the serialized JSON data.
      *
-     * @return The serialized JSON data.
+     * @returns The serialized JSON data.
      */
     toJSON(): T;
 }

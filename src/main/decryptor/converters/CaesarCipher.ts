@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter } from "./Converter.js";
-import { numberOption } from "./options/NumberOption.js";
+import { Converter } from "./Converter.ts";
+import { numberOption } from "./options/NumberOption.ts";
 
 /**
  * Abstract base class for the caesar decoder and encoder.
@@ -55,7 +55,9 @@ export abstract class CaesarCipher<T> extends Converter<T> {
             return this.rotate(char, rotation, 97);
         } else if (char >= "A" && char <= "Z") {
             return this.rotate(char, rotation, 65);
-        } else return char;
+        } else {
+            return char;
+        }
     }
 
     /**
@@ -69,7 +71,7 @@ export abstract class CaesarCipher<T> extends Converter<T> {
         return text.split("").map(char => this.convertChar(char, rotation)).join("");
     }
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public convert(input: string): string {
         return this.rotateText(input, this.rotation * this.direction);
     }

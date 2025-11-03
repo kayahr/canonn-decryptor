@@ -3,15 +3,15 @@
  * See LICENSE.md for licensing information.
  */
 
-import { sleep } from "../../utils/async.js";
-import { type Cancelable } from "../../utils/Cancelable.js";
-import { Canceled } from "../../utils/Canceled.js";
-import { type Equatable, isEqual } from "../../utils/Equatable.js";
-import { FastString } from "../../utils/FastString.js";
-import { cancelable } from "../../utils/promise.js";
-import { quadgrams } from "../../utils/Quadgrams.js";
-import { aTable, k } from "../converters/AffineCipher.js";
-import { AffineDecoder } from "../converters/AffineDecoder.js";
+import { sleep } from "../../utils/async.ts";
+import type { Cancelable } from "../../utils/Cancelable.ts";
+import type { Canceled } from "../../utils/Canceled.ts";
+import { type Equatable, isEqual } from "../../utils/Equatable.ts";
+import { FastString } from "../../utils/FastString.ts";
+import { cancelable } from "../../utils/promise.ts";
+import { quadgrams } from "../../utils/Quadgrams.ts";
+import { aTable, k } from "../converters/AffineCipher.ts";
+import { AffineDecoder } from "../converters/AffineDecoder.ts";
 
 /**
  * A single affine cracker result.
@@ -44,7 +44,7 @@ export class AffineCrackerResult implements Equatable {
         this.message = message;
     }
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public equals(obj: unknown): boolean {
         return isEqual(this, obj, other => other.score === this.score && other.a === this.a && other.b === this.b
             && other.message === this.message);

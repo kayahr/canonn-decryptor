@@ -5,10 +5,10 @@
 
 import { Component } from "@angular/core";
 
-import template from "../../assets/changelog-dialog.html?raw";
-import { ButtonDirective } from "./ui/ButtonDirective.js";
-import { Dialog } from "./ui/Dialog.js";
-import { DialogComponent } from "./ui/DialogComponent.js";
+import template from "../../assets/changelog-dialog.html";
+import { ButtonDirective } from "./ui/ButtonDirective.ts";
+import { Dialog } from "./ui/Dialog.ts";
+import { DialogComponent } from "./ui/DialogComponent.ts";
 
 /**
  * Displays the changelog in a dialog.

@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Directive, ElementRef } from "@angular/core";
+import { Directive, ElementRef, inject } from "@angular/core";
 
 /**
  * A directive which blurs buttons on click by default.
@@ -12,11 +12,7 @@ import { Directive, ElementRef } from "@angular/core";
     selector: "button"
 })
 export class ButtonDirective {
-    private readonly elementRef: ElementRef<HTMLButtonElement>;
-
-    public constructor(elementRef: ElementRef<HTMLButtonElement>) {
-        this.elementRef = elementRef;
-    }
+    private readonly elementRef = inject<ElementRef<HTMLButtonElement>>(ElementRef);
 
     public ngOnInit(): void {
         this.elementRef.nativeElement.addEventListener("click", () => {

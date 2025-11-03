@@ -3,11 +3,11 @@
  * See LICENSE.md for licensing information.
  */
 
-import { FastString } from "../../utils/FastString.js";
-import { quadgrams } from "../../utils/Quadgrams.js";
-import { CaesarCipher } from "./CaesarCipher.js";
-import { converter } from "./Converter.js";
-import { booleanOption } from "./options/BooleanOption.js";
+import { FastString } from "../../utils/FastString.ts";
+import { quadgrams } from "../../utils/Quadgrams.ts";
+import { CaesarCipher } from "./CaesarCipher.ts";
+import { converter } from "./Converter.ts";
+import { booleanOption } from "./options/BooleanOption.ts";
 
 /**
  * Converter for caesar decoding.
@@ -19,15 +19,15 @@ export class CaesarDecoder extends CaesarCipher<CaesarDecoder> {
     @booleanOption<CaesarDecoder>("auto", "Automatic", { defaultValue: true, sortIndex: -1 })
     public auto!: boolean;
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     protected readonly direction = -1;
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     protected override isAutomatic(): boolean {
         return this.auto;
     }
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public override convert(input: string): string {
         if (this.auto) {
             const scores: Array<{ score: number, rotation: number }> = [];

@@ -3,11 +3,11 @@
  * See LICENSE.md for licensing information.
  */
 
-import { unescape } from "../../utils/string.js";
-import { Converter, converter } from "./Converter.js";
-import { numberOption } from "./options/NumberOption.js";
-import { selectOption } from "./options/SelectOption.js";
-import { stringOption } from "./options/StringOption.js";
+import { unescape } from "../../utils/string.ts";
+import { Converter, converter } from "./Converter.ts";
+import { numberOption } from "./options/NumberOption.ts";
+import { selectOption } from "./options/SelectOption.ts";
+import { stringOption } from "./options/StringOption.ts";
 
 /** How to handle whitespaces. */
 export type WhitespaceHandling = "keep" | "discard" | "encode";
@@ -49,7 +49,7 @@ export class NumberEncoder extends Converter<NumberEncoder> {
     ], { defaultValue: "keep" })
     public whitespace!: WhitespaceHandling;
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public convert(input: string): string {
         const { whitespace, shift, base, length } = this;
         const separator = unescape(this.separator);

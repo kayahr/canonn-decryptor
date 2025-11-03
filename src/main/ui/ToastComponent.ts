@@ -5,7 +5,7 @@
 
 import { Component } from "@angular/core";
 
-import template from "../../../assets/ui/toast.html?raw";
+import template from "../../../assets/ui/toast.html";
 
 /**
  * The component used to display toast messages.

@@ -3,9 +3,9 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, inject, Renderer2, ViewContainerRef } from "@angular/core";
+import { Component, Renderer2, ViewContainerRef, inject } from "@angular/core";
 
-import { DialogService } from "./DialogService.js";
+import { DialogService } from "./DialogService.ts";
 
 /**
  * The dialog outlet component used in the main HTML file to define the area in which dialog components are

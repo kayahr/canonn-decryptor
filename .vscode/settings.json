@@ -1,9 +1,24 @@
 {
     "files.exclude": {
         "lib": true,
-        "node_modules": true,
-        "dist": true
+        "node_modules": true
     },
     "typescript.tsdk": "node_modules/typescript/lib",
-    "task.allowAutomaticTasks": "on"
+    "task.allowAutomaticTasks": "on",
+    "nodejs-testing.extensions": [
+        {
+            "extensions": [ "js" ],
+            "filePatterns": [
+                "lib/test/**/*.test.js"
+            ],
+            "parameters": [
+                "--experimental-test-coverage"
+            ]
+        }
+    ],
+    "oxc.typeAware": true,
+    "coverage-gutters.coverageFileNames": [
+        "lib/test/lcov.info"
+    ],
+    "oxc.enable": true
 }

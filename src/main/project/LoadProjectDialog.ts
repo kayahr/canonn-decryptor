@@ -5,15 +5,15 @@
 
 import { Component, inject } from "@angular/core";
 
-import template from "../../../assets/project/load-project-dialog.html?raw";
-import { ButtonDirective } from "../ui/ButtonDirective.js";
-import { Dialog } from "../ui/Dialog.js";
-import { DialogComponent } from "../ui/DialogComponent.js";
-import { DialogService } from "../ui/DialogService.js";
-import { ToastService } from "../ui/ToastService.js";
-import { IllegalStateError } from "../utils/error.js";
-import { Project, type ProjectStatic } from "./Project.js";
-import { ProjectService } from "./ProjectService.js";
+import template from "../../../assets/project/load-project-dialog.html";
+import { ButtonDirective } from "../ui/ButtonDirective.ts";
+import { Dialog } from "../ui/Dialog.ts";
+import { DialogComponent } from "../ui/DialogComponent.ts";
+import { DialogService } from "../ui/DialogService.ts";
+import { ToastService } from "../ui/ToastService.ts";
+import { IllegalStateError } from "../utils/error.ts";
+import type { Project, ProjectStatic } from "./Project.ts";
+import { ProjectService } from "./ProjectService.ts";
 
 /**
  * Dialog which displays the list of previously saved projects and let the user load or delete a project.
@@ -34,7 +34,7 @@ export class LoadProjectDialog extends Dialog<string> {
     /**
      * Returns a list of all project names.
      *
-     * @return All project names.
+     * @returns All project names.
      */
     public get projectNames(): string[] {
         if (this.projectType == null) {

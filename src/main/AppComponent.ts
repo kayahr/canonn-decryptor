@@ -6,13 +6,13 @@
 import { Component, inject } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
-import template from "../../assets/app.html?raw";
+import template from "../../assets/app.html";
 import packageJSON from "../../package.json" with { type: "json" };
-import { ChangelogDialog } from "./ChangelogDialog.js";
-import { ButtonDirective } from "./ui/ButtonDirective.js";
-import { DialogOutletComponent } from "./ui/DialogOutletComponent.js";
-import { DialogService } from "./ui/DialogService.js";
-import { ToastOutletComponent } from "./ui/ToastOutletComponent.js";
+import { ChangelogDialog } from "./ChangelogDialog.ts";
+import { ButtonDirective } from "./ui/ButtonDirective.ts";
+import { DialogOutletComponent } from "./ui/DialogOutletComponent.ts";
+import { DialogService } from "./ui/DialogService.ts";
+import { ToastOutletComponent } from "./ui/ToastOutletComponent.ts";
 
 const appVersion = packageJSON.version;
 

@@ -5,11 +5,11 @@
 
 import { Component } from "@angular/core";
 
-import template from "../../../assets/decryptor/select-converter-dialog.html?raw";
-import { ButtonDirective } from "../ui/ButtonDirective.js";
-import { Dialog } from "../ui/Dialog.js";
-import { DialogComponent } from "../ui/DialogComponent.js";
-import { ConverterDescriptor, getConverterDescriptors } from "./converters/Converter.js";
+import template from "../../../assets/decryptor/select-converter-dialog.html";
+import { ButtonDirective } from "../ui/ButtonDirective.ts";
+import { Dialog } from "../ui/Dialog.ts";
+import { DialogComponent } from "../ui/DialogComponent.ts";
+import { type ConverterDescriptor, getConverterDescriptors } from "./converters/Converter.ts";
 
 /**
  * Displays a list of available converters and let the user select one of them.
@@ -25,11 +25,11 @@ export class SelectConverterDialog extends Dialog<string> {
     /**
      * Returns the converter groups to be listed in the dialog.
      *
-     * @return The converter groups.
+     * @returns The converter groups.
      */
     public get converterGroups(): ConverterDescriptor[][] {
         const groups: ConverterDescriptor[][] = [];
-        const index: { [groupId: string]: ConverterDescriptor[] } = {};
+        const index: Record<string, ConverterDescriptor[]> = {};
 
         for (const descriptor of getConverterDescriptors()) {
             const groupId = descriptor.getGroupId();

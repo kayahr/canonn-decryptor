@@ -5,12 +5,12 @@
 
 import { Component, signal } from "@angular/core";
 
-import template from "../../../../assets/decryptor/crackers/affine-cracker-dialog.html?raw";
-import { ButtonDirective } from "../../ui/ButtonDirective.js";
-import { Dialog } from "../../ui/Dialog.js";
-import { DialogComponent } from "../../ui/DialogComponent.js";
-import { type Cancelable } from "../../utils/Cancelable.js";
-import { AffineCracker, AffineCrackerResult } from "./AffineCracker.js";
+import template from "../../../../assets/decryptor/crackers/affine-cracker-dialog.html";
+import { ButtonDirective } from "../../ui/ButtonDirective.ts";
+import { Dialog } from "../../ui/Dialog.ts";
+import { DialogComponent } from "../../ui/DialogComponent.ts";
+import type { Cancelable } from "../../utils/Cancelable.ts";
+import { AffineCracker, type AffineCrackerResult } from "./AffineCracker.ts";
 
 /**
  * Dialog for cracking the affine cipher.
@@ -27,7 +27,7 @@ export class AffineCrackerDialog extends Dialog<{ a: number, b: number }> {
     private readonly cracker: AffineCracker;
 
     /** The encoded text. */
-    public encoded: string = "";
+    public encoded = "";
 
     /** The current running cracking process. Null if none. */
     private running: Cancelable<void> | null = null;
@@ -65,9 +65,10 @@ export class AffineCrackerDialog extends Dialog<{ a: number, b: number }> {
         }, (current, max) => {
             this.progress.set(Math.round(100 * current / max));
         });
-        void this.running.then(() => {
+        void (async () => {
+            await this.running;
             this.running = null;
-        });
+        })();
     }
 
     /**
@@ -80,7 +81,7 @@ export class AffineCrackerDialog extends Dialog<{ a: number, b: number }> {
         }
     }
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public override close(value: { a: number, b: number } | null = null): void {
         void this.stop();
         super.close(value);

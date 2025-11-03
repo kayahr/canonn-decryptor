@@ -1,59 +1,60 @@
-import { describe, expect, it } from "vitest";
+import { describe, it } from "node:test";
 
-import { Converter } from "../../../main/decryptor/converters/Converter.js";
-import { MorseDecoder } from "../../../main/decryptor/converters/MorseDecoder.js";
+import { Converter } from "../../../main/decryptor/converters/Converter.ts";
+import { MorseDecoder } from "../../../main/decryptor/converters/MorseDecoder.ts";
+import { assertEquals, assertInstanceOf, assertSame } from "@kayahr/assert";
 
 describe("MorseDecoder", () => {
     describe("convert", () => {
         it("decodes empty string into empty string", () => {
-            expect(new MorseDecoder().convert("")).toEqual("");
+            assertEquals(new MorseDecoder().convert(""), "");
         });
         it("keeps non-morse string", () => {
-            expect(new MorseDecoder().convert("not-morse")).toEqual("not-morse");
-            expect(new MorseDecoder().convert("not_.")).toEqual("not_.");
-            expect(new MorseDecoder().convert("_.nope")).toEqual("_.nope");
+            assertEquals(new MorseDecoder().convert("not-morse"), "not-morse");
+            assertEquals(new MorseDecoder().convert("not_."), "not_.");
+            assertEquals(new MorseDecoder().convert("_.nope"), "_.nope");
         });
         it("decodes single morse codes", () => {
-            expect(new MorseDecoder().convert(".")).toEqual("E");
-            expect(new MorseDecoder().convert("-")).toEqual("T");
-            expect(new MorseDecoder().convert("...")).toEqual("S");
-            expect(new MorseDecoder().convert("---")).toEqual("O");
+            assertEquals(new MorseDecoder().convert("."), "E");
+            assertEquals(new MorseDecoder().convert("-"), "T");
+            assertEquals(new MorseDecoder().convert("..."), "S");
+            assertEquals(new MorseDecoder().convert("---"), "O");
         });
         it("can decode different kinds of morse characters", () => {
-            expect(new MorseDecoder().convert(".*")).toEqual("I");
-            expect(new MorseDecoder().convert("-__")).toEqual("O");
+            assertEquals(new MorseDecoder().convert(".*"), "I");
+            assertEquals(new MorseDecoder().convert("-__"), "O");
         });
         it("decodes sequence of morse codes", () => {
-            expect(new MorseDecoder().convert(". ... ---")).toEqual("ESO");
+            assertEquals(new MorseDecoder().convert(". ... ---"), "ESO");
         });
         it("keeps white-spaces in front of morse codes", () => {
-            expect(new MorseDecoder().convert(" .- -.")).toEqual(" AN");
-            expect(new MorseDecoder().convert("  .- -.")).toEqual("  AN");
-            expect(new MorseDecoder().convert("  \n.- -.")).toEqual("  \nAN");
-            expect(new MorseDecoder().convert("  \n\t.- -.")).toEqual("  \n\tAN");
+            assertEquals(new MorseDecoder().convert(" .- -."), " AN");
+            assertEquals(new MorseDecoder().convert("  .- -."), "  AN");
+            assertEquals(new MorseDecoder().convert("  \n.- -."), "  \nAN");
+            assertEquals(new MorseDecoder().convert("  \n\t.- -."), "  \n\tAN");
         });
         it("keeps white-spaces after morse codes", () => {
-            expect(new MorseDecoder().convert(".- -. ")).toEqual("AN ");
-            expect(new MorseDecoder().convert(".- -.  ")).toEqual("AN  ");
-            expect(new MorseDecoder().convert(".- -.\n  ")).toEqual("AN\n  ");
-            expect(new MorseDecoder().convert(".- -.\t\n  ")).toEqual("AN\t\n  ");
+            assertEquals(new MorseDecoder().convert(".- -. "), "AN ");
+            assertEquals(new MorseDecoder().convert(".- -.  "), "AN  ");
+            assertEquals(new MorseDecoder().convert(".- -.\n  "), "AN\n  ");
+            assertEquals(new MorseDecoder().convert(".- -.\t\n  "), "AN\t\n  ");
         });
         it("keeps white-spaces between morse codes but trims a leading space character", () => {
-            expect(new MorseDecoder().convert(".- -.  -. .-")).toEqual("AN NA");
-            expect(new MorseDecoder().convert(".- -.   -. .-")).toEqual("AN  NA");
-            expect(new MorseDecoder().convert(".- -.\n-. .-")).toEqual("AN\nNA");
-            expect(new MorseDecoder().convert(".- -.\n\t\n-. .-")).toEqual("AN\n\t\nNA");
-            expect(new MorseDecoder().convert(".- -. \n -. .-")).toEqual("AN \n NA");
+            assertEquals(new MorseDecoder().convert(".- -.  -. .-"), "AN NA");
+            assertEquals(new MorseDecoder().convert(".- -.   -. .-"), "AN  NA");
+            assertEquals(new MorseDecoder().convert(".- -.\n-. .-"), "AN\nNA");
+            assertEquals(new MorseDecoder().convert(".- -.\n\t\n-. .-"), "AN\n\t\nNA");
+            assertEquals(new MorseDecoder().convert(".- -. \n -. .-"), "AN \n NA");
         });
         it("keeps strings between morse codes", () => {
-            expect(new MorseDecoder().convert("before it .- -. between it -. .- after it")).toEqual(
+            assertEquals(new MorseDecoder().convert("before it .- -. between it -. .- after it"),
                 "before it AN between it NA after it");
         });
     });
 
     describe("toJSON", () => {
         it("serializes the converter", () => {
-            expect(new MorseDecoder({ dots: "o*", dashes: "-#" }).toJSON()).toEqual({
+            assertEquals(new MorseDecoder({ dots: "o*", dashes: "-#" }).toJSON(), {
                 type: "morse-decoder",
                 options: {
                     dots: "o*",
@@ -62,8 +63,8 @@ describe("MorseDecoder", () => {
             });
         });
         it("does not serialize default option values", () => {
-            expect(new MorseDecoder().toJSON()).toEqual({ type: "morse-decoder" });
-            expect(new MorseDecoder({ dots: "*o" }).toJSON()).toEqual({
+            assertEquals(new MorseDecoder().toJSON(), { type: "morse-decoder" });
+            assertEquals(new MorseDecoder({ dots: "*o" }).toJSON(), {
                 type: "morse-decoder",
                 options: { dots: "*o" }
             });
@@ -79,15 +80,15 @@ describe("MorseDecoder", () => {
                     dashes: "#~"
                 }
             });
-            expect(converter).toBeInstanceOf(MorseDecoder);
-            expect(converter.dots).toBe("*o");
-            expect(converter.dashes).toBe("#~");
+            assertInstanceOf(converter, MorseDecoder);
+            assertSame(converter.dots, "*o");
+            assertSame(converter.dashes, "#~");
         });
         it("deserializes a converter with default options", () => {
             const converter = Converter.fromJSON<MorseDecoder>({ type: "morse-decoder" });
-            expect(converter).toBeInstanceOf(MorseDecoder);
-            expect(converter.dots).toBe(".·*");
-            expect(converter.dashes).toBe("_-−");
+            assertInstanceOf(converter, MorseDecoder);
+            assertSame(converter.dots, ".·*");
+            assertSame(converter.dashes, "_-−");
         });
     });
 });

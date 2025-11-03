@@ -3,9 +3,9 @@
  * See LICENSE.md for licensing information.
  */
 
-import { IllegalArgumentError } from "../../utils/error.js";
-import { Signal } from "../../utils/Signal.js";
-import { ConverterOption } from "./options/ConverterOption.js";
+import { IllegalArgumentError } from "../../utils/error.ts";
+import { Signal } from "../../utils/Signal.ts";
+import type { ConverterOption } from "./options/ConverterOption.ts";
 
 /** Information about registered converters. */
 const descriptors: ConverterDescriptor[] = [];
@@ -149,7 +149,7 @@ export class ConverterDescriptor<T extends Converter = Converter> {
  */
 export interface ConverterJSON {
     type: string;
-    options?: { [ name: string ]: unknown };
+    options?: Record<string, unknown>;
 }
 
 /** Allowed primitive values for converter options. */
@@ -176,7 +176,7 @@ export abstract class Converter<T = unknown> {
     public readonly onChanged: Signal<this> = this.emitOnChanged.signal;
 
     /** The current option values of this converter. */
-    private readonly optionValues: WeakMap<ConverterOption<unknown, this>, unknown> = new WeakMap();
+    private readonly optionValues = new WeakMap<ConverterOption<unknown, this>, unknown>();
 
     /** The options of this converter. */
     public readonly options?: Array<ConverterOption<string | number | boolean, this>>;
@@ -196,7 +196,7 @@ export abstract class Converter<T = unknown> {
     public static fromJSON<T extends Converter>(json: ConverterJSON): T {
         // Workaround to load old project with one-time pad cipher which is the same as Vigenere
         if (json.type.startsWith("one-time-pad-")) {
-            json.type = "vigenere-" + json.type.substring(13);
+            json.type = `vigenere-${json.type.substring(13)}`;
             if (json.options?.pad != null) {
                 json.options.keyword = json.options.pad;
                 delete json.options.pad;
@@ -213,7 +213,7 @@ export abstract class Converter<T = unknown> {
         return converter as T;
     }
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public toJSON(): ConverterJSON {
         const json: ConverterJSON = {
             type: this.getType()
@@ -224,7 +224,7 @@ export abstract class Converter<T = unknown> {
                 options[option.getId()] = option.getValue(this);
             }
             return options;
-        }, ({} as { [ name: string ]: unknown }));
+        }, ({} as Record<string, unknown>));
         if (Object.keys(options).length > 0) {
             json.options = options;
         }
@@ -261,7 +261,7 @@ export abstract class Converter<T = unknown> {
                 return option;
             }
         }
-        throw new IllegalArgumentError("Option not found: " + id);
+        throw new IllegalArgumentError(`Option not found: ${id}`);
     }
 
     /**

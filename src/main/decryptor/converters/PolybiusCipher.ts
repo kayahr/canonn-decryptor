@@ -3,9 +3,9 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter } from "./Converter.js";
-import { numberOption } from "./options/NumberOption.js";
-import { stringOption } from "./options/StringOption.js";
+import { Converter } from "./Converter.ts";
+import { numberOption } from "./options/NumberOption.ts";
+import { stringOption } from "./options/StringOption.ts";
 
 const defaultAlphabet = "ABCDEFGHIKLMNOPQRSTUVWXYZ";
 
@@ -30,7 +30,7 @@ export abstract class PolybiusCipher<T extends PolybiusCipher<T>> extends Conver
     @numberOption<T>("columns", "Columns", { min: 1, max: 9, defaultValue: 5, onChange: converter => converter.resetCache() })
     public columns!: number;
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public abstract override convert(input: string): string;
 
     private resetCache(): void {

@@ -1,15 +1,16 @@
-import { describe, expect, it } from "vitest";
+import { describe, it } from "node:test";
 
-import { Converter } from "../../../main/decryptor/converters/Converter.js";
-import { VigenereEncoder } from "../../../main/decryptor/converters/VigenereEncoder.js";
+import { Converter } from "../../../main/decryptor/converters/Converter.ts";
+import { VigenereEncoder } from "../../../main/decryptor/converters/VigenereEncoder.ts";
+import { assertEquals, assertInstanceOf, assertSame } from "@kayahr/assert";
 
 describe("VigenereEncoder", () => {
     describe("constructor", () => {
         it("initializes to empty keyword if none given", () => {
-            expect(new VigenereEncoder().keyword).toBe("");
+            assertSame(new VigenereEncoder().keyword, "");
         });
         it("initializes to given keyword", () => {
-            expect(new VigenereEncoder({ keyword: "Canonn" }).keyword).toBe("Canonn");
+            assertSame(new VigenereEncoder({ keyword: "Canonn" }).keyword, "Canonn");
         });
     });
 
@@ -17,37 +18,37 @@ describe("VigenereEncoder", () => {
         it("updates the keyword", () => {
             const encoder = new VigenereEncoder({ keyword: "Not this one" });
             encoder.keyword = "Canonn";
-            expect(encoder.keyword).toBe("Canonn");
+            assertSame(encoder.keyword, "Canonn");
         });
     });
 
     describe("convert", () => {
         it("converts empty string to empty string", () => {
-            expect(new VigenereEncoder().convert("")).toBe("");
+            assertSame(new VigenereEncoder().convert(""), "");
         });
         it("keeps white-space only string", () => {
-            expect(new VigenereEncoder().convert(" \n\r\t")).toBe(" \n\r\t");
+            assertSame(new VigenereEncoder().convert(" \n\r\t"), " \n\r\t");
         });
         it("keeps unencodable characters", () => {
-            expect(new VigenereEncoder().convert("1ö_<")).toBe("1ö_<");
+            assertSame(new VigenereEncoder().convert("1ö_<"), "1ö_<");
         });
         it("encodes normal lower-case characters", () => {
-            expect(new VigenereEncoder({ keyword: "Eagle Mk3" }).convert("foobar")).toBe("joumed");
+            assertSame(new VigenereEncoder({ keyword: "Eagle Mk3" }).convert("foobar"), "joumed");
         });
         it("encodes normal upper-case characters", () => {
-            expect(new VigenereEncoder({ keyword: "Asp Explorer" }).convert("FOOBAR")).toBe("FGDFXG");
+            assertSame(new VigenereEncoder({ keyword: "Asp Explorer" }).convert("FOOBAR"), "FGDFXG");
         });
         it("encodes normal mixed-case characters", () => {
-            expect(new VigenereEncoder({ keyword: "Anaconda" }).convert("FooBar")).toBe("FboDoe");
+            assertSame(new VigenereEncoder({ keyword: "Anaconda" }).convert("FooBar"), "FboDoe");
         });
         it("encodes only normal characters in mixed string", () => {
-            expect(new VigenereEncoder({ keyword: "Cobra Mk3" }).convert("#12FooBar!")).toBe("#12HcpSad!");
+            assertSame(new VigenereEncoder({ keyword: "Cobra Mk3" }).convert("#12FooBar!"), "#12HcpSad!");
         });
     });
 
     describe("toJSON", () => {
         it("serializes the converter", () => {
-            expect(new VigenereEncoder({ keyword: "Secret" }).toJSON()).toEqual({
+            assertEquals(new VigenereEncoder({ keyword: "Secret" }).toJSON(), {
                 type: "vigenere-encoder",
                 options: {
                     keyword: "Secret"
@@ -55,7 +56,7 @@ describe("VigenereEncoder", () => {
             });
         });
         it("does not serialize default option values", () => {
-            expect(new VigenereEncoder({ keyword: "" }).toJSON()).toEqual({
+            assertEquals(new VigenereEncoder({ keyword: "" }).toJSON(), {
                 type: "vigenere-encoder"
             });
         });
@@ -69,13 +70,13 @@ describe("VigenereEncoder", () => {
                     keyword: "Secret"
                 }
             });
-            expect(converter).toBeInstanceOf(VigenereEncoder);
-            expect(converter.keyword).toBe("Secret");
+            assertInstanceOf(converter, VigenereEncoder);
+            assertSame(converter.keyword, "Secret");
         });
         it("deserializes a converter with default options", () => {
             const converter = Converter.fromJSON<VigenereEncoder>({ type: "vigenere-encoder" });
-            expect(converter).toBeInstanceOf(VigenereEncoder);
-            expect(converter.keyword).toBe("");
+            assertInstanceOf(converter, VigenereEncoder);
+            assertSame(converter.keyword, "");
         });
     });
 });

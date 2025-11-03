@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter, converter } from "./Converter.js";
+import { Converter, converter } from "./Converter.ts";
 
 /**
  * Reverses the given string.
@@ -20,7 +20,7 @@ function reverse(s: string): string {
  */
 @converter<Reverse>("reverse", "Reverse", "Reverse", "Reverses the text.")
 export class Reverse extends Converter {
-    /** @inheritDoc */
+    /** @inheritdoc */
     public convert(input: string): string {
         return reverse(input.replace(/(\r\n|\n\r)/g, reverse));
     }

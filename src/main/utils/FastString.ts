@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Alphabet } from "./Alphabet.js";
-import { type Equatable, isEqual } from "./Equatable.js";
+import type { Alphabet } from "./Alphabet.ts";
+import { type Equatable, isEqual } from "./Equatable.ts";
 
 /** Regular expression to match upper-case words in a string. */
 const WORD_REGEXP = /\b[A-Z]+\b/gi;
@@ -50,7 +50,7 @@ export class FastString extends Array<number> implements Equatable {
      * @returns The fast string content as a trimmed upper-case string.
      */
     public override toString(): string {
-        return this.map(c => String.fromCharCode(c != 0 ? (c + 64) : 32)).join("").trim();
+        return this.map(c => String.fromCharCode(c !== 0 ? (c + 64) : 32)).join("").trim();
     }
 
     /**
@@ -67,7 +67,7 @@ export class FastString extends Array<number> implements Equatable {
         return dest;
     }
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public equals(other: unknown): boolean {
         return isEqual(this, other, other => {
             const len = this.length;

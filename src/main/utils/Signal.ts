@@ -91,7 +91,7 @@ export class Signal<T = void, R = any> implements Observable<T> {
     private initResult: R | null = null;
 
     /** The number of connected slots. */
-    private slotCount: number = 0;
+    private slotCount = 0;
 
     /**
      * Creates a new signal initialized by the given init callback and de-initialized by the optionally given

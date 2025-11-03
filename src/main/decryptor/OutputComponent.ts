@@ -3,23 +3,23 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, type ElementRef, inject, Input, ViewChild } from "@angular/core";
+import { Component, type ElementRef, Input, ViewChild, inject } from "@angular/core";
 
-import template from "../../../assets/decryptor/output.html?raw";
-import { ButtonDirective } from "../ui/ButtonDirective.js";
-import { DialogService } from "../ui/DialogService.js";
-import { BooleanOptionComponent } from "./BooleanOptionComponent.js";
-import { AffineDecoder } from "./converters/AffineDecoder.js";
-import { Converter, createConverter } from "./converters/Converter.js";
-import { KeywordDecoder } from "./converters/KeywordDecoder.js";
-import { ConverterOption } from "./converters/options/ConverterOption.js";
-import { AffineCrackerDialog } from "./crackers/AffineCrackerDialog.js";
-import { KeywordCrackerDialog } from "./crackers/KeywordCrackerDialog.js";
-import { NumberOptionComponent } from "./NumberOptionComponent.js";
-import { DecryptorOutput } from "./project/DecryptorOutput.js";
-import { SelectConverterDialog } from "./SelectConverterDialog.js";
-import { SelectOptionComponent } from "./SelectOptionComponent.js";
-import { StringOptionComponent } from "./StringOptionComponent.js";
+import template from "../../../assets/decryptor/output.html";
+import { ButtonDirective } from "../ui/ButtonDirective.ts";
+import { DialogService } from "../ui/DialogService.ts";
+import { BooleanOptionComponent } from "./BooleanOptionComponent.ts";
+import { AffineDecoder } from "./converters/AffineDecoder.ts";
+import { type Converter, createConverter } from "./converters/Converter.ts";
+import { KeywordDecoder } from "./converters/KeywordDecoder.ts";
+import type { ConverterOption } from "./converters/options/ConverterOption.ts";
+import { AffineCrackerDialog } from "./crackers/AffineCrackerDialog.ts";
+import { KeywordCrackerDialog } from "./crackers/KeywordCrackerDialog.ts";
+import { NumberOptionComponent } from "./NumberOptionComponent.ts";
+import { DecryptorOutput } from "./project/DecryptorOutput.ts";
+import { SelectConverterDialog } from "./SelectConverterDialog.ts";
+import { SelectOptionComponent } from "./SelectOptionComponent.ts";
+import { StringOptionComponent } from "./StringOptionComponent.ts";
 
 /**
  * Decryptor output panel.

@@ -3,13 +3,12 @@
  * See LICENSE.md for licensing information.
  */
 
-import { escapeRegExp } from "../../utils/string.js";
-import { converter } from "./Converter.js";
-import { Converter } from "./Converter.js";
-import { stringOption } from "./options/StringOption.js";
+import { escapeRegExp } from "../../utils/string.ts";
+import { Converter, converter } from "./Converter.ts";
+import { stringOption } from "./options/StringOption.ts";
 
 /** Mapping table from cleartext to morse. */
-const alphabet: { [ key: string ]: string } = {
+const alphabet: Record<string, string> = {
     A: ".-",
     B: "-...",
     C: "-.-.",
@@ -67,13 +66,13 @@ const alphabet: { [ key: string ]: string } = {
 };
 
 /** Range string containing all ASCII characters with morse equivalent. */
-const range = "[" + Object.keys(alphabet).map(escapeRegExp).join("") + "]";
+const range = `[${Object.keys(alphabet).map(escapeRegExp).join("")}]`;
 
 /** Regular expression used to replace a single ASCII character with morse. */
 const characterReplace = new RegExp(range, "gi");
 
 /** Regular expression used to replace a group of ASCII characters with morse equivalent. */
-const groupReplace = new RegExp("(" + range + "+)", "gi");
+const groupReplace = new RegExp(`(${range}+)`, "gi");
 
 /**
  * Morse encoder.
@@ -92,7 +91,7 @@ export class MorseEncoder extends Converter {
     @stringOption<MorseEncoder>("space", "Space", { defaultValue: " ", allowEmpty: false })
     public space!: string;
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public convert(input: string): string {
         const lines = input.split(/\n/);
         return lines.map(line => {

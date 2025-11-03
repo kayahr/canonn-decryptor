@@ -6,12 +6,12 @@
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
-import template from "../../../assets/decryptor/string-option.html?raw";
-import { LabelDirective } from "../ui/LabelDirective.js";
-import { NoUpdateOnEditDirective } from "../ui/NoUpdateOnEditDirective.js";
-import { type StringValue } from "../ui/StringValue.js";
-import { StringOption } from "./converters/options/StringOption.js";
-import { OptionComponent } from "./OptionComponent.js";
+import template from "../../../assets/decryptor/string-option.html";
+import { LabelDirective } from "../ui/LabelDirective.ts";
+import { NoUpdateOnEditDirective } from "../ui/NoUpdateOnEditDirective.ts";
+import type { StringValue } from "../ui/StringValue.ts";
+import type { StringOption } from "./converters/options/StringOption.ts";
+import { OptionComponent } from "./OptionComponent.ts";
 
 /**
  * Displays a decryptor string option.
@@ -29,7 +29,7 @@ export class StringOptionComponent extends OptionComponent<StringOption> {
     /**
      * Returns the current option value.
      *
-     * @return The current option value.
+     * @returns The current option value.
      */
     public get value(): StringValue {
         return this.option.getValue(this.converter);
@@ -47,7 +47,7 @@ export class StringOptionComponent extends OptionComponent<StringOption> {
     /**
      * Returns the maximum string length.
      *
-     * @return The maximum string length.
+     * @returns The maximum string length.
      */
     public get maxLength(): number | null {
         return this.option.getMaxLength();

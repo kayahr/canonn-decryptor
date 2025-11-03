@@ -4,7 +4,7 @@
  */
 
 /** List of diacritics. */
-const diacritics: { [base: string]: number[] } = {
+const diacritics: Record<string, number[]> = {
     A: [
         192, 193, 194, 195, 196, 197, 256, 258, 260, 461, 478, 480, 506, 512, 514, 550, 570, 7680, 7840, 7842, 7844,
         7846, 7848, 7850, 7852, 7854, 7856, 7858, 7860, 7862, 9398, 11375, 65313
@@ -129,7 +129,7 @@ const diacriticsMap = Object.keys(diacritics).reduce((map, base) => {
  * Replaces all diacritics in the given string with ASCII
  *
  * @param s  The string in which to replace all diacritics with ASCII.
- * @return The string with all diacritics replaced with ASCII.
+ * @returns The string with all diacritics replaced with ASCII.
  */
 export function diacriticsToAscii(s: string): string {
     return s.split("").map(char => diacriticsMap.get(char) ?? char).join("");
@@ -139,7 +139,7 @@ export function diacriticsToAscii(s: string): string {
  * Escapes a string so it can be safely used within a regular expression.
  *
  * @param s  The string to escape.
- * @return The escaped string.
+ * @returns The escaped string.
  */
 export function escapeRegExp(s: string): string {
     return s.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
@@ -149,7 +149,7 @@ export function escapeRegExp(s: string): string {
  * Converts a string to a byte array containing UTF-8 encoded data.
  *
  * @param s  The string to convert (In JavaScript Unicode encoding).
- * @return The string as bytes in UTF-8 encoding.
+ * @returns The string as bytes in UTF-8 encoding.
  */
 export function toByteArray(s: string): Uint8Array {
     const bytes: number[] = [];
@@ -175,10 +175,9 @@ export function toByteArray(s: string): Uint8Array {
  * @param bytes   The UTF-8 encoded byte array.
  * @param index   Optional start index in the bytes array.
  * @param length  Optional number of bytes to read.
- * @return The JavaScript Unicode string.
+ * @returns The JavaScript Unicode string.
  */
-export function fromByteArray(bytes: ArrayLike<number>, index: number = 0,
-        length: number = bytes.length - index): string {
+export function fromByteArray(bytes: ArrayLike<number>, index = 0, length: number = bytes.length - index): string {
     let out = "";
     index = Math.min(bytes.length, Math.max(0, index));
     length = Math.min(bytes.length - index, Math.max(0, length));

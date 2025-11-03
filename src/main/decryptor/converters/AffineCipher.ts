@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter } from "./Converter.js";
-import { selectOption } from "./options/SelectOption.js";
+import { Converter } from "./Converter.ts";
+import { selectOption } from "./options/SelectOption.ts";
 
 /** Latin alphabet has 26 characters. */
 export const k = 26;
@@ -37,9 +37,9 @@ export abstract class AffineCipher<T extends AffineCipher<T>> extends Converter<
     public a!: string;
 
     /** The number base. */
-    @selectOption<T>("b", "b", [ ...new Array(26).keys() ].map(b => ({ label: String(b + 1), value: String(b + 1) })), { defaultValue: "1" })
+    @selectOption<T>("b", "b", [ ...Array.from({ length: 26 }).keys() ].map(b => ({ label: String(b + 1), value: String(b + 1) })), { defaultValue: "1" })
     public b!: string;
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public abstract override convert(input: string): string;
 }

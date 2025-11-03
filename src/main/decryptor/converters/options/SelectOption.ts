@@ -3,16 +3,16 @@
  * See LICENSE.md for licensing information.
  */
 
-import { IllegalArgumentError } from "../../../utils/error.js";
-import { Converter } from "../Converter.js";
-import { ConverterOption, converterOption, type ConverterOptionArgs, type OptionTarget } from "./ConverterOption.js";
+import { IllegalArgumentError } from "../../../utils/error.ts";
+import type { Converter } from "../Converter.ts";
+import { ConverterOption, type ConverterOptionArgs, type OptionTarget, converterOption } from "./ConverterOption.ts";
 
 /**
  * The select option arguments.
  */
 export interface SelectOptionArgs<T extends Converter> extends ConverterOptionArgs<string, T> {}
 
-export type SelectItem = {
+export interface SelectItem {
     readonly value: string;
     readonly label: string;
 };
@@ -58,7 +58,7 @@ export class SelectOption<T extends Converter = Converter> extends ConverterOpti
         return this.items;
     }
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     protected override correctValue(value: string): string {
         for (const item of this.items) {
             if (value === item.value) {

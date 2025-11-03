@@ -5,7 +5,7 @@
 
 import { Component } from "@angular/core";
 
-import template from "../../../assets/ui/dialog.html?raw";
+import template from "../../../assets/ui/dialog.html";
 
 /**
  * The component used to display modal dialogs.

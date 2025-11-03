@@ -3,10 +3,10 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Injectable, Renderer2, ViewContainerRef } from "@angular/core";
+import { Injectable, type Renderer2, type ViewContainerRef } from "@angular/core";
 
-import { IllegalStateError } from "../utils/error.js";
-import { ToastComponent } from "./ToastComponent.js";
+import { IllegalStateError } from "../utils/error.ts";
+import { ToastComponent } from "./ToastComponent.ts";
 
 /**
  * The toast service used to spawn new toasts.

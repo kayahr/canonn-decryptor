@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter } from "./Converter.js";
-import { stringOption } from "./options/StringOption.js";
+import { Converter } from "./Converter.ts";
+import { stringOption } from "./options/StringOption.ts";
 
 /** The standard alphabet. */
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -43,7 +43,7 @@ export abstract class KeywordCipher extends Converter {
         this.alphabet = null;
     }
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public convert(input: string): string {
         return input.split("").map(char => {
             if (char >= "A" && char <= "Z") {

@@ -5,10 +5,10 @@
 
 import { Component, HostListener } from "@angular/core";
 
-import template from "../../../assets/ui/confirm-dialog.html?raw";
-import { ButtonDirective } from "./ButtonDirective.js";
-import { Dialog } from "./Dialog.js";
-import { DialogComponent } from "./DialogComponent.js";
+import template from "../../../assets/ui/confirm-dialog.html";
+import { ButtonDirective } from "./ButtonDirective.ts";
+import { Dialog } from "./Dialog.ts";
+import { DialogComponent } from "./DialogComponent.ts";
 
 /**
  * Common dialog to display a confirmation message and let the user confirm or cancel it.

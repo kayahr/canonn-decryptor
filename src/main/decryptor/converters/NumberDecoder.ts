@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter, converter } from "./Converter.js";
-import { numberOption } from "./options/NumberOption.js";
+import { Converter, converter } from "./Converter.ts";
+import { numberOption } from "./options/NumberOption.ts";
 
 /**
  * Number decoder.
@@ -37,7 +37,7 @@ export class NumberDecoder extends Converter {
      */
     private getRange(): string {
         const base = this.base;
-        return "-?[0-" + Math.min(9, base - 1) + (base > 10 ? "a-" + String.fromCharCode(86 + base) : "") + "]+";
+        return `-?[0-${Math.min(9, base - 1)}${(base > 10 ? `a-${String.fromCharCode(86 + base)}` : "")}]+`;
     }
 
     /**
@@ -74,7 +74,7 @@ export class NumberDecoder extends Converter {
         this.numberRegExp = null;
     }
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     public convert(input: string): string {
         return input.replace(this.getGroupRegExp(), match =>
             match.replace(this.getNumberRegExp(), (match, dummy, spaces: string) =>

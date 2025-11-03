@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import { createInterface } from "node:readline/promises";
 import { parseArgs } from "node:util";
 
-import { diacriticsToAscii } from "../main/utils/string.js";
+import { diacriticsToAscii } from "../main/utils/string.ts";
 
 const WORD_REGEXP = /\b[A-Z]+\b/g;
 
@@ -37,8 +37,8 @@ class Quadgrams {
         }
     }
 
-    public toJSON(): { [ngram: string]: number } {
-        const json: { [ngram: string]: number } = {};
+    public toJSON(): Record<string, number> {
+        const json: Record<string, number> = {};
         const ngrams = this.quadgrams.sort((a, b) => b.count - a.count);
         for (const ngram of ngrams) {
             json[ngram.quadgram] = ngram.count;
@@ -79,7 +79,7 @@ async function processText(file: string, quadgrams: Quadgrams): Promise<void> {
     }
 
     // Build quadgrams
-    quadgrams.processText(" " + words.join(" ") + " ");
+    quadgrams.processText(` ${words.join(" ")} `);
 }
 
 async function processLines(file: string, quadgrams: Quadgrams): Promise<void> {
@@ -94,7 +94,7 @@ async function processLines(file: string, quadgrams: Quadgrams): Promise<void> {
             // Extract words from lines
             const words = numbersToText(line).toUpperCase().match(WORD_REGEXP);
             if (words != null) {
-                quadgrams.processText(" " + words.join(" ") + " ");
+                quadgrams.processText(` ${words.join(" ")} `);
             }
 
             lines++;

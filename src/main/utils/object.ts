@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { isEquatable } from "./Equatable.js";
+import { isEquatable } from "./Equatable.ts";
 
 /**
  * Internal implementation of equals which can recursively dive deep into arrays and objects to check for equality.
@@ -25,8 +25,8 @@ function deepEquals(obj1: object | null | undefined, obj2: object | null | undef
     }
 
     // Check if objects are already checked (To prevent endless recursion loops)
-    const seen1 = seen.indexOf(obj1) !== -1;
-    const seen2 = seen.indexOf(obj2) !== -1;
+    const seen1 = seen.includes(obj1);
+    const seen2 = seen.includes(obj2);
     if (seen1 && seen2) {
         return true;
     }
@@ -69,7 +69,7 @@ function deepEquals(obj1: object | null | undefined, obj2: object | null | undef
         // Build array with all keys from obj1 and obj2
         const keys = Object.keys(obj1);
         for (const key of Object.keys(obj2)) {
-            if (keys.indexOf(key) < 0) {
+            if (!keys.includes(key)) {
                 keys.push(key);
             }
         }

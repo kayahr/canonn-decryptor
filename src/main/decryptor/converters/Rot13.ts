@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter, converter } from "./Converter.js";
+import { Converter, converter } from "./Converter.ts";
 
 /**
  * Rotates a single character.
@@ -21,7 +21,7 @@ function rotate(char: string): string {
  */
 @converter<Rot13>("rot13", "rot13", "Rot 13", "Converts text by rotating the alphabet by 13.")
 export class Rot13 extends Converter {
-    /** @inheritDoc */
+    /** @inheritdoc */
     public convert(input: string): string {
         return input.replace(/[a-z]/gi, rotate);
     }

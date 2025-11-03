@@ -9,7 +9,7 @@
  *
  * @param ms - The number of milliseconds to sleep. Defaults to 0.
  */
-export async function sleep(ms: number = 0): Promise<void> {
+export async function sleep(ms = 0): Promise<void> {
     return new Promise<void>(resolve => {
         setTimeout(resolve, ms);
     });

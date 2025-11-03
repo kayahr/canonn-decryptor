@@ -6,12 +6,12 @@
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
-import template from "../../../assets/decryptor/select-option.html?raw";
-import { LabelDirective } from "../ui/LabelDirective.js";
-import { NoUpdateOnEditDirective } from "../ui/NoUpdateOnEditDirective.js";
-import { type StringValue } from "../ui/StringValue.js";
-import { type SelectItem, SelectOption } from "./converters/options/SelectOption.js";
-import { OptionComponent } from "./OptionComponent.js";
+import template from "../../../assets/decryptor/select-option.html";
+import { LabelDirective } from "../ui/LabelDirective.ts";
+import { NoUpdateOnEditDirective } from "../ui/NoUpdateOnEditDirective.ts";
+import type { StringValue } from "../ui/StringValue.ts";
+import type { SelectItem, SelectOption } from "./converters/options/SelectOption.ts";
+import { OptionComponent } from "./OptionComponent.ts";
 
 /**
  * Displays a decryptor select option.
@@ -29,7 +29,7 @@ export class SelectOptionComponent extends OptionComponent<SelectOption> {
     /**
      * Returns the current option value.
      *
-     * @return The current option value.
+     * @returns The current option value.
      */
     public get value(): StringValue {
         return this.option.getValue(this.converter);
@@ -47,7 +47,7 @@ export class SelectOptionComponent extends OptionComponent<SelectOption> {
     /**
      * Returns the selectable items.
      *
-     * @return The selectable items.
+     * @returns The selectable items.
      */
     public get items(): readonly SelectItem[] {
         return this.option.getItems();

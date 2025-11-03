@@ -1,36 +1,37 @@
-import { describe, expect, it } from "vitest";
+import { describe, it } from "node:test";
 
-import { CaesarEncoder } from "../../../main/decryptor/converters/CaesarEncoder.js";
-import { Converter } from "../../../main/decryptor/converters/Converter.js";
+import { CaesarEncoder } from "../../../main/decryptor/converters/CaesarEncoder.ts";
+import { Converter } from "../../../main/decryptor/converters/Converter.ts";
+import { assertEquals, assertInstanceOf, assertSame } from "@kayahr/assert";
 
 describe("CaesarEncoder", () => {
     describe("convert", () => {
         it("converts empty string to empty string", () => {
-            expect(new CaesarEncoder().convert("")).toBe("");
+            assertSame(new CaesarEncoder().convert(""), "");
         });
         it("keeps white-space only string", () => {
-            expect(new CaesarEncoder().convert(" \n\r\t")).toBe(" \n\r\t");
+            assertSame(new CaesarEncoder().convert(" \n\r\t"), " \n\r\t");
         });
         it("keeps unrotatable characters", () => {
-            expect(new CaesarEncoder().convert("1ö_<")).toBe("1ö_<");
+            assertSame(new CaesarEncoder().convert("1ö_<"), "1ö_<");
         });
         it("encodes normal lower-case characters", () => {
-            expect(new CaesarEncoder({ rotation: 5 }).convert("foobar")).toBe("kttgfw");
+            assertSame(new CaesarEncoder({ rotation: 5 }).convert("foobar"), "kttgfw");
         });
         it("encodes normal upper-case characters", () => {
-            expect(new CaesarEncoder({ rotation: 12 }).convert("FOOBAR")).toBe("RAANMD");
+            assertSame(new CaesarEncoder({ rotation: 12 }).convert("FOOBAR"), "RAANMD");
         });
         it("encodes normal mixed-case characters", () => {
-            expect(new CaesarEncoder({ rotation: 25 }).convert("FooBar")).toBe("EnnAzq");
+            assertSame(new CaesarEncoder({ rotation: 25 }).convert("FooBar"), "EnnAzq");
         });
         it("encodes only normal characters in mixed string", () => {
-            expect(new CaesarEncoder({ rotation: 7 }).convert("#12FooBar!")).toBe("#12MvvIhy!");
+            assertSame(new CaesarEncoder({ rotation: 7 }).convert("#12FooBar!"), "#12MvvIhy!");
         });
     });
 
     describe("toJSON", () => {
         it("serializes the converter", () => {
-            expect(new CaesarEncoder({ rotation: 12 }).toJSON()).toEqual({
+            assertEquals(new CaesarEncoder({ rotation: 12 }).toJSON(), {
                 type: "caesar-encoder",
                 options: {
                     rotation: 12
@@ -38,7 +39,7 @@ describe("CaesarEncoder", () => {
             });
         });
         it("does not serialize default option values", () => {
-            expect(new CaesarEncoder({ rotation: 13 }).toJSON()).toEqual({
+            assertEquals(new CaesarEncoder({ rotation: 13 }).toJSON(), {
                 type: "caesar-encoder"
             });
         });
@@ -52,13 +53,13 @@ describe("CaesarEncoder", () => {
                     rotation: 11
                 }
             });
-            expect(converter).toBeInstanceOf(CaesarEncoder);
-            expect(converter.rotation).toBe(11);
+            assertInstanceOf(converter, CaesarEncoder);
+            assertSame(converter.rotation, 11);
         });
         it("deserializes a converter with default options", () => {
             const converter = Converter.fromJSON<CaesarEncoder>({ type: "caesar-encoder" });
-            expect(converter).toBeInstanceOf(CaesarEncoder);
-            expect(converter.rotation).toBe(13);
+            assertInstanceOf(converter, CaesarEncoder);
+            assertSame(converter.rotation, 13);
         });
     });
 });

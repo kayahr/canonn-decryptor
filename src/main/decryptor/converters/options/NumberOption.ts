@@ -3,8 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Converter } from "../Converter.js";
-import { ConverterOption, converterOption, type ConverterOptionArgs, type OptionTarget } from "./ConverterOption.js";
+import type { Converter } from "../Converter.ts";
+import { ConverterOption, type ConverterOptionArgs, type OptionTarget, converterOption } from "./ConverterOption.ts";
 
 /**
  * The arguments of a number option.
@@ -71,7 +71,7 @@ export class NumberOption<T extends Converter = Converter> extends ConverterOpti
         return this.step;
     }
 
-    /** @inheritDoc */
+    /** @inheritdoc */
     protected override correctValue(value: number): number {
         const { min, max, step } = this;
         return Math.min(max, (Math.round((Math.max(value, min) - min) / step)) * step + min);

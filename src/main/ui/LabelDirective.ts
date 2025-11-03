@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Directive, ElementRef, Renderer2 } from "@angular/core";
+import { Directive, ElementRef, Renderer2, inject } from "@angular/core";
 
 let inputLabelLinkCounter = 0;
 
@@ -22,15 +22,14 @@ let inputLabelLinkCounter = 0;
     inputs: [ "label" ]
 })
 export class LabelDirective {
-    private readonly renderer: Renderer2;
+    private readonly renderer = inject(Renderer2);
     private readonly inputElement: HTMLInputElement;
     private labelElement: HTMLLabelElement | null = null;
 
-    public constructor(renderer: Renderer2, elementRef: ElementRef<HTMLInputElement>) {
-        this.renderer = renderer;
-        this.inputElement = elementRef.nativeElement;
+    public constructor() {
+        this.inputElement = inject<ElementRef<HTMLInputElement>>(ElementRef).nativeElement;
         if (this.inputElement.id === "" || this.inputElement.id === null) {
-            this.inputElement.id = "input-label-link-" + inputLabelLinkCounter++;
+            this.inputElement.id = `input-label-link-${inputLabelLinkCounter++}`;
         }
     }
 
@@ -45,9 +44,9 @@ export class LabelDirective {
             if (this.labelElement == null) {
                 this.labelElement = this.renderer.createElement("label") as HTMLLabelElement;
                 this.labelElement.htmlFor = this.inputElement.id;
-                parentElement.insertBefore(this.labelElement, reference);
+                reference.before(this.labelElement);
             }
-            this.labelElement.innerText = label;
+            this.labelElement.textContent = label;
         }
     }
 }
