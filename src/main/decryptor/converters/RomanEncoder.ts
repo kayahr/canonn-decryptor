@@ -61,7 +61,7 @@ export class RomanEncoder extends Converter {
     /** @inheritdoc */
     public convert(input: string): string {
         return input.replace(groupRegExp, (all, prefix: string, match: string, suffix: string) =>
-            prefix + match.replace(decimalRegExp, decimal => encodeRoman(+decimal)) + suffix
+            prefix + match.replace(decimalRegExp, decimal => encodeRoman(Number(decimal))) + suffix
         );
     }
 }

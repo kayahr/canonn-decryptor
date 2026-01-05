@@ -41,7 +41,7 @@ export class NumberOptionComponent extends OptionComponent<NumberOption> {
      * @param value  The new option value to set.
      */
     public set value(value: StringValue) {
-        this.option.setValue(this.converter, +value);
+        this.option.setValue(this.converter, Number(value));
     }
 
     /**

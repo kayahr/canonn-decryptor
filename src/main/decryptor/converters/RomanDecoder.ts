@@ -36,7 +36,7 @@ export class RomanDecoder extends Converter {
     /** @inheritdoc */
     public convert(input: string): string {
         return input.replace(groupRegExp, (all, prefix: string, match: string, suffix: string) =>
-            prefix + match.replace(romanRegExp, roman => (roman === "" ? "" : "" + decodeRoman(roman))) + suffix
+            prefix + match.replace(romanRegExp, roman => (roman === "" ? "" : String(decodeRoman(roman)))) + suffix
         );
     }
 }
