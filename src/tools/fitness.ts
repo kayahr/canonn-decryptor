@@ -20,7 +20,7 @@ class Quadgram {
 
 class Quadgrams {
     private readonly quadgrams: Quadgram[] = [];
-    private index: { [quadgram: string]: Quadgram } = {};
+    private index: Record<string, Quadgram> = {};
 
     public addQuadgram(quadgram: string): void {
         const entry = this.index[quadgram];

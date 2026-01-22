@@ -11,7 +11,7 @@ import type { ConverterOption } from "./options/ConverterOption.ts";
 const descriptors: ConverterDescriptor[] = [];
 
 /** Map from converter ID to converter descriptor. */
-const idMap: { [id: string]: ConverterDescriptor } = {};
+const idMap: Record<string, ConverterDescriptor> = {};
 
 /** Map from converter to converter descriptor. */
 const ctorMap = new WeakMap<new () => Converter, ConverterDescriptor>();
