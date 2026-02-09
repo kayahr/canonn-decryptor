@@ -50,7 +50,7 @@
     "@kayahr/oxlint-config": "1.19.0",
     "@kayahr/typedoc": "0.28.14-bundle.3",
     "@types/node": "25.2.0",
-    "esbuild": "0.27.2",
+    "esbuild": "0.27.3",
     "esbuild-copy-static-files": "0.1.0",
     "typescript": "5.9.3"
   },
