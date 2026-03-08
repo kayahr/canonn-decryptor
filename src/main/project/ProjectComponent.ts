@@ -57,7 +57,7 @@ export abstract class ProjectComponent<T extends Project> {
         // Initialize project state from 'data' query parameter and also update the project state automatically when
         // this parameter changes
         this.queryParamsSubscription = this.activatedRoute.queryParams.subscribe(params => {
-            const stateData = params["data"] as string;
+            const stateData = params.data as string;
             if (stateData != null) {
                 if (stateData !== this.stateData) {
                     this.stateData = stateData;

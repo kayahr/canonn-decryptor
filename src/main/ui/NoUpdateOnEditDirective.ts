@@ -5,7 +5,6 @@
 
 import { Directive, ElementRef, EventEmitter, type ExistingProvider, Renderer2, forwardRef, inject } from "@angular/core";
 import { type ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
-import type { Subscription } from "rxjs";
 
 import type { StringValue } from "./StringValue.ts";
 
@@ -77,11 +76,11 @@ export class NoUpdateOnEditDirective implements ControlValueAccessor {
         }
     }
 
-    public registerOnChange(fn: unknown): Subscription {
-        return this.onChangeCallback.subscribe(fn);
+    public registerOnChange(fn: unknown): void {
+        this.onChangeCallback.subscribe(fn);
     }
 
-    public registerOnTouched(fn: unknown): Subscription {
-        return this.onTouchedCallback.subscribe(fn);
+    public registerOnTouched(fn: unknown): void {
+        this.onTouchedCallback.subscribe(fn);
     }
 }

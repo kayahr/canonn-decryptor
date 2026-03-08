@@ -122,11 +122,7 @@ async function main(args: string[]): Promise<number> {
     const quadgrams = new Quadgrams();
 
     for (const file of positionals) {
-        if (values.lines) {
-            await processLines(file, quadgrams);
-        } else {
-            await processText(file, quadgrams);
-        }
+        await (values.lines ? processLines(file, quadgrams) : processText(file, quadgrams));
     }
     console.log(JSON.stringify(quadgrams.toJSON(), null, 4));
     return 0;
