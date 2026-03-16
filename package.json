@@ -60,7 +60,7 @@
     "@angular/core": "^21.2.1",
     "@angular/forms": "^21.2.1",
     "@angular/platform-browser": "^21.2.1",
-    "@angular/platform-browser-dynamic": "^21.2.1",
+    "@angular/platform-browser-dynamic": "^21.2.4",
     "@angular/router": "^21.2.1",
     "base64-js": "^1.5.1",
     "lz-string": "^1.5.0",
