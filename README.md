@@ -44,7 +44,7 @@ For deployment copy the content of the `lib/package` directory to your web serve
 Links
 -----
 
-* [Canonn Research Group](http://canonn.science/)
+* [Canonn Research Group](https://canonn.science/)
 
 
 [Canonn Decryptor]: https://kayahr.github.io/canonn-decryptor/

@@ -16,7 +16,7 @@ export class PolybiusDecoder extends PolybiusCipher<PolybiusDecoder> {
         const square = this.getSquare();
         return input.replace(/(?<!\\w)\d\d(?: +\d\d)*(?!\\w)/gi, match =>
             match.replace(/\s*(\d)(\d)( *)/g, (match, row, column, spaces: string) =>
-                (square[Number(row - 1)]?.[Number(column - 1)] ?? "�") + spaces.substring(1)
+                (square[row - 1]?.[column - 1] ?? "�") + spaces.substring(1)
             )
         );
     }
