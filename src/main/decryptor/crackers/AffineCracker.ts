@@ -5,7 +5,7 @@
 
 import { sleep } from "../../utils/async.ts";
 import type { Cancelable } from "../../utils/Cancelable.ts";
-import type { Canceled } from "../../utils/Canceled.ts";
+import type { CanceledError } from "../../utils/Canceled.ts";
 import { type Equatable, isEqual } from "../../utils/Equatable.ts";
 import { FastString } from "../../utils/FastString.ts";
 import { cancelable } from "../../utils/promise.ts";
@@ -98,7 +98,7 @@ export class AffineCracker {
      * @param onResult - Callback called whenever a new result was calculated.
      */
     public crack(encoded: string, onResult?: (result: AffineCrackerResult) => void, onProgress?: (current: number, max: number) => void): Cancelable<void> {
-        let cancel: Canceled | null = null;
+        let cancel: CanceledError | null = null;
         return cancelable(async () => {
             const max = aTable.length * k;
             let current = 0;
@@ -119,7 +119,7 @@ export class AffineCracker {
                     await sleep(0);
                 }
             }
-        }, (canceled: Canceled) => {
+        }, (canceled: CanceledError) => {
             cancel = canceled;
         });
     }

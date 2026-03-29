@@ -6,7 +6,7 @@
 import { Alphabet } from "../../utils/Alphabet.ts";
 import { sleep } from "../../utils/async.ts";
 import type { Cancelable } from "../../utils/Cancelable.ts";
-import type { Canceled } from "../../utils/Canceled.ts";
+import type { CanceledError } from "../../utils/Canceled.ts";
 import { type Equatable, isEqual } from "../../utils/Equatable.ts";
 import { FastString } from "../../utils/FastString.ts";
 import { cancelable } from "../../utils/promise.ts";
@@ -132,7 +132,7 @@ export class KeywordCracker {
      */
     public crack(encoded: string, onResult?: (result: KeywordCrackerResult) => void,
             onProgress?: (current: number, max: number) => void): Cancelable<KeywordCrackerResult | null> {
-        let cancel: Canceled | null = null;
+        let cancel: CanceledError | null = null;
         return cancelable(async () => {
             const decoder = new KeywordDecoder();
             const fastEncoded = FastString.fromString(encoded);
@@ -179,7 +179,7 @@ export class KeywordCracker {
                 await sleep();
             }
             return bestResult;
-        }, (canceled: Canceled) => {
+        }, (canceled: CanceledError) => {
             cancel = canceled;
         });
     }

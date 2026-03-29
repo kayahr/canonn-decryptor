@@ -6,11 +6,12 @@
 /**
  * Error with which canceled promises are rejected.
  */
-export class Canceled extends Error {
+export class CanceledError extends Error {
     /**
      * @param reason - Optional cancellation reason.
      */
     public constructor(reason = "") {
         super(reason);
+        this.name = "CanceledError";
     }
 }

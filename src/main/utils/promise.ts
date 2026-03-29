@@ -4,7 +4,7 @@
  */
 
 import type { Cancelable } from "./Cancelable.ts";
-import { Canceled } from "./Canceled.ts";
+import { CanceledError } from "./Canceled.ts";
 import { toError } from "./error.ts";
 
 /**
@@ -15,7 +15,7 @@ import { toError } from "./error.ts";
  *                   standard promise and then (if successfully canceled) throw the passed canceled object.
  * @returns The created cancelable promise.
  */
-export function cancelable<T>(promise: Promise<T>, onCancel?: (canceled: Canceled) => void): Cancelable<T>;
+export function cancelable<T>(promise: Promise<T>, onCancel?: (canceled: CanceledError) => void): Cancelable<T>;
 
 /**
  * Wraps the given async function and a cancellation handler into a cancelable promise.
@@ -25,16 +25,16 @@ export function cancelable<T>(promise: Promise<T>, onCancel?: (canceled: Cancele
  *                    async function and then (if successfully canceled) throw the passed canceled object.
  * @returns The created cancelable promise.
  */
-export function cancelable<T>(asyncFunc: () => Promise<T>, onCancel?: (canceled: Canceled) => void): Cancelable<T>;
+export function cancelable<T>(asyncFunc: () => Promise<T>, onCancel?: (canceled: CanceledError) => void): Cancelable<T>;
 
-export function cancelable<T>(promiseOrAsync: (() => Promise<T>) | Promise<T>, onCancel?: (canceled: Canceled) => void): Cancelable<T> {
+export function cancelable<T>(promiseOrAsync: (() => Promise<T>) | Promise<T>, onCancel?: (canceled: CanceledError) => void): Cancelable<T> {
     const promise = promiseOrAsync instanceof Promise ? promiseOrAsync : (promiseOrAsync as () => Promise<T>)();
     let cancel: ((reason: string) => Promise<void>) | null = null;
     const cancelable: Cancelable<T> = new Promise((resolve, reject) => {
         cancel = (reason = "") => {
             try {
                 if (onCancel != null) {
-                    onCancel(new Canceled(reason));
+                    onCancel(new CanceledError(reason));
                 }
             } catch (error) {
                 reject(toError(error));

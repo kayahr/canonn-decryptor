@@ -6,12 +6,18 @@
 /**
  * Thrown when an illegal argument has been specified.
  */
-export class IllegalArgumentError extends Error {}
+export class IllegalArgumentError extends Error {
+    /** @inheritdoc */
+    public override readonly name = "IllegalArgumentError";
+}
 
 /**
  * Thrown when an operation is not allowed because of an illegal state.
  */
-export class IllegalStateError extends Error {}
+export class IllegalStateError extends Error {
+    /** @inheritdoc */
+    public override readonly name = "IllegalStateError";
+}
 
 /**
  * Converts the given error object into an instance of the Error class. If it is already is an instance then it is
