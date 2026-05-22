@@ -23,11 +23,11 @@ export class Quadgrams {
             const ngram2 = Array.prototype.map.call(ngram, (char: string) => Math.max(0, char.charCodeAt(0) - 64)) as number[];
 
             let char = ngram2[0];
-            const a = this.quadgrams[char] ?? (this.quadgrams[char] = []);
+            const a = this.quadgrams[char] ??= [];
             char = ngram2[1];
-            const b = a[char] ?? (a[char] = []);
+            const b = a[char] ??= [];
             char = ngram2[2];
-            const c = b[char] ?? (b[char] = []);
+            const c = b[char] ??= [];
             c[ngram2[3]] = score;
         }
     }

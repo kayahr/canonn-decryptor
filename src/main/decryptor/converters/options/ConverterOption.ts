@@ -32,10 +32,10 @@ export function converterOption<T, C extends Converter>(target: OptionTarget<C>,
     Object.defineProperty(target, propertyKey, {
         configurable: false,
         enumerable: true,
-        get: function (this: Converter): T {
+        get(this: Converter): T {
             return option.getValue((this as C));
         },
-        set: function (this: Converter, value: T): void {
+        set(this: Converter, value: T): void {
             option.setValue((this as C), value);
         }
     });
