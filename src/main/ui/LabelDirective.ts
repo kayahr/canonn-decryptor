@@ -36,7 +36,7 @@ export class LabelDirective {
     public set label(label: string) {
         let reference: HTMLElement = this.inputElement;
         let parentElement = reference.parentElement;
-        if (parentElement != null && parentElement.tagName === "LABEL") {
+        if (parentElement?.tagName === "LABEL") {
             reference = parentElement;
             parentElement = reference.parentElement;
         }

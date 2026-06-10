@@ -163,7 +163,7 @@ export class Signal<T = void, R = any> implements Observable<T> {
         const slots = this.slots;
         for (let i = slots.length - 1; i >= 0; --i) {
             const slot = slots[i];
-            if (slot != null && slot.equals(callback, context)) {
+            if (slot?.equals(callback, context)) {
                 slots[i] = null;
                 break;
             }
