@@ -3,14 +3,14 @@
  * See LICENSE.md for licensing information.
  */
 
-import { type ChangeDetectorRef, type ElementRef, ViewChild } from "@angular/core";
-import type { ActivatedRoute, Router } from "@angular/router";
+import { ChangeDetectorRef, type ElementRef, ViewChild, inject } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 import type { Subscription } from "rxjs";
 
-import type { ProjectService } from "../project/ProjectService.ts";
-import type { DialogService } from "../ui/DialogService.ts";
+import { ProjectService } from "../project/ProjectService.ts";
+import { DialogService } from "../ui/DialogService.ts";
 import type { StringValue } from "../ui/StringValue.ts";
-import type { ToastService } from "../ui/ToastService.ts";
+import { ToastService } from "../ui/ToastService.ts";
 import { LoadProjectDialog } from "./LoadProjectDialog.ts";
 import type { Project, ProjectStatic } from "./Project.ts";
 import type { ProjectState } from "./ProjectState.ts";
@@ -19,14 +19,14 @@ import type { ProjectState } from "./ProjectState.ts";
  * Abstract base class for a main application component which works on project.
  */
 export abstract class ProjectComponent<T extends Project> {
-    private readonly type: ProjectStatic<T>;
-    protected readonly state: ProjectState<T>;
-    protected readonly changeDetectorRef: ChangeDetectorRef;
-    protected readonly projectService: ProjectService;
-    protected readonly dialogService: DialogService;
-    protected readonly toastService: ToastService;
-    private readonly router: Router;
-    private readonly activatedRoute: ActivatedRoute;
+    protected abstract readonly type: ProjectStatic<T>;
+    protected abstract readonly state: ProjectState<T>;
+    protected readonly changeDetectorRef = inject(ChangeDetectorRef);
+    protected readonly projectService = inject(ProjectService);
+    protected readonly dialogService = inject(DialogService);
+    protected readonly toastService = inject(ToastService);
+    private readonly router = inject(Router);
+    private readonly activatedRoute = inject(ActivatedRoute);
     private queryParamsSubscription: Subscription | null = null;
     private stateData = "";
 
@@ -36,19 +36,6 @@ export abstract class ProjectComponent<T extends Project> {
      */
     @ViewChild("projectNameInput")
     public projectNameInput: ElementRef<HTMLInputElement> | null = null;
-
-    protected constructor(type: ProjectStatic<T>, state: ProjectState<T>, changeDetectorRef: ChangeDetectorRef,
-            projectService: ProjectService,
-            dialogService: DialogService, toastService: ToastService, router: Router, activatedRoute: ActivatedRoute) {
-        this.type = type;
-        this.state = state;
-        this.changeDetectorRef = changeDetectorRef;
-        this.projectService = projectService;
-        this.dialogService = dialogService;
-        this.toastService = toastService;
-        this.router = router;
-        this.activatedRoute = activatedRoute;
-    }
 
     public ngOnInit(): void {
         // Listen on project deletions to update the saved state of current project if needed

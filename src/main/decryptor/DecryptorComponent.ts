@@ -25,17 +25,13 @@ import "./converters/Rot13.ts";
 import "./converters/VigenereDecoder.ts";
 import "./converters/VigenereEncoder.ts";
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, type ElementRef, ViewChild, inject } from "@angular/core";
+import { ChangeDetectionStrategy, Component, type ElementRef, ViewChild, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
 
 import template from "../../../assets/decryptor/decryptor.html";
 import { ProjectComponent } from "../project/ProjectComponent.ts";
-import { ProjectService } from "../project/ProjectService.ts";
 import { ButtonDirective } from "../ui/ButtonDirective.ts";
-import { DialogService } from "../ui/DialogService.ts";
 import { NoUpdateOnEditDirective } from "../ui/NoUpdateOnEditDirective.ts";
-import { ToastService } from "../ui/ToastService.ts";
 import { DecryptorState } from "./DecryptorState.ts";
 import { InputComponent } from "./InputComponent.ts";
 import { DecryptorInput } from "./project/DecryptorInput.ts";
@@ -56,25 +52,11 @@ import { DecryptorProject } from "./project/DecryptorProject.ts";
     template
 })
 export class DecryptorComponent extends ProjectComponent<DecryptorProject> {
+    protected override readonly type = DecryptorProject;
+    protected override readonly state = inject(DecryptorState);
+
     @ViewChild("clearButton")
     protected clearButton!: ElementRef<HTMLButtonElement>;
-
-    /**
-     * Creates a new decryptor component showing the specified state and using the specified service for loading
-     * and saving.
-     */
-    public constructor() {
-        super(
-            DecryptorProject,
-            inject(DecryptorState),
-            inject(ChangeDetectorRef),
-            inject(ProjectService),
-            inject(DialogService),
-            inject(ToastService),
-            inject(Router),
-            inject(ActivatedRoute)
-        );
-    }
 
     /**
      * Returns the current decryptor project.
