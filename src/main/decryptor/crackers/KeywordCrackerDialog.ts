@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, signal } from "@angular/core";
+import { Component, DestroyRef, inject, signal } from "@angular/core";
 
 import template from "../../../../assets/decryptor/crackers/keyword-cracker-dialog.html";
 import { ButtonDirective } from "../../ui/ButtonDirective.ts";
@@ -33,6 +33,9 @@ export class KeywordCrackerDialog extends Dialog<string> {
     /** The current running cracking process. Null if none. */
     private runningTask: Cancelable<KeywordCrackerResult | null> | null = null;
 
+    /** The current cancellation process. Null if none. */
+    private stoppingTask: Promise<void> | null = null;
+
     /** True while the cracker is running. */
     public readonly running = signal(false);
 
@@ -48,6 +51,9 @@ export class KeywordCrackerDialog extends Dialog<string> {
     public constructor() {
         super();
         this.cracker = new KeywordCracker();
+        inject(DestroyRef).onDestroy(() => {
+            void this.stop().catch(() => {});
+        });
     }
 
     /**
@@ -95,13 +101,13 @@ export class KeywordCrackerDialog extends Dialog<string> {
             void (async () => {
                 try {
                     await runningTask;
-                    if (this.runningTask === runningTask) {
+                    if (this.runningTask === runningTask && this.stoppingTask == null) {
                         this.runningTask = null;
                         this.running.set(false);
                         this.start();
                     }
                 } catch {
-                    if (this.runningTask === runningTask) {
+                    if (this.runningTask === runningTask && this.stoppingTask == null) {
                         this.runningTask = null;
                         this.running.set(false);
                     }
@@ -114,13 +120,23 @@ export class KeywordCrackerDialog extends Dialog<string> {
      * Stops cracking.
      */
     public async stop(): Promise<void> {
-        const runningTask = this.runningTask;
-        if (runningTask != null) {
-            await runningTask.cancel();
-            if (this.runningTask === runningTask) {
-                this.runningTask = null;
-                this.running.set(false);
+        if (this.stoppingTask == null) {
+            const runningTask = this.runningTask;
+            if (runningTask != null) {
+                const stoppingTask = Promise.resolve().then(() => runningTask.cancel()).finally(() => {
+                    if (this.runningTask === runningTask) {
+                        this.runningTask = null;
+                        this.running.set(false);
+                    }
+                    if (this.stoppingTask === stoppingTask) {
+                        this.stoppingTask = null;
+                    }
+                });
+                this.stoppingTask = stoppingTask;
             }
+        }
+        if (this.stoppingTask != null) {
+            await this.stoppingTask;
         }
     }
 
@@ -145,7 +161,7 @@ export class KeywordCrackerDialog extends Dialog<string> {
 
     /** @inheritdoc */
     public override close(value: string | null = null): void {
-        void this.stop();
+        void this.stop().catch(() => {});
         super.close(value);
     }
 }

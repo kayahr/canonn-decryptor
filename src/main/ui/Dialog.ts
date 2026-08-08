@@ -3,12 +3,16 @@
  * See LICENSE.md for licensing information.
  */
 
-import { EventEmitter, HostListener } from "@angular/core";
+import { Directive, EventEmitter } from "@angular/core";
 
 /**
  * Base class for dialogs.
  */
+@Directive()
 export abstract class Dialog<T> {
+    /** True after the dialog emitted its result. */
+    private closed = false;
+
     /**
      * This event is triggered when the dialog is closed. Event value is the dialog result.
      *
@@ -22,15 +26,21 @@ export abstract class Dialog<T> {
      * @param value - The dialog result.
      */
     public close(value: T | null = null): void {
-        this.onClosed.emit(value);
+        if (!this.closed) {
+            this.closed = true;
+            this.onClosed.emit(value);
+            this.onClosed.complete();
+        }
     }
 
     /**
-     * Closes the dialog when pressing Escape.
+     * Handles a keyboard event while this is the topmost dialog.
+     *
+     * @param event - The keyboard event to handle.
      */
-    @HostListener("window:keydown", [ "$event" ])
-    public handleEscape(event: KeyboardEvent): void {
+    public handleKeydown(event: KeyboardEvent): void {
         if (!event.defaultPrevented && event.key === "Escape") {
+            event.preventDefault();
             this.close();
         }
     }

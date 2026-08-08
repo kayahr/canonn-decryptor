@@ -3,5 +3,5 @@
        [ngModel]="value()"
        (ngModelChange)="setValue($event)"
        [label]="title()"
-       [attr.disabled]="disabled() ? 'disabled' : null"
+       [disabled]="disabled()"
        [attr.maxlength]="maxLength()" />

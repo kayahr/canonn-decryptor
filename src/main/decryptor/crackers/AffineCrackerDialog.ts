@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, signal } from "@angular/core";
+import { Component, DestroyRef, inject, signal } from "@angular/core";
 
 import template from "../../../../assets/decryptor/crackers/affine-cracker-dialog.html";
 import { ButtonDirective } from "../../ui/ButtonDirective.ts";
@@ -44,6 +44,9 @@ export class AffineCrackerDialog extends Dialog<{ a: number, b: number }> {
     public constructor() {
         super();
         this.cracker = new AffineCracker();
+        inject(DestroyRef).onDestroy(() => {
+            void this.stop().catch(() => {});
+        });
     }
 
     /**
@@ -90,17 +93,15 @@ export class AffineCrackerDialog extends Dialog<{ a: number, b: number }> {
     private async stop(): Promise<void> {
         const runningTask = this.runningTask;
         if (runningTask != null) {
+            this.runningTask = null;
+            this.running.set(false);
             await runningTask.cancel();
-            if (this.runningTask === runningTask) {
-                this.runningTask = null;
-                this.running.set(false);
-            }
         }
     }
 
     /** @inheritdoc */
     public override close(value: { a: number, b: number } | null = null): void {
-        void this.stop();
+        void this.stop().catch(() => {});
         super.close(value);
     }
 }

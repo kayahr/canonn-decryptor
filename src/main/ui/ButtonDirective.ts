@@ -9,14 +9,15 @@ import { Directive, ElementRef, inject } from "@angular/core";
  * A directive which blurs buttons on click by default.
  */
 @Directive({
-    selector: "button"
+    selector: "button",
+    host: {
+        "(click)": "blur()"
+    }
 })
 export class ButtonDirective {
     private readonly elementRef = inject<ElementRef<HTMLButtonElement>>(ElementRef);
 
-    public ngOnInit(): void {
-        this.elementRef.nativeElement.addEventListener("click", () => {
-            this.elementRef.nativeElement.blur();
-        });
+    public blur(): void {
+        this.elementRef.nativeElement.blur();
     }
 }

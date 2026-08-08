@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Directive, ElementRef, inject } from "@angular/core";
+import { type AfterViewInit, Directive, ElementRef, inject } from "@angular/core";
 
 /**
  * A directive for automatically focusing a textarea or input field on init.
@@ -17,10 +17,11 @@ import { Directive, ElementRef, inject } from "@angular/core";
 @Directive({
     selector: "textarea[focus], input[focus]"
 })
-export class FocusDirective {
+export class FocusDirective implements AfterViewInit {
     private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
-    public ngOnInit(): void {
+    /** @inheritdoc */
+    public ngAfterViewInit(): void {
         this.elementRef.nativeElement.focus();
     }
 }

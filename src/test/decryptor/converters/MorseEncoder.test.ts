@@ -53,6 +53,19 @@ describe("MorseEncoder", () => {
         });
     });
 
+    describe("options", () => {
+        it("does not allow empty morse symbols", () => {
+            const converter = new MorseEncoder();
+            converter.dot = "";
+            converter.dash = "";
+            converter.space = "";
+
+            assertSame(converter.dot, ".");
+            assertSame(converter.dash, "-");
+            assertSame(converter.space, " ");
+        });
+    });
+
     describe("toJSON", () => {
         it("serializes the converter", () => {
             assertEquals(new MorseEncoder({ dot: "*", dash: "#" }).toJSON(), {

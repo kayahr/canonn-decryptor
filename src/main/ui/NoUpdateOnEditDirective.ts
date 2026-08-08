@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Directive, ElementRef, EventEmitter, type ExistingProvider, Renderer2, forwardRef, inject } from "@angular/core";
+import { Directive, ElementRef, type ExistingProvider, Renderer2, forwardRef, inject } from "@angular/core";
 import { type ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 import type { StringValue } from "./StringValue.ts";
@@ -41,10 +41,10 @@ const NO_UPDATE_ON_EDIT_ACCESSOR: ExistingProvider = {
     providers: [ NO_UPDATE_ON_EDIT_ACCESSOR ]
 })
 export class NoUpdateOnEditDirective implements ControlValueAccessor {
-    private readonly onTouchedCallback = new EventEmitter<void>();
-    private readonly onChangeCallback = new EventEmitter<StringValue>();
+    private onTouchedCallback: () => void = () => {};
+    private onChangeCallback: (value: StringValue) => void = () => {};
     private readonly renderer = inject(Renderer2);
-    private readonly elementRef = inject(ElementRef);
+    private readonly elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
     private value = "";
     private editing = false;
 
@@ -53,7 +53,7 @@ export class NoUpdateOnEditDirective implements ControlValueAccessor {
         // from the model after updating it because we need the value to come back to the [[writeValue]]() method.
         // This requires the setters and getters in the component to always cast between the input field text and
         // the actual model value type even if it is a string. This isn't ideal but so far the only solution I found.
-        this.onChangeCallback.emit({ valueOf: () => value });
+        this.onChangeCallback({ valueOf: () => value });
     }
 
     public enter(): void {
@@ -63,24 +63,29 @@ export class NoUpdateOnEditDirective implements ControlValueAccessor {
     public leave(): void {
         this.editing = false;
         this.update();
+        this.onTouchedCallback();
     }
 
     public update(): void {
         this.renderer.setProperty(this.elementRef.nativeElement, "value", this.value);
     }
 
-    public writeValue(value: string): void {
-        this.value = value;
+    public writeValue(value: string | null | undefined): void {
+        this.value = value ?? "";
         if (!this.editing) {
-            this.renderer.setProperty(this.elementRef.nativeElement, "value", value);
+            this.update();
         }
     }
 
-    public registerOnChange(fn: unknown): void {
-        this.onChangeCallback.subscribe(fn);
+    public registerOnChange(fn: (value: StringValue) => void): void {
+        this.onChangeCallback = fn;
     }
 
-    public registerOnTouched(fn: unknown): void {
-        this.onTouchedCallback.subscribe(fn);
+    public registerOnTouched(fn: () => void): void {
+        this.onTouchedCallback = fn;
+    }
+
+    public setDisabledState(disabled: boolean): void {
+        this.renderer.setProperty(this.elementRef.nativeElement, "disabled", disabled);
     }
 }

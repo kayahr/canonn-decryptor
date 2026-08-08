@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, Renderer2, ViewContainerRef, inject } from "@angular/core";
+import { Component, DestroyRef, Renderer2, ViewContainerRef, inject } from "@angular/core";
 
 import { DialogService } from "./DialogService.ts";
 
@@ -20,6 +20,6 @@ export class DialogOutletComponent {
         const dialogService = inject(DialogService);
         const viewContainer = inject(ViewContainerRef);
         const renderer = inject(Renderer2);
-        dialogService.registerOutlet(viewContainer, renderer);
+        inject(DestroyRef).onDestroy(dialogService.registerOutlet(viewContainer, renderer));
     }
 }

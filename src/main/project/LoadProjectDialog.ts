@@ -62,7 +62,7 @@ export class LoadProjectDialog extends Dialog<string> {
         if (this.projectType == null) {
             throw new IllegalStateError("Project type not set");
         }
-        if (await this.dialogService.confirm(`Area you sure you want to delete '${projectName}'?`)) {
+        if (await this.dialogService.confirm(`Are you sure you want to delete '${projectName}'?`)) {
             this.projectService.deleteProject(this.projectType, projectName);
             this.toastService.showToast(`Project '${projectName}' has been deleted`);
             this.updateProjectNames();

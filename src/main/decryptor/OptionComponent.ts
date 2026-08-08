@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Input, computed, signal } from "@angular/core";
+import { Directive, Input, computed, signal } from "@angular/core";
 
 import type { Converter } from "./converters/Converter.ts";
 import type { ConverterOption } from "./converters/options/ConverterOption.ts";
@@ -11,6 +11,7 @@ import type { ConverterOption } from "./converters/options/ConverterOption.ts";
 /**
  * Abstract base class for option components.
  */
+@Directive()
 export abstract class OptionComponent<T extends ConverterOption> {
     private readonly optionState = signal<T | null>(null);
     private readonly converterState = signal<Converter | null>(null);

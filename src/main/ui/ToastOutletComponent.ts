@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, Renderer2, ViewContainerRef, inject } from "@angular/core";
+import { Component, DestroyRef, Renderer2, ViewContainerRef, inject } from "@angular/core";
 
 import { ToastService } from "./ToastService.ts";
 
@@ -20,6 +20,6 @@ export class ToastOutletComponent {
         const toastService = inject(ToastService);
         const viewContainer = inject(ViewContainerRef);
         const renderer = inject(Renderer2);
-        toastService.registerOutlet(viewContainer, renderer);
+        inject(DestroyRef).onDestroy(toastService.registerOutlet(viewContainer, renderer));
     }
 }

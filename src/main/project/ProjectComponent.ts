@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { type EffectRef, type ElementRef, Injector, ViewChild, effect, inject } from "@angular/core";
+import { Directive, type EffectRef, type ElementRef, Injector, ViewChild, effect, inject } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import type { Subscription } from "rxjs";
 
@@ -18,6 +18,7 @@ import type { ProjectState } from "./ProjectState.ts";
 /**
  * Abstract base class for a main application component which works on project.
  */
+@Directive()
 export abstract class ProjectComponent<T extends Project> {
     protected abstract readonly type: ProjectStatic<T>;
     protected abstract readonly state: ProjectState<T>;
@@ -147,16 +148,20 @@ export abstract class ProjectComponent<T extends Project> {
     /**
      * Saves the current project. When no project name has been entered yet then the input field is just focused
      * instead and a toast informs the user about the missing project name.
+     *
+     * @returns True if the project has been saved, false if the project name is missing.
      */
-    public save(): void {
+    public save(): boolean {
         const project = this.state.getProject();
         const name = project.getName().trim();
         if (name === "") {
             this.toastService.showToast("Project needs a name to save", { type: "warning" });
             this.projectNameInput?.nativeElement.focus();
+            return false;
         } else {
             this.projectService.save(this.type, project);
             this.toastService.showToast(`Project '${name}' has been saved`);
+            return true;
         }
     }
 }

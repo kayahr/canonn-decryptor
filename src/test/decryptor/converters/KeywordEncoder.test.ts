@@ -32,6 +32,11 @@ describe("KeywordEncoder", () => {
             encoder.keyword = "Canonn";
             assertSame(encoder.getAlphabet(), "CANOBDEFGHIJKLMPQRSTUVWXYZ");
         });
+        it("allows clearing the keyword", () => {
+            const encoder = new KeywordEncoder({ keyword: "Canonn" });
+            encoder.keyword = "";
+            assertSame(encoder.keyword, "");
+        });
     });
 
     describe("convert", () => {

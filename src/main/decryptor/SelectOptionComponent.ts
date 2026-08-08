@@ -8,7 +8,6 @@ import { FormsModule } from "@angular/forms";
 
 import template from "../../../assets/decryptor/select-option.html";
 import { LabelDirective } from "../ui/LabelDirective.ts";
-import { NoUpdateOnEditDirective } from "../ui/NoUpdateOnEditDirective.ts";
 import type { StringValue } from "../ui/StringValue.ts";
 import type { SelectItem, SelectOption } from "./converters/options/SelectOption.ts";
 import { OptionComponent } from "./OptionComponent.ts";
@@ -20,7 +19,6 @@ import { OptionComponent } from "./OptionComponent.ts";
     selector: "decryptor-select-option",
     imports: [
         FormsModule,
-        NoUpdateOnEditDirective,
         LabelDirective
     ],
     template
