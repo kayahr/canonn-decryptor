@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { type ElementRef, ViewChild } from "@angular/core";
+import { type ChangeDetectorRef, type ElementRef, ViewChild } from "@angular/core";
 import type { ActivatedRoute, Router } from "@angular/router";
 import type { Subscription } from "rxjs";
 
@@ -21,6 +21,7 @@ import type { ProjectState } from "./ProjectState.ts";
 export abstract class ProjectComponent<T extends Project> {
     private readonly type: ProjectStatic<T>;
     protected readonly state: ProjectState<T>;
+    protected readonly changeDetectorRef: ChangeDetectorRef;
     protected readonly projectService: ProjectService;
     protected readonly dialogService: DialogService;
     protected readonly toastService: ToastService;
@@ -36,10 +37,12 @@ export abstract class ProjectComponent<T extends Project> {
     @ViewChild("projectNameInput")
     public projectNameInput: ElementRef<HTMLInputElement> | null = null;
 
-    protected constructor(type: ProjectStatic<T>, state: ProjectState<T>, projectService: ProjectService,
+    protected constructor(type: ProjectStatic<T>, state: ProjectState<T>, changeDetectorRef: ChangeDetectorRef,
+            projectService: ProjectService,
             dialogService: DialogService, toastService: ToastService, router: Router, activatedRoute: ActivatedRoute) {
         this.type = type;
         this.state = state;
+        this.changeDetectorRef = changeDetectorRef;
         this.projectService = projectService;
         this.dialogService = dialogService;
         this.toastService = toastService;
@@ -95,6 +98,7 @@ export abstract class ProjectComponent<T extends Project> {
         const project = this.getProject();
         if (name === project.getName()) {
             project.markAsSaved(false);
+            this.changeDetectorRef.markForCheck();
         }
     }
 
@@ -145,6 +149,7 @@ export abstract class ProjectComponent<T extends Project> {
         });
         if (name != null) {
             this.state.setProject(this.projectService.load(this.type, name));
+            this.changeDetectorRef.markForCheck();
         }
     }
 

@@ -25,7 +25,7 @@ import "./converters/Rot13.ts";
 import "./converters/VigenereDecoder.ts";
 import "./converters/VigenereEncoder.ts";
 
-import { Component, type ElementRef, ViewChild, inject } from "@angular/core";
+import { ChangeDetectorRef, Component, type ElementRef, ViewChild, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 
@@ -66,6 +66,7 @@ export class DecryptorComponent extends ProjectComponent<DecryptorProject> {
         super(
             DecryptorProject,
             inject(DecryptorState),
+            inject(ChangeDetectorRef),
             inject(ProjectService),
             inject(DialogService),
             inject(ToastService),
@@ -97,6 +98,7 @@ export class DecryptorComponent extends ProjectComponent<DecryptorProject> {
         if (await this.dialogService.confirm("Are you sure you want to clear the project?", { owner: this.clearButton.nativeElement })) {
             this.state.getProject().clear();
             this.toastService.showToast("Project has been cleared");
+            this.changeDetectorRef.markForCheck();
         }
     }
 

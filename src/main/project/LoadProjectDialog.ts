@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, inject } from "@angular/core";
+import { ChangeDetectorRef, Component, inject } from "@angular/core";
 
 import template from "../../../assets/project/load-project-dialog.html";
 import { ButtonDirective } from "../ui/ButtonDirective.ts";
@@ -30,6 +30,7 @@ export class LoadProjectDialog extends Dialog<string> {
     private readonly dialogService = inject(DialogService);
     private readonly toastService = inject(ToastService);
     private readonly projectService = inject(ProjectService);
+    private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
     /**
      * Returns a list of all project names.
@@ -55,6 +56,7 @@ export class LoadProjectDialog extends Dialog<string> {
         if (await this.dialogService.confirm(`Area you sure you want to delete '${projectName}'?`)) {
             this.projectService.deleteProject(this.projectType, projectName);
             this.toastService.showToast(`Project '${projectName}' has been deleted`);
+            this.changeDetectorRef.markForCheck();
         }
     }
 }

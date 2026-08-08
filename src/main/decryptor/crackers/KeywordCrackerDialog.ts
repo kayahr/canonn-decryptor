@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, signal } from "@angular/core";
+import { ChangeDetectorRef, Component, inject, signal } from "@angular/core";
 
 import template from "../../../../assets/decryptor/crackers/keyword-cracker-dialog.html";
 import { ButtonDirective } from "../../ui/ButtonDirective.ts";
@@ -24,6 +24,8 @@ import { KeywordCracker, type KeywordCrackerResult } from "./KeywordCracker.ts";
     template
 })
 export class KeywordCrackerDialog extends Dialog<string> {
+    private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
     /** The cracker to use. */
     private readonly cracker: KeywordCracker;
 
@@ -94,6 +96,7 @@ export class KeywordCrackerDialog extends Dialog<string> {
                     this.start();
                 } catch {
                     this.running = null;
+                    this.changeDetectorRef.markForCheck();
                 }
             })();
         }
@@ -106,6 +109,7 @@ export class KeywordCrackerDialog extends Dialog<string> {
         if (this.running != null) {
             await this.running.cancel();
             this.running = null;
+            this.changeDetectorRef.markForCheck();
         }
     }
 

@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, signal } from "@angular/core";
+import { ChangeDetectorRef, Component, inject, signal } from "@angular/core";
 
 import template from "../../../../assets/decryptor/crackers/affine-cracker-dialog.html";
 import { ButtonDirective } from "../../ui/ButtonDirective.ts";
@@ -23,6 +23,8 @@ import { AffineCracker, type AffineCrackerResult } from "./AffineCracker.ts";
     template
 })
 export class AffineCrackerDialog extends Dialog<{ a: number, b: number }> {
+    private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
     /** The cracker to use. */
     private readonly cracker: AffineCracker;
 
@@ -68,6 +70,7 @@ export class AffineCrackerDialog extends Dialog<{ a: number, b: number }> {
         void (async () => {
             await this.running;
             this.running = null;
+            this.changeDetectorRef.markForCheck();
         })();
     }
 

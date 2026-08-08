@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, type ElementRef, Input, ViewChild, inject } from "@angular/core";
+import { ChangeDetectorRef, Component, type ElementRef, Input, ViewChild, inject } from "@angular/core";
 
 import template from "../../../assets/decryptor/output.html";
 import { ButtonDirective } from "../ui/ButtonDirective.ts";
@@ -36,13 +36,37 @@ import { StringOptionComponent } from "./StringOptionComponent.ts";
     template
 })
 export class OutputComponent {
+    private readonly changeDetectorRef = inject(ChangeDetectorRef);
+    private currentOutput!: DecryptorOutput;
+
     @Input()
-    protected output!: DecryptorOutput;
+    protected set output(output: DecryptorOutput) {
+        if (output !== this.currentOutput) {
+            this.currentOutput?.onChanged.disconnect(this.handleOutputChanged, this);
+            this.currentOutput = output;
+            output.onChanged.connect(this.handleOutputChanged, this);
+        }
+    }
+
+    protected get output(): DecryptorOutput {
+        return this.currentOutput;
+    }
 
     private readonly dialogService = inject(DialogService);
 
     @ViewChild("removeButton")
     protected removeButton!: ElementRef<HTMLButtonElement>;
+
+    public ngOnDestroy(): void {
+        this.currentOutput?.onChanged.disconnect(this.handleOutputChanged, this);
+    }
+
+    /**
+     * Notifies Angular when the output model has changed.
+     */
+    private handleOutputChanged(): void {
+        this.changeDetectorRef.markForCheck();
+    }
 
     /**
      * Returns the output title which is the title of the used converter.
@@ -96,6 +120,7 @@ export class OutputComponent {
         if (await this.dialogService.confirm("Are you sure you want to delete this output?", { owner: this.removeButton.nativeElement })) {
             this.output.getParent().addOutputs(this.output.getOutputs());
             this.output.remove();
+            this.changeDetectorRef.markForCheck();
         }
     }
 
@@ -106,6 +131,7 @@ export class OutputComponent {
         const converterId = await this.dialogService.openDialog(SelectConverterDialog);
         if (converterId != null) {
             this.output.addOutput(new DecryptorOutput(createConverter(converterId)));
+            this.changeDetectorRef.markForCheck();
         }
     }
 
@@ -118,6 +144,7 @@ export class OutputComponent {
             const newOutput = new DecryptorOutput(createConverter(converterId));
             this.output.replace(newOutput);
             this.output = newOutput;
+            this.changeDetectorRef.markForCheck();
         }
     }
 
@@ -129,6 +156,7 @@ export class OutputComponent {
         if (converterId != null) {
             const newOutput = new DecryptorOutput(createConverter(converterId));
             this.output.insertParent(newOutput);
+            this.changeDetectorRef.markForCheck();
         }
     }
 
@@ -155,6 +183,7 @@ export class OutputComponent {
             });
             if (keyword != null) {
                 converter.keyword = keyword;
+                this.changeDetectorRef.markForCheck();
             }
         } else if (converter instanceof AffineDecoder) {
             const result = await this.dialogService.openDialog(AffineCrackerDialog, {
@@ -165,6 +194,7 @@ export class OutputComponent {
             if (result != null) {
                 converter.a = String(result.a);
                 converter.b = String(result.b);
+                this.changeDetectorRef.markForCheck();
             }
         }
     }

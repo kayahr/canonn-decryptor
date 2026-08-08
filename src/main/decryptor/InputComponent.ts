@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, type ElementRef, Input, ViewChild, inject } from "@angular/core";
+import { ChangeDetectorRef, Component, type ElementRef, Input, ViewChild, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
 import template from "../../../assets/decryptor/input.html";
@@ -33,6 +33,7 @@ import { SelectConverterDialog } from "./SelectConverterDialog.ts";
 export class InputComponent {
     private readonly state = inject(DecryptorState);
     private readonly dialogService = inject(DialogService);
+    private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
     /** The decryptor input.  */
     @Input()
@@ -83,6 +84,7 @@ export class InputComponent {
     public async remove(): Promise<void> {
         if (this.input != null && await this.dialogService.confirm("Are you sure you want to delete this input?", { owner: this.removeButton.nativeElement })) {
             this.state.getProject().removeInput(this.input);
+            this.changeDetectorRef.markForCheck();
         }
     }
 
@@ -93,6 +95,7 @@ export class InputComponent {
         const converterId = await this.dialogService.openDialog(SelectConverterDialog);
         if (converterId != null) {
             this.input?.addOutput(new DecryptorOutput(createConverter(converterId)));
+            this.changeDetectorRef.markForCheck();
         }
     }
 }
