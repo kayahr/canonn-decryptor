@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
 import template from "../../../assets/decryptor/string-option.html";
@@ -23,6 +23,7 @@ import { OptionComponent } from "./OptionComponent.ts";
         NoUpdateOnEditDirective,
         LabelDirective
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class StringOptionComponent extends OptionComponent<StringOption> {

@@ -6,7 +6,7 @@
 import "zone.js";
 import "@angular/compiler";
 
-import { enableProdMode } from "@angular/core";
+import { enableProdMode, provideZoneChangeDetection } from "@angular/core";
 import { bootstrapApplication } from "@angular/platform-browser";
 import { type Routes, provideRouter, withHashLocation } from "@angular/router";
 
@@ -28,6 +28,7 @@ if (process.env.ESBUILD_MODE === "serve") {
 
 bootstrapApplication(AppComponent, {
     providers: [
+        provideZoneChangeDetection(),
         provideRouter(routes, withHashLocation())
     ]
 }).catch(console.error);

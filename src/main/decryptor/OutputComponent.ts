@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ChangeDetectorRef, Component, type ElementRef, Input, ViewChild, inject } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, type ElementRef, Input, ViewChild, inject } from "@angular/core";
 
 import template from "../../../assets/decryptor/output.html";
 import { ButtonDirective } from "../ui/ButtonDirective.ts";
@@ -33,40 +33,19 @@ import { StringOptionComponent } from "./StringOptionComponent.ts";
         SelectOptionComponent,
         ButtonDirective
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class OutputComponent {
     private readonly changeDetectorRef = inject(ChangeDetectorRef);
-    private currentOutput!: DecryptorOutput;
 
     @Input()
-    protected set output(output: DecryptorOutput) {
-        if (output !== this.currentOutput) {
-            this.currentOutput?.onChanged.disconnect(this.handleOutputChanged, this);
-            this.currentOutput = output;
-            output.onChanged.connect(this.handleOutputChanged, this);
-        }
-    }
-
-    protected get output(): DecryptorOutput {
-        return this.currentOutput;
-    }
+    protected output!: DecryptorOutput;
 
     private readonly dialogService = inject(DialogService);
 
     @ViewChild("removeButton")
     protected removeButton!: ElementRef<HTMLButtonElement>;
-
-    public ngOnDestroy(): void {
-        this.currentOutput?.onChanged.disconnect(this.handleOutputChanged, this);
-    }
-
-    /**
-     * Notifies Angular when the output model has changed.
-     */
-    private handleOutputChanged(): void {
-        this.changeDetectorRef.markForCheck();
-    }
 
     /**
      * Returns the output title which is the title of the used converter.

@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ChangeDetectorRef, Component, inject } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from "@angular/core";
 
 import template from "../../../assets/project/load-project-dialog.html";
 import { ButtonDirective } from "../ui/ButtonDirective.ts";
@@ -23,6 +23,7 @@ import { ProjectService } from "./ProjectService.ts";
         ButtonDirective,
         DialogComponent
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class LoadProjectDialog extends Dialog<string> {

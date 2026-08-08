@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 
 import template from "../../../assets/decryptor/select-converter-dialog.html";
 import { ButtonDirective } from "../ui/ButtonDirective.ts";
@@ -19,6 +19,7 @@ import { type ConverterDescriptor, getConverterDescriptors } from "./converters/
         ButtonDirective,
         DialogComponent
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class SelectConverterDialog extends Dialog<string> {

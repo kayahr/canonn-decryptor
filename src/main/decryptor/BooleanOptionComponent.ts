@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
 import template from "../../../assets/decryptor/boolean-option.html";
@@ -21,6 +21,7 @@ import { OptionComponent } from "./OptionComponent.ts";
         LabelDirective,
         CustomCheckboxDirective
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class BooleanOptionComponent extends OptionComponent<BooleanOption> {

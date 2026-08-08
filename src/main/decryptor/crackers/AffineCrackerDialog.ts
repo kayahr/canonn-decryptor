@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ChangeDetectorRef, Component, inject, signal } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal } from "@angular/core";
 
 import template from "../../../../assets/decryptor/crackers/affine-cracker-dialog.html";
 import { ButtonDirective } from "../../ui/ButtonDirective.ts";
@@ -20,6 +20,7 @@ import { AffineCracker, type AffineCrackerResult } from "./AffineCracker.ts";
         ButtonDirective,
         DialogComponent
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class AffineCrackerDialog extends Dialog<{ a: number, b: number }> {

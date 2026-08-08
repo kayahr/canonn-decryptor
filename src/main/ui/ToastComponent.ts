@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 
 import template from "../../../assets/ui/toast.html";
 
@@ -12,6 +12,7 @@ import template from "../../../assets/ui/toast.html";
  */
 @Component({
     selector: "div.toast",
+    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class ToastComponent {

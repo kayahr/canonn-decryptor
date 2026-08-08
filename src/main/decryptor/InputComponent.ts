@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ChangeDetectorRef, Component, type ElementRef, Input, ViewChild, inject } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, type ElementRef, Input, ViewChild, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
 import template from "../../../assets/decryptor/input.html";
@@ -28,6 +28,7 @@ import { SelectConverterDialog } from "./SelectConverterDialog.ts";
         FocusDirective
     ],
     selector: "decryptor-input",
+    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class InputComponent {

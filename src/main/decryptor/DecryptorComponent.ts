@@ -25,7 +25,7 @@ import "./converters/Rot13.ts";
 import "./converters/VigenereDecoder.ts";
 import "./converters/VigenereEncoder.ts";
 
-import { ChangeDetectorRef, Component, type ElementRef, ViewChild, inject } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, type ElementRef, ViewChild, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 
@@ -52,6 +52,7 @@ import { DecryptorProject } from "./project/DecryptorProject.ts";
         NoUpdateOnEditDirective,
         ButtonDirective
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class DecryptorComponent extends ProjectComponent<DecryptorProject> {

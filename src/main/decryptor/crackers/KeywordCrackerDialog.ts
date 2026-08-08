@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ChangeDetectorRef, Component, inject, signal } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal } from "@angular/core";
 
 import template from "../../../../assets/decryptor/crackers/keyword-cracker-dialog.html";
 import { ButtonDirective } from "../../ui/ButtonDirective.ts";
@@ -21,6 +21,7 @@ import { KeywordCracker, type KeywordCrackerResult } from "./KeywordCracker.ts";
         ButtonDirective,
         DialogComponent
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class KeywordCrackerDialog extends Dialog<string> {

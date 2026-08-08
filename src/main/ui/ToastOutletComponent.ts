@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Component, Renderer2, ViewContainerRef, inject } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Renderer2, ViewContainerRef, inject } from "@angular/core";
 
 import { ToastService } from "./ToastService.ts";
 
@@ -13,6 +13,7 @@ import { ToastService } from "./ToastService.ts";
  */
 @Component({
     selector: "toast-outlet",
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: " "
 })
 export class ToastOutletComponent {
