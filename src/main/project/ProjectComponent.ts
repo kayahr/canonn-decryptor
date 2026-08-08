@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ChangeDetectorRef, type ElementRef, ViewChild, inject } from "@angular/core";
+import { type EffectRef, type ElementRef, Injector, ViewChild, effect, inject } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import type { Subscription } from "rxjs";
 
@@ -21,13 +21,15 @@ import type { ProjectState } from "./ProjectState.ts";
 export abstract class ProjectComponent<T extends Project> {
     protected abstract readonly type: ProjectStatic<T>;
     protected abstract readonly state: ProjectState<T>;
-    protected readonly changeDetectorRef = inject(ChangeDetectorRef);
     protected readonly projectService = inject(ProjectService);
     protected readonly dialogService = inject(DialogService);
     protected readonly toastService = inject(ToastService);
     private readonly router = inject(Router);
     private readonly activatedRoute = inject(ActivatedRoute);
+    private readonly injector = inject(Injector);
+    private deletedProjectSubscription: Subscription | null = null;
     private queryParamsSubscription: Subscription | null = null;
+    private routerEffect: EffectRef | null = null;
     private stateData = "";
 
     /**
@@ -39,10 +41,7 @@ export abstract class ProjectComponent<T extends Project> {
 
     public ngOnInit(): void {
         // Listen on project deletions to update the saved state of current project if needed
-        this.projectService.onDeleted.connect(this.handleProjectDelete, this);
-
-        // Update router when project state changes
-        this.state.onChanged.connect(this.updateRouter, this);
+        this.deletedProjectSubscription = this.projectService.onDeleted.subscribe(name => this.handleProjectDelete(name));
 
         // Initialize project state from 'data' query parameter and also update the project state automatically when
         // this parameter changes
@@ -59,14 +58,21 @@ export abstract class ProjectComponent<T extends Project> {
             }
         });
 
+        // Update the URL 250 milliseconds after the project or any of its nested state has changed
+        this.routerEffect = effect(onCleanup => {
+            this.getProject().getRevision();
+            const timer = setTimeout(() => this.updateRouter(), 250);
+            onCleanup(() => clearTimeout(timer));
+        }, { injector: this.injector });
+
         // Update URL right now with current project state
         this.updateRouter();
     }
 
     public ngOnDestroy(): void {
+        this.routerEffect?.destroy();
         this.queryParamsSubscription?.unsubscribe();
-        this.state.onChanged.disconnect(this.updateRouter, this);
-        this.projectService.onDeleted.disconnect(this.handleProjectDelete, this);
+        this.deletedProjectSubscription?.unsubscribe();
     }
 
     private updateRouter(): void {
@@ -85,7 +91,6 @@ export abstract class ProjectComponent<T extends Project> {
         const project = this.getProject();
         if (name === project.getName()) {
             project.markAsSaved(false);
-            this.changeDetectorRef.markForCheck();
         }
     }
 
@@ -131,12 +136,11 @@ export abstract class ProjectComponent<T extends Project> {
     public async load(): Promise<void> {
         const name = await this.dialogService.openDialog(LoadProjectDialog, {
             init: component => {
-                component.projectType = this.type;
+                component.init(this.type);
             }
         });
         if (name != null) {
             this.state.setProject(this.projectService.load(this.type, name));
-            this.changeDetectorRef.markForCheck();
         }
     }
 

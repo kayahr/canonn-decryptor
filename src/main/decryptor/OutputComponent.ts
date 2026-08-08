@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, type ElementRef, Input, ViewChild, inject } from "@angular/core";
+import { Component, type ElementRef, Input, ViewChild, computed, inject, signal } from "@angular/core";
 
 import template from "../../../assets/decryptor/output.html";
 import { ButtonDirective } from "../ui/ButtonDirective.ts";
@@ -33,73 +33,69 @@ import { StringOptionComponent } from "./StringOptionComponent.ts";
         SelectOptionComponent,
         ButtonDirective
     ],
-    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class OutputComponent {
-    private readonly changeDetectorRef = inject(ChangeDetectorRef);
+    private readonly outputState = signal<DecryptorOutput | null>(null);
 
-    @Input()
-    protected output!: DecryptorOutput;
+    @Input({ required: true })
+    protected set output(output: DecryptorOutput) {
+        this.outputState.set(output);
+    }
 
     private readonly dialogService = inject(DialogService);
 
     @ViewChild("removeButton")
     protected removeButton!: ElementRef<HTMLButtonElement>;
 
+    /** Returns the configured decryptor output. */
+    private getOutput(): DecryptorOutput {
+        return this.outputState()!;
+    }
+
     /**
      * Returns the output title which is the title of the used converter.
      *
      * @returns The title.
      */
-    public get title(): string {
-        return this.output.getConverter().getTitle();
-    }
+    public readonly title = computed(() => this.getOutput().getConverter().getTitle());
 
     /**
      * Returns the current output value.
      *
      * @returns The output value.
      */
-    public get value(): string {
-        return this.output.getValue();
-    }
+    public readonly value = computed(() => this.getOutput().getValue());
 
     /**
      * Returns the options of the converter used in this output.
      *
      * @returns The converter options.
      */
-    public get options(): readonly ConverterOption[] {
-        return this.output.getConverter().getOptions();
-    }
+    public readonly options = computed<readonly ConverterOption[]>(() => this.getOutput().getConverter().getOptions());
 
     /**
      * Returns the converter used by this output.
      *
      * @returns The used converter.
      */
-    public get converter(): Converter {
-        return this.output.getConverter();
-    }
+    public readonly converter = computed<Converter>(() => this.getOutput().getConverter());
 
     /**
      * Returns the child outputs of this output.
      *
      * @returns The child outputs.
      */
-    public get outputs(): DecryptorOutput[] {
-        return this.output.getOutputs();
-    }
+    public readonly outputs = computed(() => this.getOutput().getOutputs());
 
     /**
      * Removes this decryptor output. User has to confirm it first.
      */
     public async remove(): Promise<void> {
+        const output = this.getOutput();
         if (await this.dialogService.confirm("Are you sure you want to delete this output?", { owner: this.removeButton.nativeElement })) {
-            this.output.getParent().addOutputs(this.output.getOutputs());
-            this.output.remove();
-            this.changeDetectorRef.markForCheck();
+            output.getParent().addOutputs(output.getOutputs());
+            output.remove();
         }
     }
 
@@ -109,8 +105,7 @@ export class OutputComponent {
     public async addOutput(): Promise<void> {
         const converterId = await this.dialogService.openDialog(SelectConverterDialog);
         if (converterId != null) {
-            this.output.addOutput(new DecryptorOutput(createConverter(converterId)));
-            this.changeDetectorRef.markForCheck();
+            this.getOutput().addOutput(new DecryptorOutput(createConverter(converterId)));
         }
     }
 
@@ -121,9 +116,7 @@ export class OutputComponent {
         const converterId = await this.dialogService.openDialog(SelectConverterDialog);
         if (converterId != null) {
             const newOutput = new DecryptorOutput(createConverter(converterId));
-            this.output.replace(newOutput);
-            this.output = newOutput;
-            this.changeDetectorRef.markForCheck();
+            this.getOutput().replace(newOutput);
         }
     }
 
@@ -134,8 +127,7 @@ export class OutputComponent {
         const converterId = await this.dialogService.openDialog(SelectConverterDialog);
         if (converterId != null) {
             const newOutput = new DecryptorOutput(createConverter(converterId));
-            this.output.insertParent(newOutput);
-            this.changeDetectorRef.markForCheck();
+            this.getOutput().insertParent(newOutput);
         }
     }
 
@@ -144,36 +136,35 @@ export class OutputComponent {
      *
      * @returns True if crackable, false if not.
      */
-    public get crackable(): boolean {
-        const converter = this.output.getConverter();
+    public readonly crackable = computed(() => {
+        const converter = this.getOutput().getConverter();
         return converter instanceof KeywordDecoder || converter instanceof AffineDecoder;
-    }
+    });
 
     /**
      * Starts the cracking process if converter supports it.
      */
     public async crack(): Promise<void> {
-        const converter = this.output.getConverter();
+        const output = this.getOutput();
+        const converter = output.getConverter();
         if (converter instanceof KeywordDecoder) {
             const keyword = await this.dialogService.openDialog(KeywordCrackerDialog, {
                 init: dialog => {
-                    dialog.init(this.output.getParent().getValue());
+                    dialog.init(output.getParent().getValue());
                 }
             });
             if (keyword != null) {
                 converter.keyword = keyword;
-                this.changeDetectorRef.markForCheck();
             }
         } else if (converter instanceof AffineDecoder) {
             const result = await this.dialogService.openDialog(AffineCrackerDialog, {
                 init: dialog => {
-                    dialog.init(this.output.getParent().getValue());
+                    dialog.init(output.getParent().getValue());
                 }
             });
             if (result != null) {
                 converter.a = String(result.a);
                 converter.b = String(result.b);
-                this.changeDetectorRef.markForCheck();
             }
         }
     }

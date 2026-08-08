@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, type ElementRef, Input, ViewChild, inject } from "@angular/core";
+import { Component, type ElementRef, Input, ViewChild, computed, inject, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
 import template from "../../../assets/decryptor/input.html";
@@ -28,17 +28,18 @@ import { SelectConverterDialog } from "./SelectConverterDialog.ts";
         FocusDirective
     ],
     selector: "decryptor-input",
-    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class InputComponent {
     private readonly state = inject(DecryptorState);
     private readonly dialogService = inject(DialogService);
-    private readonly changeDetectorRef = inject(ChangeDetectorRef);
+    private readonly inputState = signal<DecryptorInput | null>(null);
 
     /** The decryptor input.  */
-    @Input()
-    public input: DecryptorInput | null = null;
+    @Input({ required: true })
+    public set input(input: DecryptorInput) {
+        this.inputState.set(input);
+    }
 
     @ViewChild("removeButton")
     protected removeButton!: ElementRef<HTMLButtonElement>;
@@ -48,17 +49,15 @@ export class InputComponent {
      *
      * @returns The input data.
      */
-    public get value(): string {
-        return this.input?.getInput() ?? "";
-    }
+    public readonly value = computed(() => this.inputState()?.getInput() ?? "");
 
     /**
      * Sets the input data.
      *
      * @param value  The input data to set.
      */
-    public set value(value: string) {
-        this.input?.setInput(value);
+    public setValue(value: string): void {
+        this.inputState()?.setInput(value);
     }
 
     /**
@@ -66,26 +65,22 @@ export class InputComponent {
      *
      * @returns The connected outputs.
      */
-    public get outputs(): DecryptorOutput[] {
-        return this.input?.getOutputs() ?? [];
-    }
+    public readonly outputs = computed<DecryptorOutput[]>(() => this.inputState()?.getOutputs() ?? []);
 
     /**
      * Checks if this input is removable. When there is only one input then it can't be removed.
      *
      * @returns True if input is removable, false if not.
      */
-    public get removable(): boolean {
-        return this.state.getProject().getInputs().length > 1;
-    }
+    public readonly removable = computed(() => this.state.getProject().getInputs().length > 1);
 
     /**
      * Removes this input after the user has confirmed it.
      */
     public async remove(): Promise<void> {
-        if (this.input != null && await this.dialogService.confirm("Are you sure you want to delete this input?", { owner: this.removeButton.nativeElement })) {
-            this.state.getProject().removeInput(this.input);
-            this.changeDetectorRef.markForCheck();
+        const input = this.inputState();
+        if (input != null && await this.dialogService.confirm("Are you sure you want to delete this input?", { owner: this.removeButton.nativeElement })) {
+            this.state.getProject().removeInput(input);
         }
     }
 
@@ -95,8 +90,7 @@ export class InputComponent {
     public async addOutput(): Promise<void> {
         const converterId = await this.dialogService.openDialog(SelectConverterDialog);
         if (converterId != null) {
-            this.input?.addOutput(new DecryptorOutput(createConverter(converterId)));
-            this.changeDetectorRef.markForCheck();
+            this.inputState()?.addOutput(new DecryptorOutput(createConverter(converterId)));
         }
     }
 }

@@ -3,8 +3,10 @@
  * See LICENSE.md for licensing information.
  */
 
+import { type WritableSignal, signal } from "@angular/core";
+import { Subject } from "rxjs";
+
 import { IllegalArgumentError } from "../../utils/error.ts";
-import { Signal } from "../../utils/Signal.ts";
 import type { ConverterOption } from "./options/ConverterOption.ts";
 
 /** Information about registered converters. */
@@ -166,17 +168,20 @@ export type ConverterOptions<T> = {
  * Abstract base class for converters.
  */
 export abstract class Converter<T = unknown> {
-    private readonly emitOnChanged = Signal.createEmitter<this>();
+    private readonly changed = new Subject<void>();
 
     /**
      * Emitted when converter has been changed so output must be updated.
      *
      * @event
      */
-    public readonly onChanged: Signal<this> = this.emitOnChanged.signal;
+    public readonly onChanged = this.changed.asObservable();
 
     /** The current option values of this converter. */
-    private readonly optionValues = new WeakMap<ConverterOption<unknown, this>, unknown>();
+    private readonly optionValues = new WeakMap<object, WritableSignal<unknown>>();
+
+    /** Token identifying the current converter revision. */
+    private readonly revision = signal<object>({});
 
     /** The options of this converter. */
     public readonly options?: Array<ConverterOption<string | number | boolean, this>>;
@@ -298,8 +303,31 @@ export abstract class Converter<T = unknown> {
      * @returns The option value or null if none.
      */
     public getOptionValue<T>(option: ConverterOption<T, this>): T | null {
-        const value = this.optionValues.get(option);
-        return value === undefined ? null : value as T;
+        return this.getOptionValueSignal(option)();
+    }
+
+    /**
+     * Returns the signal holding the value of the specified converter option.
+     *
+     * @param option - The converter option.
+     * @returns The option value signal.
+     */
+    private getOptionValueSignal<T>(option: ConverterOption<T, this>): WritableSignal<T | null> {
+        let value = this.optionValues.get(option);
+        if (value == null) {
+            value = signal<unknown>(null);
+            this.optionValues.set(option, value);
+        }
+        return value as WritableSignal<T | null>;
+    }
+
+    /**
+     * Returns a stable token for the current converter revision.
+     *
+     * @returns The current converter revision token.
+     */
+    public getRevision(): object {
+        return this.revision();
     }
 
     /**
@@ -311,17 +339,15 @@ export abstract class Converter<T = unknown> {
      */
     public setOptionValue<T>(option: ConverterOption<T, this>, value: T,
             onChange: ((converter: this) => void) | null = null): void {
-        const oldValue = this.getOptionValue(option);
+        const valueSignal = this.getOptionValueSignal(option);
+        const oldValue = valueSignal();
         if (value !== oldValue) {
-            if (value == null) {
-                this.optionValues.delete(option);
-            } else {
-                this.optionValues.set(option, value);
-            }
+            valueSignal.set(value);
             if (onChange != null) {
                 onChange(this);
             }
-            this.emitOnChanged(this);
+            this.revision.set({});
+            this.changed.next();
         }
     }
 }

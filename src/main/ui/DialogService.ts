@@ -89,8 +89,8 @@ export class DialogService {
     public async confirm(body: string, { title = "Confirm", init, ...options }: DialogOptions<ConfirmDialog> & { title?: string } = {}): Promise<boolean> {
         return await this.openDialog(ConfirmDialog, {
             init: component => {
-                component.body = body;
-                component.title = title;
+                component.body.set(body);
+                component.title.set(title);
                 init?.(component);
             },
             ...options

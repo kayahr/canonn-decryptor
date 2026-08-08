@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 
 import template from "../../../assets/project/load-project-dialog.html";
 import { ButtonDirective } from "../ui/ButtonDirective.ts";
@@ -23,26 +23,34 @@ import { ProjectService } from "./ProjectService.ts";
         ButtonDirective,
         DialogComponent
     ],
-    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class LoadProjectDialog extends Dialog<string> {
-    public projectType: ProjectStatic<Project> | null = null;
+    private projectType: ProjectStatic<Project> | null = null;
     private readonly dialogService = inject(DialogService);
     private readonly toastService = inject(ToastService);
     private readonly projectService = inject(ProjectService);
-    private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
+    /** Names of all saved projects. */
+    public readonly projectNames = signal<string[]>([]);
 
     /**
-     * Returns a list of all project names.
+     * Initializes the dialog for the specified project type.
      *
-     * @returns All project names.
+     * @param projectType - The project type to load.
      */
-    public get projectNames(): string[] {
-        if (this.projectType == null) {
+    public init(projectType: ProjectStatic<Project>): void {
+        this.projectType = projectType;
+        this.updateProjectNames();
+    }
+
+    /** Updates the displayed project names. */
+    private updateProjectNames(): void {
+        const projectType = this.projectType;
+        if (projectType == null) {
             throw new IllegalStateError("Project type not set");
         }
-        return this.projectService.loadProjects(this.projectType).map(project => project.getName());
+        this.projectNames.set(this.projectService.loadProjects(projectType).map(project => project.getName()));
     }
 
     /**
@@ -57,7 +65,7 @@ export class LoadProjectDialog extends Dialog<string> {
         if (await this.dialogService.confirm(`Area you sure you want to delete '${projectName}'?`)) {
             this.projectService.deleteProject(this.projectType, projectName);
             this.toastService.showToast(`Project '${projectName}' has been deleted`);
-            this.changeDetectorRef.markForCheck();
+            this.updateProjectNames();
         }
     }
 }

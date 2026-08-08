@@ -24,7 +24,7 @@ export class DecryptorOutput extends DecryptorNode implements Serializable<Decry
     public constructor(converter: Converter) {
         super();
         this.converter = converter;
-        converter.onChanged.connect(this.update, this);
+        converter.onChanged.subscribe(() => this.update());
     }
 
     public static fromJSON(json: DecryptorOutputJSON): DecryptorOutput {
@@ -49,6 +49,11 @@ export class DecryptorOutput extends DecryptorNode implements Serializable<Decry
      */
     public getConverter(): Converter {
         return this.converter;
+    }
+
+    /** @inheritdoc */
+    protected override trackChanges(): void {
+        this.converter.getRevision();
     }
 
     /**

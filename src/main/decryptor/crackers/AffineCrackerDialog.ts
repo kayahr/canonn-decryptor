@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal } from "@angular/core";
+import { Component, signal } from "@angular/core";
 
 import template from "../../../../assets/decryptor/crackers/affine-cracker-dialog.html";
 import { ButtonDirective } from "../../ui/ButtonDirective.ts";
@@ -20,12 +20,9 @@ import { AffineCracker, type AffineCrackerResult } from "./AffineCracker.ts";
         ButtonDirective,
         DialogComponent
     ],
-    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class AffineCrackerDialog extends Dialog<{ a: number, b: number }> {
-    private readonly changeDetectorRef = inject(ChangeDetectorRef);
-
     /** The cracker to use. */
     private readonly cracker: AffineCracker;
 
@@ -33,7 +30,10 @@ export class AffineCrackerDialog extends Dialog<{ a: number, b: number }> {
     public encoded = "";
 
     /** The current running cracking process. Null if none. */
-    private running: Cancelable<void> | null = null;
+    private runningTask: Cancelable<void> | null = null;
+
+    /** True while the cracker is running. */
+    public readonly running = signal(false);
 
     /** The results sorted by score. */
     public results = signal<AffineCrackerResult[]>([]);
@@ -60,7 +60,7 @@ export class AffineCrackerDialog extends Dialog<{ a: number, b: number }> {
      * Starts cracking.
      */
     public start(): void {
-        this.running = this.cracker.crack(this.encoded, result => {
+        const runningTask = this.cracker.crack(this.encoded, result => {
             const results = this.results().slice();
             results.push(result);
             results.sort((a, b) => b.getScore() - a.getScore());
@@ -68,10 +68,19 @@ export class AffineCrackerDialog extends Dialog<{ a: number, b: number }> {
         }, (current, max) => {
             this.progress.set(Math.round(100 * current / max));
         });
+        this.runningTask = runningTask;
+        this.running.set(true);
         void (async () => {
-            await this.running;
-            this.running = null;
-            this.changeDetectorRef.markForCheck();
+            try {
+                await runningTask;
+            } catch {
+                // Cancellation is expected when the dialog is closed.
+            } finally {
+                if (this.runningTask === runningTask) {
+                    this.runningTask = null;
+                    this.running.set(false);
+                }
+            }
         })();
     }
 
@@ -79,9 +88,13 @@ export class AffineCrackerDialog extends Dialog<{ a: number, b: number }> {
      * Stops cracking.
      */
     private async stop(): Promise<void> {
-        if (this.running != null) {
-            await this.running.cancel();
-            this.running = null;
+        const runningTask = this.runningTask;
+        if (runningTask != null) {
+            await runningTask.cancel();
+            if (this.runningTask === runningTask) {
+                this.runningTask = null;
+                this.running.set(false);
+            }
         }
     }
 

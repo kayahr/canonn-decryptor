@@ -5,9 +5,9 @@
 
 import { Injectable } from "@angular/core";
 import lz from "lz-string";
+import { Subject } from "rxjs";
 
 import { IllegalArgumentError } from "../utils/error.ts";
-import { Signal } from "../utils/Signal.ts";
 import type { Project, ProjectJSON, ProjectStatic } from "./Project.ts";
 
 /**
@@ -27,14 +27,14 @@ function itemKey<T extends Project>(type: ProjectStatic<T>): string {
  */
 @Injectable({ providedIn: "root" })
 export class ProjectService {
-    private readonly emitOnDeleted = Signal.createEmitter<string>();
+    private readonly deletedProject = new Subject<string>();
 
     /**
      * Signal is triggered when a project has been deleted.
      *
      * @event
      */
-    public readonly onDeleted = this.emitOnDeleted.signal;
+    public readonly onDeleted = this.deletedProject.asObservable();
 
     /**
      * Loads all projects and returns them.
@@ -104,7 +104,7 @@ export class ProjectService {
     public deleteProject<T extends Project>(type: ProjectStatic<T>, name: string): void {
         const projects = this.loadProjects(type);
         this.saveProjects(type, projects.filter(project => project.getName() !== name));
-        this.emitOnDeleted(name);
+        this.deletedProject.next(name);
     }
 
     /**

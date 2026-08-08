@@ -1,6 +1,7 @@
 <input type="text"
        no-update-on-edit
-       [(ngModel)]="value"
-       [label]="title"
-       [attr.disabled]="disabled"
-       [attr.maxlength]="maxLength" />
+       [ngModel]="value()"
+       (ngModelChange)="setValue($event)"
+       [label]="title()"
+       [attr.disabled]="disabled() ? 'disabled' : null"
+       [attr.maxlength]="maxLength()" />

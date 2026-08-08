@@ -3,8 +3,9 @@
  * See LICENSE.md for licensing information.
  */
 
+import { type WritableSignal, computed, signal } from "@angular/core";
+
 import type { Serializable, SerializableStatic } from "../utils/Serializable.ts";
-import { Signal } from "../utils/Signal.ts";
 
 /**
  * Base JSON structure for a project.
@@ -41,23 +42,30 @@ export interface ProjectStatic<T extends Project> extends SerializableStatic<T> 
  * Abstract base class for projects.
  */
 export abstract class Project implements Serializable<ProjectJSON> {
-    private readonly emitOnChanged = Signal.createEmitter();
-
-    public readonly onChanged = this.emitOnChanged.signal;
-
     /** The project name. */
-    private name: string;
+    private readonly name: WritableSignal<string>;
 
-    private saved = false;
+    /** Token identifying the last direct change of this project. */
+    private readonly ownRevision = signal<object>({});
+
+    /** Token identifying the current state of this project including all nested state. */
+    private readonly revision = computed(() => {
+        this.ownRevision();
+        this.trackChanges();
+        return {};
+    });
+
+    /** Revision at which the project was last saved. Null means explicitly unsaved. */
+    private readonly savedRevision = signal<object | null>(null);
 
     public constructor(name: string) {
-        this.name = name;
+        this.name = signal(name);
     }
 
     /** @inheritdoc */
     public toJSON(): ProjectJSON {
         return {
-            name: this.name
+            name: this.name()
         };
     }
 
@@ -67,12 +75,28 @@ export abstract class Project implements Serializable<ProjectJSON> {
      * @returns The project name.
      */
     public getName(): string {
-        return this.name;
+        return this.name();
     }
 
+    /**
+     * Tracks additional state owned by subclasses. All signals read by this method become part of the project
+     * revision.
+     */
+    protected trackChanges(): void {}
+
+    /** Marks the project as changed. */
     protected change(): void {
-        this.saved = false;
-        this.emitOnChanged();
+        this.ownRevision.set({});
+    }
+
+    /**
+     * Returns a stable token for the current project revision. The token changes whenever this project or any
+     * nested project state changes.
+     *
+     * @returns The current project revision token.
+     */
+    public getRevision(): object {
+        return this.revision();
     }
 
     /**
@@ -81,7 +105,7 @@ export abstract class Project implements Serializable<ProjectJSON> {
      * @returns True if project is saved, false if not.
      */
     public isSaved(): boolean {
-        return this.saved;
+        return this.savedRevision() === this.getRevision();
     }
 
     /**
@@ -90,7 +114,7 @@ export abstract class Project implements Serializable<ProjectJSON> {
      * @param saved  Optionally set this parameter to false to mark the project as unsaved.
      */
     public markAsSaved(saved = true): void {
-        this.saved = saved;
+        this.savedRevision.set(saved ? this.getRevision() : null);
     }
 
     /**
@@ -100,8 +124,8 @@ export abstract class Project implements Serializable<ProjectJSON> {
      */
     public setName(name: string): void {
         name = name.trim();
-        if (name !== this.name) {
-            this.name = name;
+        if (name !== this.name()) {
+            this.name.set(name);
             this.change();
         }
     }

@@ -1,5 +1,6 @@
 <input type="checkbox"
-       [(ngModel)]="value"
-       [attr.disabled]="disabled"
-       [label]="title"
+       [ngModel]="value()"
+       (ngModelChange)="setValue($event)"
+       [attr.disabled]="disabled() ? 'disabled' : null"
+       [label]="title()"
        custom-checkbox />

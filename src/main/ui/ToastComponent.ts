@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { Component, signal } from "@angular/core";
 
 import template from "../../../assets/ui/toast.html";
 
@@ -12,9 +12,8 @@ import template from "../../../assets/ui/toast.html";
  */
 @Component({
     selector: "div.toast",
-    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class ToastComponent {
-    public text = "";
+    public readonly text = signal("");
 }

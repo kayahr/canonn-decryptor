@@ -1,8 +1,8 @@
 <div class="dialog confirm-dialog">
-  <h1>{{ title }}</h1>
+  <h1>{{ title() }}</h1>
   <button class="close" (click)="close()"></button>
   <p>
-    {{ body }}
+    {{ body() }}
   </p>
   <button class="cancel" (click)="close()">Cancel</button>
   <button class="ok" (click)="close('ok')">OK</button>

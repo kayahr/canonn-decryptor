@@ -5,7 +5,7 @@
     This cracker brute-forces all possibilities and lists the results sorted by <em>englishness</em>-score. Click on a result to accept it.
   </p>
   <div class="controls">
-    @if (running) {
+    @if (running()) {
       <span class="progress">
         Cracking... ({{ progress() }}%)
       </span>
@@ -16,7 +16,7 @@
     }
   </div>
   <div class="results">
-    @for (result of results(); track $index) {
+    @for (result of results(); track result) {
       <div class="result" (click)="close({ a: result.getA(), b: result.getB() })">
         <h1>a={{ result.getA() }} b={{ result.getB() }} <span class="score">({{ result.getScore().toFixed(2) }})</span></h1>
         <p>

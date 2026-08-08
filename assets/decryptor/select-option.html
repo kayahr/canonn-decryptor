@@ -1,7 +1,8 @@
-<select [(ngModel)]="value"
-        [label]="title"
-        [attr.disabled]="disabled">
-  @for (item of items; track item.value) {
+<select [ngModel]="value()"
+        (ngModelChange)="setValue($event)"
+        [label]="title()"
+        [attr.disabled]="disabled() ? 'disabled' : null">
+  @for (item of items(); track item.value) {
     <option [attr.value]="item.value">{{ item.label }}</option>
   }
 </select>

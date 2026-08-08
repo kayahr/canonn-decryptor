@@ -25,7 +25,7 @@ import "./converters/Rot13.ts";
 import "./converters/VigenereDecoder.ts";
 import "./converters/VigenereEncoder.ts";
 
-import { ChangeDetectionStrategy, Component, type ElementRef, ViewChild, inject } from "@angular/core";
+import { Component, type ElementRef, ViewChild, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
 import template from "../../../assets/decryptor/decryptor.html";
@@ -48,7 +48,6 @@ import { DecryptorProject } from "./project/DecryptorProject.ts";
         NoUpdateOnEditDirective,
         ButtonDirective
     ],
-    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class DecryptorComponent extends ProjectComponent<DecryptorProject> {
@@ -81,7 +80,6 @@ export class DecryptorComponent extends ProjectComponent<DecryptorProject> {
         if (await this.dialogService.confirm("Are you sure you want to clear the project?", { owner: this.clearButton.nativeElement })) {
             this.state.getProject().clear();
             this.toastService.showToast("Project has been cleared");
-            this.changeDetectorRef.markForCheck();
         }
     }
 

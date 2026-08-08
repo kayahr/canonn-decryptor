@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { Component, computed } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
 import template from "../../../assets/decryptor/number-option.html";
@@ -23,7 +23,6 @@ import { OptionComponent } from "./OptionComponent.ts";
         NoUpdateOnEditDirective,
         LabelDirective
     ],
-    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class NumberOptionComponent extends OptionComponent<NumberOption> {
@@ -32,17 +31,15 @@ export class NumberOptionComponent extends OptionComponent<NumberOption> {
      *
      * @returns The current option value.
      */
-    public get value(): StringValue {
-        return this.option.getValue(this.converter).toString();
-    }
+    public readonly value = computed<StringValue>(() => this.getOption().getValue(this.getConverter()).toString());
 
     /**
      * Sets the option value.
      *
      * @param value  The new option value to set.
      */
-    public set value(value: StringValue) {
-        this.option.setValue(this.converter, Number(value));
+    public setValue(value: StringValue): void {
+        this.getOption().setValue(this.getConverter(), Number(value));
     }
 
     /**
@@ -50,25 +47,19 @@ export class NumberOptionComponent extends OptionComponent<NumberOption> {
      *
      * @returns The minimum number.
      */
-    public get min(): number {
-        return this.option.getMin();
-    }
+    public readonly min = computed(() => this.getOption().getMin());
 
     /**
      * Returns the maximum numeric value of this option.
      *
      * @returns The maximum number.
      */
-    public get max(): number {
-        return this.option.getMax();
-    }
+    public readonly max = computed(() => this.getOption().getMax());
 
     /**
      * Returns the step size.
      *
      * @returns The step size.
      */
-    public get step(): number {
-        return this.option.getStep();
-    }
+    public readonly step = computed(() => this.getOption().getStep());
 }

@@ -11,7 +11,7 @@
 
 <div class="inputs">
   <div class="panels">
-    @for (input of project.getInputs(); track $index) {
+    @for (input of project.getInputs(); track input) {
       <div class="panel">
         <decryptor-input [input]="input"></decryptor-input>
       </div>

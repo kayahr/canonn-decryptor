@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { Component, computed } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
 import template from "../../../assets/decryptor/boolean-option.html";
@@ -21,7 +21,6 @@ import { OptionComponent } from "./OptionComponent.ts";
         LabelDirective,
         CustomCheckboxDirective
     ],
-    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class BooleanOptionComponent extends OptionComponent<BooleanOption> {
@@ -30,16 +29,14 @@ export class BooleanOptionComponent extends OptionComponent<BooleanOption> {
      *
      * @returns The current option value.
      */
-    public get value(): boolean {
-        return this.option.getValue(this.converter);
-    }
+    public readonly value = computed(() => this.getOption().getValue(this.getConverter()));
 
     /**
      * Sets the option value.
      *
      * @param value  The new option value to set.
      */
-    public set value(value: boolean) {
-        this.option.setValue(this.converter, value);
+    public setValue(value: boolean): void {
+        this.getOption().setValue(this.getConverter(), value);
     }
 }

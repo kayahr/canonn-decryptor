@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ChangeDetectionStrategy, Component, HostListener } from "@angular/core";
+import { Component, HostListener, signal } from "@angular/core";
 
 import template from "../../../assets/ui/confirm-dialog.html";
 import { ButtonDirective } from "./ButtonDirective.ts";
@@ -18,12 +18,11 @@ import { DialogComponent } from "./DialogComponent.ts";
         ButtonDirective,
         DialogComponent
     ],
-    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class ConfirmDialog extends Dialog<string> {
-    public title = "Confirm";
-    public body = "";
+    public readonly title = signal("Confirm");
+    public readonly body = signal("");
 
     /**
      * Confirms the dialog when pressing Enter.

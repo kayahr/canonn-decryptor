@@ -3,6 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
+import { signal } from "@angular/core";
+
 import { Project, type ProjectJSON, isProjectJSON } from "../../project/Project.ts";
 import { IllegalArgumentError } from "../../utils/error.ts";
 import type { Serializable } from "../../utils/Serializable.ts";
@@ -30,11 +32,10 @@ export function isDecryptorProjectJSON(json: unknown): json is DecryptorProjectJ
  */
 export class DecryptorProject extends Project implements Serializable<DecryptorProjectJSON> {
     /** The decryptor inputs. */
-    private readonly inputs: DecryptorInput[];
+    private readonly inputs = signal<readonly DecryptorInput[]>([]);
 
     public constructor(name = "") {
         super(name);
-        this.inputs = [];
     }
 
     /**
@@ -65,8 +66,15 @@ export class DecryptorProject extends Project implements Serializable<DecryptorP
     /** @inheritdoc */
     public override toJSON(): DecryptorProjectJSON {
         return Object.assign(super.toJSON(), {
-            inputs: this.inputs.map(input => input.toJSON())
+            inputs: this.inputs().map(input => input.toJSON())
         });
+    }
+
+    /** @inheritdoc */
+    protected override trackChanges(): void {
+        for (const input of this.inputs()) {
+            input.getRevision();
+        }
     }
 
     /**
@@ -75,8 +83,7 @@ export class DecryptorProject extends Project implements Serializable<DecryptorP
      * @param input  The input add. A new empty input is generated when not specified.
      */
     public addInput(input: DecryptorInput = new DecryptorInput()): void {
-        this.inputs.push(input);
-        input.onChanged.connect(this.change, this);
+        this.inputs.update(inputs => [ ...inputs, input ]);
         this.change();
     }
 
@@ -98,12 +105,12 @@ export class DecryptorProject extends Project implements Serializable<DecryptorP
      * @throws IllegalArgumentError  When input was not found.
      */
     public removeInput(input: DecryptorInput): void {
-        const index = this.inputs.indexOf(input);
+        const inputs = this.inputs();
+        const index = inputs.indexOf(input);
         if (index === -1) {
             throw new IllegalArgumentError("Input to remove not found");
         }
-        this.inputs.splice(index, 1);
-        input.onChanged.disconnect(this.change, this);
+        this.inputs.set([ ...inputs.slice(0, index), ...inputs.slice(index + 1) ]);
         this.change();
     }
 
@@ -113,7 +120,7 @@ export class DecryptorProject extends Project implements Serializable<DecryptorP
      * @returns The decryptor inputs.
      */
     public getInputs(): DecryptorInput[] {
-        return this.inputs.slice();
+        return this.inputs().slice();
     }
 
     /**
@@ -132,10 +139,11 @@ export class DecryptorProject extends Project implements Serializable<DecryptorP
         if (this.getName().trim() !== "") {
             return false;
         }
-        if (this.inputs.length !== 1) {
+        const inputs = this.inputs();
+        if (inputs.length !== 1) {
             return false;
         }
-        const input = this.inputs[0];
+        const input = inputs[0];
         if (input.getInput() !== "") {
             return false;
         }

@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ChangeDetectionStrategy, Component, Renderer2, ViewContainerRef, inject } from "@angular/core";
+import { Component, Renderer2, ViewContainerRef, inject } from "@angular/core";
 
 import { DialogService } from "./DialogService.ts";
 
@@ -13,7 +13,6 @@ import { DialogService } from "./DialogService.ts";
  */
 @Component({
     selector: "dialog-outlet",
-    changeDetection: ChangeDetectionStrategy.Eager,
     template: " "
 })
 export class DialogOutletComponent {

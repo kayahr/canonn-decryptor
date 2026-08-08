@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal } from "@angular/core";
+import { Component, signal } from "@angular/core";
 
 import template from "../../../../assets/decryptor/crackers/keyword-cracker-dialog.html";
 import { ButtonDirective } from "../../ui/ButtonDirective.ts";
@@ -21,12 +21,9 @@ import { KeywordCracker, type KeywordCrackerResult } from "./KeywordCracker.ts";
         ButtonDirective,
         DialogComponent
     ],
-    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class KeywordCrackerDialog extends Dialog<string> {
-    private readonly changeDetectorRef = inject(ChangeDetectorRef);
-
     /** The cracker to use. */
     private readonly cracker: KeywordCracker;
 
@@ -34,7 +31,10 @@ export class KeywordCrackerDialog extends Dialog<string> {
     public encoded = "";
 
     /** The current running cracking process. Null if none. */
-    private running: Cancelable<KeywordCrackerResult | null> | null = null;
+    private runningTask: Cancelable<KeywordCrackerResult | null> | null = null;
+
+    /** True while the cracker is running. */
+    public readonly running = signal(false);
 
     /** The top 100 recorded cracker results sorted by score. */
     public results = signal<KeywordCrackerResult[]>([]);
@@ -64,9 +64,9 @@ export class KeywordCrackerDialog extends Dialog<string> {
      * Starts cracking.
      */
     public start(): void {
-        if (this.running == null) {
+        if (this.runningTask == null) {
             this.run.update(run => run + 1);
-            this.running = this.cracker.crack(this.encoded, result => {
+            const runningTask = this.cracker.crack(this.encoded, result => {
                 const origResults = this.results();
                 if (!contains(origResults, result)) {
                     const results = origResults.slice();
@@ -90,14 +90,21 @@ export class KeywordCrackerDialog extends Dialog<string> {
             }, (current, max) => {
                 this.progress.set(Math.round(100 * current / max));
             });
+            this.runningTask = runningTask;
+            this.running.set(true);
             void (async () => {
                 try {
-                    await this.running;
-                    this.running = null;
-                    this.start();
+                    await runningTask;
+                    if (this.runningTask === runningTask) {
+                        this.runningTask = null;
+                        this.running.set(false);
+                        this.start();
+                    }
                 } catch {
-                    this.running = null;
-                    this.changeDetectorRef.markForCheck();
+                    if (this.runningTask === runningTask) {
+                        this.runningTask = null;
+                        this.running.set(false);
+                    }
                 }
             })();
         }
@@ -107,10 +114,13 @@ export class KeywordCrackerDialog extends Dialog<string> {
      * Stops cracking.
      */
     public async stop(): Promise<void> {
-        if (this.running != null) {
-            await this.running.cancel();
-            this.running = null;
-            this.changeDetectorRef.markForCheck();
+        const runningTask = this.runningTask;
+        if (runningTask != null) {
+            await runningTask.cancel();
+            if (this.runningTask === runningTask) {
+                this.runningTask = null;
+                this.running.set(false);
+            }
         }
     }
 
@@ -130,7 +140,7 @@ export class KeywordCrackerDialog extends Dialog<string> {
      * @returns True if results are empty, false if not.
      */
     public get emptyResult(): boolean {
-        return this.results.length === 0;
+        return this.results().length === 0;
     }
 
     /** @inheritdoc */

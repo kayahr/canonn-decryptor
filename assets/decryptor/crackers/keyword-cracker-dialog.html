@@ -6,7 +6,7 @@
     <em>englishness</em>-score. Click on a result to accept it.
   </p>
   <div class="controls">
-    @if (running) {
+    @if (running()) {
       <span class="progress">
         Run {{ run() }} ({{ progress() }}%)
       </span>
@@ -16,7 +16,7 @@
       </span>
     }
     <nav>
-      @if (running) {
+      @if (running()) {
         <button class="stop" (click)="stop()">Stop</button>
       } @else {
         <button class="clear" (click)="clear()">Clear</button>
@@ -25,7 +25,7 @@
     </nav>
   </div>
   <div class="results">
-    @for (result of results(); track $index) {
+    @for (result of results(); track result) {
       <div class="result" (click)="close(result.getKeyword())">
         <h1>{{ result.getKeyword() }} <span class="score">({{ result.getScore().toFixed(2) }})</span></h1>
         <p>

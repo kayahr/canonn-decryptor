@@ -3,6 +3,8 @@
  * See LICENSE.md for licensing information.
  */
 
+import { signal } from "@angular/core";
+
 import type { Serializable } from "../../utils/Serializable.ts";
 import { DecryptorNode, type DecryptorNodeJSON } from "./DecryptorNode.ts";
 import { DecryptorOutput } from "./DecryptorOutput.ts";
@@ -19,12 +21,7 @@ export interface DecryptorInputJSON extends DecryptorNodeJSON {
  */
 export class DecryptorInput extends DecryptorNode implements Serializable<DecryptorInputJSON> {
     /** The input data. */
-    private input: string;
-
-    public constructor() {
-        super();
-        this.input = "";
-    }
+    private readonly input = signal("");
 
     public static fromJSON(json: DecryptorInputJSON): DecryptorInput {
         const node = new DecryptorInput();
@@ -40,7 +37,7 @@ export class DecryptorInput extends DecryptorNode implements Serializable<Decryp
     /** @inheritdoc */
     public override toJSON(): DecryptorInputJSON {
         return Object.assign(super.toJSON(), {
-            input: this.input
+            input: this.input()
         });
     }
 
@@ -50,7 +47,7 @@ export class DecryptorInput extends DecryptorNode implements Serializable<Decryp
      * @returns The input data.
      */
     public getInput(): string {
-        return this.input;
+        return this.input();
     }
 
     /**
@@ -59,8 +56,8 @@ export class DecryptorInput extends DecryptorNode implements Serializable<Decryp
      * @param input  The input data to set.
      */
     public setInput(input: string): void {
-        if (input !== this.input) {
-            this.input = input;
+        if (input !== this.input()) {
+            this.input.set(input);
             this.update();
             this.change();
         }

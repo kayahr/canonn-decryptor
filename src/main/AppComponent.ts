@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
 import template from "../../assets/app.html";
@@ -24,7 +24,6 @@ const appVersion = packageJSON.version;
         ToastOutletComponent,
         ButtonDirective
     ],
-    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class AppComponent {

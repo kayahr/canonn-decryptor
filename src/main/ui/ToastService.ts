@@ -42,7 +42,7 @@ export class ToastService {
         }
         const toastComponentRef = viewContainer.createComponent(ToastComponent);
         const toast = toastComponentRef.instance;
-        toast.text = text;
+        toast.text.set(text);
         const element = toastComponentRef.location.nativeElement as HTMLElement;
         const type = options?.type ?? "info";
         renderer.addClass(element, type);

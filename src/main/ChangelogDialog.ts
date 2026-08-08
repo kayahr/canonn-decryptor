@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { Component } from "@angular/core";
 
 import template from "../../assets/changelog-dialog.html";
 import { ButtonDirective } from "./ui/ButtonDirective.ts";
@@ -18,7 +18,6 @@ import { DialogComponent } from "./ui/DialogComponent.ts";
         ButtonDirective,
         DialogComponent
     ],
-    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class ChangelogDialog extends Dialog<string> {}

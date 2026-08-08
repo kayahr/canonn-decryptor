@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { Component, computed } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
 import template from "../../../assets/decryptor/string-option.html";
@@ -23,7 +23,6 @@ import { OptionComponent } from "./OptionComponent.ts";
         NoUpdateOnEditDirective,
         LabelDirective
     ],
-    changeDetection: ChangeDetectionStrategy.Eager,
     template
 })
 export class StringOptionComponent extends OptionComponent<StringOption> {
@@ -32,17 +31,15 @@ export class StringOptionComponent extends OptionComponent<StringOption> {
      *
      * @returns The current option value.
      */
-    public get value(): StringValue {
-        return this.option.getValue(this.converter);
-    }
+    public readonly value = computed<StringValue>(() => this.getOption().getValue(this.getConverter()));
 
     /**
      * Sets a new option value.
      *
      * @param value  The new option value to set.
      */
-    public set value(value: StringValue) {
-        this.option.setValue(this.converter, value.valueOf());
+    public setValue(value: StringValue): void {
+        this.getOption().setValue(this.getConverter(), value.valueOf());
     }
 
     /**
@@ -50,7 +47,5 @@ export class StringOptionComponent extends OptionComponent<StringOption> {
      *
      * @returns The maximum string length.
      */
-    public get maxLength(): number | null {
-        return this.option.getMaxLength();
-    }
+    public readonly maxLength = computed(() => this.getOption().getMaxLength());
 }

@@ -1,32 +1,32 @@
 <div class="box">
   <button class="insert" (click)="insertOutput()" title="Insert conversion">+</button>
   <div class="title">
-    <h1>{{ title }}</h1>
+    <h1>{{ title() }}</h1>
     <nav>
-      @if (crackable) {<button class="crack" (click)="crack()">Crack</button>}
+      @if (crackable()) {<button class="crack" (click)="crack()">Crack</button>}
       <button class="decrypt" (click)="addOutput()">Convert</button>
       <button class="replace" (click)="replace()">Replace</button>
       <button #removeButton class="remove" (click)="remove()">Remove</button>
     </nav>
   </div>
   <div class="params">
-    @for (option of options; track option.getId()) {
+    @for (option of options(); track option.getId()) {
       @if (option.getType() == 'string') {
-        <decryptor-string-option class="param" [converter]="converter" [option]="option"></decryptor-string-option>
+        <decryptor-string-option class="param" [converter]="converter()" [option]="option"></decryptor-string-option>
       } @else if (option.getType() == 'number') {
-        <decryptor-number-option class="param" [converter]="converter" [option]="option"></decryptor-number-option>
+        <decryptor-number-option class="param" [converter]="converter()" [option]="option"></decryptor-number-option>
       } @else if (option.getType() == 'boolean') {
-        <decryptor-boolean-option class="param" [converter]="converter" [option]="option"></decryptor-boolean-option>
+        <decryptor-boolean-option class="param" [converter]="converter()" [option]="option"></decryptor-boolean-option>
       } @else if (option.getType() == 'select') {
-        <decryptor-select-option class="param" [converter]="converter" [option]="option"></decryptor-select-option>
+        <decryptor-select-option class="param" [converter]="converter()" [option]="option"></decryptor-select-option>
       }
     }
   </div>
-  <p>{{ value }}</p>
+  <p>{{ value() }}</p>
 </div>
 <div class="outputs">
   <div class="panels">
-    @for (output of outputs; track $index) {
+    @for (output of outputs(); track output) {
       <div class="panel">
         <decryptor-output [output]="output"></decryptor-output>
       </div>

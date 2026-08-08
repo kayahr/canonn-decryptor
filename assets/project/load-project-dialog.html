@@ -1,13 +1,13 @@
 <div class="dialog load-project-dialog">
   <h1>Load</h1>
   <button class="close" (click)="close()"></button>
-  @if (!projectNames.length) {
+  @if (!projectNames().length) {
     <p>
       No saved projects found.
     </p>
   } @else {
     <div class="projects">
-      @for (projectName of projectNames; track projectName) {
+      @for (projectName of projectNames(); track projectName) {
         <div class="project">
           <div class="load">
             <button (click)="close(projectName)">{{ projectName }}</button>
