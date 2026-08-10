@@ -24,6 +24,6 @@ jobs:
       - name: Package project
         run: npm run package
       - name: Deploy project
-        uses: kayahr/deploy-github-pages-action@v4
+        uses: kayahr/deploy-github-pages-action@v6
         with:
           path: lib/package
