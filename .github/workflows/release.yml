@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 24.x
       - name: Build project
@@ -24,6 +24,6 @@ jobs:
       - name: Package project
         run: npm run package
       - name: Deploy project
-        uses: kayahr/deploy-github-pages-action@v4
+        uses: kayahr/deploy-github-pages-action@v7
         with:
           path: lib/package
